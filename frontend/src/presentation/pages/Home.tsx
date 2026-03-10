@@ -85,146 +85,178 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="home-page animate-fade-in">
+    <>
+      <div className="home-page animate-fade-in">
 
-      {/* SECTION ACCUEIL ET PHOTO */}
-      <section id="home" className="hero-section">
-        <div className="profile-photo-container">
-          <img src="https://ui-avatars.com/api/?name=Tom+Frumy&background=ff4d00&color=fff&size=200" alt="Tom Frumy" className="profile-photo" />
-        </div>
-        <h1 className="hero-title">Tom Frumy<span className="dot">.</span></h1>
-        <p className="hero-subtitle">Étudiant Développeur & Passionné</p>
-        <div className="hero-bio">
-          Développeur passionné par l'innovation et le spatial.
-          Expertise technique et rigueur opérationnelle au service de projets à fort impact.
-        </div>
-      </section>
+        {/* SECTION ACCUEIL ET PHOTO V3 (PREMIUM) */}
+        <section id="home" className="hero-fullscreen">
+          <div className="hero-content-wrapper">
 
-      {/* SECTION PARCOURS */}
-      <section id="parcours" className="timeline-section">
-        <h2 className="section-title">Mon Parcours</h2>
-        <p className="section-subtitle">Formation et expériences professionnelles. Cliquez pour découvrir les compétences acquises.</p>
-
-        {/* FORMATIONS */}
-        <div className="parcours-subsection">
-          <h3 className="subsection-title">🎓 Formation</h3>
-          {formations.length === 0 ? (
-            <p>Chargement des formations...</p>
-          ) : (
-            <div className="timeline-grid">
-              {formations.map(formation => (
-                <div key={formation.id} className="mac-card timeline-card formation-card" onClick={() => handleOpenFormationModal(formation)}>
-                  <div className="timeline-header">
-                    <span className="timeline-company">{formation.institution}</span>
-                    <span className="timeline-period">{formation.period}</span>
-                  </div>
-                  <h3 className="timeline-title">{formation.title}</h3>
-                  <p className="timeline-desc">{formation.description}</p>
-                  <div className="formation-type-badge">{formation.type}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* EXPERIENCES PROFESSIONNELLES */}
-        <div className="parcours-subsection">
-          <h3 className="subsection-title">💼 Expériences Professionnelles</h3>
-          {professionalExperiences.length === 0 ? (
-            <p>Chargement des expériences...</p>
-          ) : (
-            <div className="timeline-grid">
-              {professionalExperiences.map(exp => (
-                <div key={exp.id} className="mac-card timeline-card experience-card" onClick={() => handleOpenProfExperienceModal(exp)}>
-                  <div className="timeline-header">
-                    <span className="timeline-company">{exp.company}</span>
-                    <span className="timeline-period">{exp.period}</span>
-                  </div>
-                  <h3 className="timeline-title">{exp.title}</h3>
-                  <p className="timeline-desc">{exp.description}</p>
-                  <div className="experience-type-badge">{exp.type}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* SECTION PROJETS */}
-      <section id="projects" className="projects-section">
-        <h2 className="section-title">Mes Projets</h2>
-        <p className="section-subtitle">Cliquez sur un projet pour voir les détails.</p>
-        <div className="projects-grid">
-          {projects.map(project => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onClick={() => handleOpenProjectModal(project)}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION PASSIONS */}
-      <section id="passions" className="passions-section">
-        <h2 className="section-title">Mes Passions</h2>
-        <p className="section-subtitle">Ce qui m'anime au quotidien.</p>
-        <div className="passions-grid">
-          {passions.map(passion => (
-            <div key={passion.id} className="mac-card passion-card">
-              <div className="passion-image">
-                <img src={passion.imageUrl} alt={passion.name} />
+            {/* Côté Gauche : Texte & Actions */}
+            <div className="hero-text-side">
+              <div className="telemetry-badge">Systems Active // Port: 3000</div>
+              <h1 className="hero-name-massive">
+                Tom Frumy<span className="dot">.</span>
+              </h1>
+              <p className="hero-role">
+                Étudiant <span className="highlight-text">Développeur Software</span> & Passionné
+              </p>
+              <div className="hero-description">
+                Expertise technique en C# (.NET 9), Svelte et Java.
+                Ancien cuisinier reconverti dans l'ingénierie logicielle,
+                j'apporte rigueur et curiosité à chaque ligne de code.
               </div>
-              <div className="passion-content">
-                <h3>{passion.name}</h3>
-                <p>{passion.description}</p>
+              <div className="hero-action-bay">
+                <a href="#projects" className="cta-button primary">Initialiser Projets</a>
+                <a href="#parcours" className="cta-button secondary">Consulter Parcours</a>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* SECTION IUT */}
-      <section id="iut" className="iut-section">
-        <h2 className="section-title">Référentiel B.U.T Informatique</h2>
-        <p className="section-subtitle">
-          Projets associés et progression sur les 6 compétences clés.
-        </p>
-        <div className="iut-grid">
-          {iutCompetences.map(comp => {
-            const linkedProjects = PortfolioService.getProjectsByCompetence(projects, comp.id);
-            return (
-              <div key={comp.id} className="mac-card iut-card">
-                <h3>{comp.name}</h3>
-                <p className="iut-desc">{comp.description}</p>
-                <SkillBar name="Niveau d'acquisition" mastery={comp.level} />
+            {/* Côté Droit : Image de profil Premium (Apple ID style) */}
+            <div className="hero-visual-side">
+              <div className="apple-id-card">
+                <div className="apple-id-photo-wrapper">
+                  <img
+                    src="/images/ID_mono.png"
+                    alt="Tom"
+                    className="apple-id-photo"
+                  />
+                  <div className="apple-id-glare"></div>
+                </div>
+              </div>
+            </div>
 
-                {linkedProjects.length > 0 && (
-                  <div className="linked-projects-area">
-                    <h4>Projets associés :</h4>
-                    <div className="linked-projects-pills">
-                      {linkedProjects.map(p => (
-                        <button
-                          key={p.id}
-                          className="project-pill"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenProjectModal(p);
-                          }}
-                        >
-                          {p.title}
-                        </button>
-                      ))}
+          </div>
+        </section>
+
+        <div className="main-content-container">
+          {/* SECTION PARCOURS */}
+          <section id="parcours" className="timeline-section">
+          <h2 className="section-title">Mon Parcours</h2>
+          <p className="section-subtitle">Formation et expériences professionnelles. Cliquez pour découvrir les compétences acquises.</p>
+
+          {/* FORMATIONS */}
+          <div className="parcours-subsection">
+            <h3 className="subsection-title">🎓 Formation</h3>
+            {formations.length === 0 ? (
+              <p>Chargement des formations...</p>
+            ) : (
+              <div className="timeline-grid">
+                {formations.map(formation => (
+                  <div key={formation.id} className="mac-card timeline-card formation-card" onClick={() => handleOpenFormationModal(formation)}>
+                    <div className="timeline-header">
+                      <span className="timeline-company">{formation.institution}</span>
+                      <span className="timeline-period">{formation.period}</span>
                     </div>
+                    <h3 className="timeline-title">{formation.title}</h3>
+                    <p className="timeline-desc">{formation.description}</p>
+                    <div className="formation-type-badge">{formation.type}</div>
                   </div>
-                )}
+                ))}
               </div>
-            );
-          })}
-        </div>
-      </section>
+            )}
+          </div>
 
-      {/* MODALS */}
+          {/* EXPERIENCES PROFESSIONNELLES */}
+          <div className="parcours-subsection">
+            <h3 className="subsection-title">💼 Expériences Professionnelles</h3>
+            {professionalExperiences.length === 0 ? (
+              <p>Chargement des expériences...</p>
+            ) : (
+              <div className="timeline-grid">
+                {professionalExperiences.map(exp => (
+                  <div key={exp.id} className="mac-card timeline-card experience-card" onClick={() => handleOpenProfExperienceModal(exp)}>
+                    <div className="timeline-header">
+                      <span className="timeline-company">{exp.company}</span>
+                      <span className="timeline-period">{exp.period}</span>
+                    </div>
+                    <h3 className="timeline-title">{exp.title}</h3>
+                    <p className="timeline-desc">{exp.description}</p>
+                    <div className="experience-type-badge">{exp.type}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* SECTION PROJETS */}
+        <section id="projects" className="projects-section">
+          <h2 className="section-title">Mes Projets</h2>
+          <p className="section-subtitle">Cliquez sur un projet pour voir les détails.</p>
+          <div className="projects-grid">
+            {projects.map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onClick={() => handleOpenProjectModal(project)}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION PASSIONS */}
+        <section id="passions" className="passions-section">
+          <h2 className="section-title">Mes Passions</h2>
+          <p className="section-subtitle">Ce qui m'anime au quotidien.</p>
+          <div className="passions-grid">
+            {passions.map(passion => (
+              <div key={passion.id} className="mac-card passion-card">
+                <div className="passion-image">
+                  <img src={passion.imageUrl} alt={passion.name} />
+                </div>
+                <div className="passion-content">
+                  <h3>{passion.name}</h3>
+                  <p>{passion.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION IUT */}
+        <section id="iut" className="iut-section">
+          <h2 className="section-title">Référentiel B.U.T Informatique</h2>
+          <p className="section-subtitle">
+            Projets associés et progression sur les 6 compétences clés.
+          </p>
+          <div className="iut-grid">
+            {iutCompetences.map(comp => {
+              const linkedProjects = PortfolioService.getProjectsByCompetence(projects, comp.id);
+              return (
+                <div key={comp.id} className="mac-card iut-card">
+                  <h3>{comp.name}</h3>
+                  <p className="iut-desc">{comp.description}</p>
+                  <SkillBar name="Niveau d'acquisition" mastery={comp.level} />
+
+                  {linkedProjects.length > 0 && (
+                    <div className="linked-projects-area">
+                      <h4>Projets associés :</h4>
+                      <div className="linked-projects-pills">
+                        {linkedProjects.map(p => (
+                          <button
+                            key={p.id}
+                            className="project-pill"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenProjectModal(p);
+                            }}
+                          >
+                            {p.title}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+        </div>
+      </div>
+
+      {/* MODALS (ROOT LEVEL - Outside transform context) */}
       {selectedProject && (
         <div className="modal-overlay" onClick={handleCloseModals}>
           <ProjectModal project={selectedProject} onClose={handleCloseModals} />
@@ -240,8 +272,7 @@ const Home: React.FC = () => {
           <ProfExperienceModal experience={selectedProfExperience} onClose={handleCloseModals} />
         </div>
       )}
-
-    </div>
+    </>
   );
 };
 

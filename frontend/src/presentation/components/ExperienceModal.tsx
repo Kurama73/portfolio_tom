@@ -74,7 +74,7 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({ experience, onClose }
               <h3 className="modal-section-title" style={{ margin: '1.8rem 0 0 0' }}>Compétences Techniques Globales</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', margin: '1rem 0 0 0' }}>
                 {skills.map(skill => (
-                  <SkillBar key={skill.id} name={skill.name} mastery={skill.mastery} />
+                  <SkillBar key={skill.id} name={skill.name} mastery={skill.mastery} icon={skill.icon} />
                 ))}
               </div>
             </div>

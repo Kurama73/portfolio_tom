@@ -2,23 +2,24 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 // Mock data
+// Update skill icons
 const SKILLS = [
-  { id: "html", name: "HTML", category: "Web", mastery: 90 },
-  { id: "sql", name: "SQL", category: "Database", mastery: 90 },
-  { id: "mongodb", name: "MongoDB", category: "Database", mastery: 90 },
-  { id: "xml", name: "XML", category: "Data", mastery: 90 },
-  { id: "css", name: "CSS", category: "Web", mastery: 85 },
-  { id: "js", name: "JavaScript", category: "Web", mastery: 80 },
-  { id: "git", name: "Git", category: "Tools", mastery: 80 },
-  { id: "tailwind", name: "Tailwind CSS", category: "Web", mastery: 80 },
-  { id: "java", name: "Java", category: "Backend", mastery: 75 },
-  { id: "c", name: "C", category: "System", mastery: 75 },
-  { id: "csharp", name: "C#", category: "Backend", mastery: 75 },
-  { id: "kotlin", name: "Kotlin", category: "Mobile", mastery: 75 },
-  { id: "svelte", name: "Svelte", category: "Web", mastery: 70 },
-  { id: "dotnet", name: ".NET 9", category: "Backend", mastery: 60 },
-  { id: "php", name: "PHP", category: "Backend", mastery: 60 },
-  { id: "symfony", name: "Symfony", category: "Backend", mastery: 60 },
+  { id: "html", name: "HTML", category: "Web", mastery: 90, icon: "/images/skills/html.png" },
+  { id: "sql", name: "SQL", category: "Database", mastery: 90, icon: "/images/skills/sql.png" },
+  { id: "mongodb", name: "MongoDB", category: "Database", mastery: 90, icon: "/images/skills/mongodb.png" },
+  { id: "xml", name: "XML", category: "Data", mastery: 90, icon: "/images/skills/xml.png" },
+  { id: "css", name: "CSS", category: "Web", mastery: 85, icon: "/images/skills/css.png" },
+  { id: "js", name: "JavaScript", category: "Web", mastery: 80, icon: "/images/skills/javascript.png" },
+  { id: "git", name: "Git", category: "Tools", mastery: 80, icon: "/images/skills/git.png" },
+  { id: "tailwind", name: "Tailwind CSS", category: "Web", mastery: 80, icon: "/images/skills/tailwind css.png" },
+  { id: "java", name: "Java", category: "Backend", mastery: 75, icon: "/images/skills/java.png" },
+  { id: "c", name: "C", category: "System", mastery: 75, icon: "/images/skills/c.png" },
+  { id: "csharp", name: "C#", category: "Backend", mastery: 75, icon: "/images/skills/c-sharp.png" },
+  { id: "kotlin", name: "Kotlin", category: "Mobile", mastery: 75, icon: "/images/skills/kotlin.png" },
+  { id: "svelte", name: "Svelte", category: "Web", mastery: 70, icon: "/images/skills/svelte.png" },
+  { id: "dotnet", name: ".NET 9", category: "Backend", mastery: 60, icon: "/images/skills/net9.png" },
+  { id: "php", name: "PHP", category: "Backend", mastery: 60, icon: "/images/skills/php.png" },
+  { id: "symfony", name: "Symfony", category: "Backend", mastery: 60, icon: "/images/skills/symfony.png" },
 ];
 
 const SOFT_SKILLS = [
@@ -48,7 +49,8 @@ const PROJECTS = [
     techStack: ["C#", ".NET 9", "WPF", "XML", "Design Patterns"],
     skillsIds: ["csharp", "dotnet", "xml", "git"],
     competencesIds: ["comp1", "comp2", "comp4"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/projects/AppliParam/1.jpg",
+    images: ["/images/projects/AppliParam/1.jpg", "/images/projects/AppliParam/2.jpg", "/images/projects/AppliParam/3.jpg"],
     category: "Software",
   },
   {
@@ -59,7 +61,8 @@ const PROJECTS = [
     techStack: ["Svelte", "Node.js", "TailwindCSS", "MySQL", "VPS"],
     skillsIds: ["svelte", "tailwind", "sql", "js"],
     competencesIds: ["comp1", "comp2"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/projects/SmartDesk/1.png",
+    images: ["/images/projects/SmartDesk/1.png", "/images/projects/SmartDesk/2.png"],
     category: "Web",
   },
   {
@@ -70,8 +73,10 @@ const PROJECTS = [
     techStack: ["PHP", "Symfony", "Twig", "MySQL", "CSS"],
     skillsIds: ["php", "symfony", "sql", "css"],
     competencesIds: ["comp1", "comp4", "comp6"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/projects/PanierVIP/1.png",
+    images: ["/images/projects/PanierVIP/1.png", "/images/projects/PanierVIP/2.png", "/images/projects/PanierVIP/3.png"],
     category: "Web",
+    status: "Déployé"
   },
   {
     id: "lootboxhunter",
@@ -81,8 +86,10 @@ const PROJECTS = [
     techStack: ["Kotlin", "Android Studio", "Firebase", "REST API"],
     skillsIds: ["kotlin"],
     competencesIds: ["comp1", "comp4"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/projects/LootBoxHunter/1.png",
+    images: ["/images/projects/LootBoxHunter/1.png", "/images/projects/LootBoxHunter/2.png", "/images/projects/LootBoxHunter/3.png", "/images/projects/LootBoxHunter/4.png"],
     category: "Mobile",
+    status: "Déployé"
   },
   {
     id: "dimensionalmatrix",
@@ -92,8 +99,10 @@ const PROJECTS = [
     techStack: ["Python", "Raspberry Pi", "SenseHat", "Gyroscope"],
     skillsIds: ["python"],
     competencesIds: ["comp1", "comp3"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/projects/DimensionalMatrix/1.png",
+    images: ["/images/projects/DimensionalMatrix/1.png"],
     category: "System",
+    status: "Archivé"
   },
   {
     id: "sae-java",
@@ -103,8 +112,10 @@ const PROJECTS = [
     techStack: ["Java Swing", "Algorithmes de Graphes", "JUnit"],
     skillsIds: ["java"],
     competencesIds: ["comp1", "comp2", "comp5"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/projects/SAE_JAVA/4.png",
+    images: ["/images/projects/SAE_JAVA/4.png", "/images/projects/SAE_JAVA/1.png", "/images/projects/SAE_JAVA/2.png", "/images/projects/SAE_JAVA/3.png"],
     category: "Desktop",
+    status: "Archivé"
   },
 ];
 
@@ -118,7 +129,7 @@ const FORMATIONS = [
     longDescription: "Formation complète en arts culinaires avec apprentissage des techniques de base et avancées de la cuisine française. Accent mis sur la précision, l'organisation et le travail en équipe dans un environnement exigeant.",
     hardSkills: ["Techniques culinaires", "Hygiène alimentaire", "Gestion des stocks", "Préparation des plats", "Service en salle"],
     softSkills: ["Travail d'équipe", "Rigueur", "Gestion du stress", "Adaptabilité", "Précision"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/experiences/Cuisine.png",
     type: "education"
   },
   {
@@ -130,7 +141,7 @@ const FORMATIONS = [
     longDescription: "Formation technologique orientée vers l'innovation et le développement durable. Introduction aux sciences industrielles et aux technologies numériques.",
     hardSkills: ["Électronique", "Informatique", "Mécanique", "Énergies renouvelables", "Programmation basique"],
     softSkills: ["Résolution de problèmes", "Créativité", "Travail en équipe", "Autonomie", "Pensée critique"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/ID_mono.png",
     type: "education"
   },
   {
@@ -142,7 +153,7 @@ const FORMATIONS = [
     longDescription: "Formation supérieure en informatique avec spécialisation en développement logiciel, bases de données et systèmes d'information. Projet de fin d'études en cours.",
     hardSkills: ["Développement web", "Bases de données", "Programmation orientée objet", "Algorithmique", "Architecture logicielle", "Cybersécurité"],
     softSkills: ["Communication", "Travail en équipe", "Adaptabilité", "Résolution de problèmes", "Gestion de projet", "Autonomie"],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/ID_mono.png",
     type: "education"
   }
 ];
@@ -162,7 +173,7 @@ const PROFESSIONAL_EXPERIENCES = [
       "Génération de rapports PDF complexes avec données chiffrées",
       "Travail en méthodologie agile avec Git pour le versioning"
     ],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/experiences/Desautel.jpg",
     type: "stage"
   },
   {
@@ -179,7 +190,7 @@ const PROFESSIONAL_EXPERIENCES = [
       "Respect des normes d'hygiène et de sécurité alimentaire",
       "Service en salle et relation client"
     ],
-    imageUrl: "/uploads/placeholder.jpg",
+    imageUrl: "/images/experiences/Cuisine.png",
     type: "stage"
   }
 ];
@@ -189,37 +200,37 @@ const PASSIONS = [
     id: "pas1",
     name: "Gaming",
     description: "Plus qu'un loisir, une source d'inspiration pour le design de mécaniques et l'optimisation des performances.",
-    imageUrl: "/uploads/placeholder.jpg"
+    imageUrl: "/images/passions/gaming_1.png"
   },
   {
     id: "pas2",
     name: "Aérospatial",
     description: "L'exigence technique et l'innovation constante du secteur spatial me fascinent et guident ma curiosité.",
-    imageUrl: "/uploads/placeholder.jpg"
+    imageUrl: "/images/passions/space_1.jpg"
   },
   {
     id: "pas3",
     name: "Sport Automobile",
     description: "L'adrénaline de la performance et l'ingénierie de pointe au service de la vitesse.",
-    imageUrl: "/uploads/placeholder.jpg"
+    imageUrl: "/images/passions/ms_1.jpg"
   },
   {
     id: "pas4",
     name: "SimRacing",
     description: "La quête de la trajectoire parfaite, demandant une concentration et une précision chirurgicale.",
-    imageUrl: "/uploads/placeholder.jpg"
+    imageUrl: "/images/passions/sr_1.jpg"
   },
   {
     id: "pas5",
     name: "Cuisine",
     description: "L'art de l'organisation et de la précision, où chaque ingrédient compte pour le résultat final.",
-    imageUrl: "/uploads/placeholder.jpg"
+    imageUrl: "/images/passions/cuisine_1.jpg"
   },
   {
     id: "pas6",
     name: "Technologie",
     description: "En veille permanente sur les dernières avancées logicielle et matérielle pour rester à la pointe.",
-    imageUrl: "/uploads/placeholder.jpg"
+    imageUrl: "/images/passions/informatique_1.jpg"
   }
 ];
 
@@ -233,7 +244,8 @@ function seedDatabase(db) {
           id TEXT PRIMARY KEY,
           name TEXT NOT NULL,
           category TEXT NOT NULL,
-          mastery INTEGER NOT NULL
+          mastery INTEGER NOT NULL,
+          icon TEXT
         )
       `);
 
@@ -263,7 +275,8 @@ function seedDatabase(db) {
           skillsIds TEXT NOT NULL,
           competencesIds TEXT NOT NULL,
           imageUrl TEXT NOT NULL,
-          category TEXT NOT NULL
+          category TEXT NOT NULL,
+          images TEXT
         )
       `);
 
@@ -307,9 +320,9 @@ function seedDatabase(db) {
         if (err) return reject(err);
 
         // Insert skills
-        const skillStmt = db.prepare('INSERT OR REPLACE INTO skills (id, name, category, mastery) VALUES (?, ?, ?, ?)');
+        const skillStmt = db.prepare('INSERT OR REPLACE INTO skills (id, name, category, mastery, icon) VALUES (?, ?, ?, ?, ?)');
         SKILLS.forEach(skill => {
-          skillStmt.run(skill.id, skill.name, skill.category, skill.mastery);
+          skillStmt.run(skill.id, skill.name, skill.category, skill.mastery, skill.icon);
         });
         skillStmt.finalize();
 
@@ -328,9 +341,9 @@ function seedDatabase(db) {
         compStmt.finalize();
 
         // Insert projects
-        const projectStmt = db.prepare('INSERT OR REPLACE INTO projects (id, title, description, longDescription, techStack, skillsIds, competencesIds, imageUrl, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const projectStmt = db.prepare('INSERT OR REPLACE INTO projects (id, title, description, longDescription, techStack, skillsIds, competencesIds, imageUrl, category, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         PROJECTS.forEach(project => {
-          projectStmt.run(project.id, project.title, project.description, project.longDescription, JSON.stringify(project.techStack), JSON.stringify(project.skillsIds), JSON.stringify(project.competencesIds), project.imageUrl, project.category);
+          projectStmt.run(project.id, project.title, project.description, project.longDescription, JSON.stringify(project.techStack), JSON.stringify(project.skillsIds), JSON.stringify(project.competencesIds), project.imageUrl, project.category, JSON.stringify(project.images || []));
         });
         projectStmt.finalize();
 

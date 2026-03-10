@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Project, IutCompetence } from '../../domain/models';
+import type { Project, IutCompetence } from '../../domain/models';
 import { PortfolioService } from '../../domain/services/portfolio.service';
 import ImageCarousel from './ImageCarousel';
 import './Modal.css';
@@ -14,27 +14,45 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
   useEffect(() => {
     const loadData = async () => {
-      const allCompetences = await PortfolioService.getIutCompetences();
-      setCompetences(allCompetences.filter(c => project.competencesIds.includes(c.id)));
+      try {
+        const allCompetences = await PortfolioService.getIutCompetences();
+        const ids = Array.isArray(project.competencesIds) ? project.competencesIds : [];
+        setCompetences(allCompetences.filter(c => ids.includes(c.id)));
+      } catch (e) {
+        console.error("Error loading competences", e);
+      }
     };
     loadData();
   }, [project]);
 
-  // Si on avait un tableau 'images', on l'utiliserait. Sinon on met le 'imageUrl' dans un tableau pour le carousel.
-  const imagesToDisplay = (project as any).images || (project.imageUrl ? [project.imageUrl] : []);
+  let safeTechStack: string[] = [];
+  if (Array.isArray(project.techStack)) {
+    safeTechStack = project.techStack;
+  } else if (typeof project.techStack === 'string') {
+    try { safeTechStack = JSON.parse(project.techStack); } catch (e) { safeTechStack = []; }
+  }
+
+  const imagesToDisplay = Array.isArray(project.images) && project.images.length > 0
+    ? project.images
+    : (project.imageUrl ? [project.imageUrl] : []);
 
   return (
     <div className="tech-modal animate-fade-in" onClick={e => e.stopPropagation()}>
       <button className="close-button" onClick={onClose}>&times;</button>
 
       <div className="modal-content-scroll">
-        <ImageCarousel images={imagesToDisplay} alt={project.title} />
+        {/* HERO ILLUSTRATION HEADER */}
+        {imagesToDisplay.length > 0 && (
+          <ImageCarousel images={imagesToDisplay} alt={project.title} showGalleryOnly={false} />
+        )}
 
         <div className="modal-body-padding" style={imagesToDisplay.length === 0 ? { marginTop: '3rem' } : {}}>
           <h2 className="modal-title">{project.title}</h2>
           <div className="modal-meta">
             <span className="tag tag-soft">{project.category}</span>
           </div>
+
+          <p className="modal-tagline">{project.description}</p>
 
           <div className="modal-grid">
             <div>
@@ -50,14 +68,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             <div>
               <h3 className="modal-section-title">Stack Technique</h3>
               <div className="skills-group">
-                {project.techStack.map(tech => (
+                {safeTechStack.map(tech => (
                   <span key={tech} className="tag tag-tech">{tech}</span>
                 ))}
               </div>
 
               {competences.length > 0 && (
                 <>
-                  <h3 className="modal-section-title">Compétences IUT</h3>
+                  <h3 className="modal-section-title" style={{ marginTop: '2.5rem' }}>Compétences IUT</h3>
                   <div className="skills-group">
                     {competences.map(comp => (
                       <span key={comp.id} className="tag tag-hard" style={{ width: '100%', textAlign: 'center' }}>
@@ -69,6 +87,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
               )}
             </div>
           </div>
+
+          {/* GALERIE MINIATURES AU BAS DE LA MODALE */}
+          <ImageCarousel images={imagesToDisplay} alt={project.title} showGalleryOnly={true} />
         </div>
       </div>
     </div>

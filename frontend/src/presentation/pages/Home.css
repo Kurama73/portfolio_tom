@@ -8,10 +8,10 @@
 .main-content-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem 5rem 2rem;
+  padding: 8rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 6rem;
+  gap: 12rem;
 }
 
 /* =========================================
@@ -384,3 +384,10 @@
   .hero-action-bay { flex-direction: column; width: 100%; }
   .primary-button, .secondary-button { width: 100%; }
 }
+/* SKILL ICONS */
+.skill-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+.skill-label { display: flex; align-items: center; gap: 0.8rem; }
+.skill-icon { width: 22px; height: 22px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(255,51,0,0.2)); }
+.skill-name { color: #fff; font-weight: 600; font-size: 0.95rem; }
+.skill-percentage { color: #888; font-size: 0.85rem; font-weight: 500; }
+

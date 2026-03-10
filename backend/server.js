@@ -4,11 +4,12 @@ const cors = require('cors');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 const { seedDatabase } = require('./seed');
 
 const app = express();
-const PORT = 3001;
-const SECRET_KEY = 'ton_secret_hyper_securise_a_changer';
+const PORT = process.env.PORT || 3001;
+const SECRET_KEY = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
 
 app.use(cors());
 app.use(express.json());
@@ -38,7 +39,8 @@ db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT)`);
   db.get("SELECT * FROM admin", (err, row) => {
     if (!row) {
-      const hash = bcrypt.hashSync("admin123", 10);
+      const adminPass = process.env.ADMIN_PASSWORD || "admin123";
+      const hash = bcrypt.hashSync(adminPass, 10);
       db.run("INSERT INTO admin (username, password) VALUES ('tom', ?)", [hash]);
     }
   });
@@ -87,7 +89,8 @@ app.get('/api/projects', (req, res) => {
       // Ton seed enregistre techStack, skillsIds et competencesIds en JSON stringifié
       techStack: r.techStack ? JSON.parse(r.techStack) : [],
       skillsIds: r.skillsIds ? JSON.parse(r.skillsIds) : [],
-      competencesIds: r.competencesIds ? JSON.parse(r.competencesIds) : []
+      competencesIds: r.competencesIds ? JSON.parse(r.competencesIds) : [],
+      images: r.images ? JSON.parse(r.images) : []
     }));
     res.json(formatted);
   });

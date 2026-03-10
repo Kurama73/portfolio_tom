@@ -1,5 +1,5 @@
 import React from 'react';
-import { Project } from '../../domain/models';
+import type { Project } from '../../domain/models';
 import './ProjectCard.css';
 
 interface ProjectCardProps {
@@ -16,7 +16,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
     try { safeTechStack = JSON.parse(project.techStack); } catch (e) { safeTechStack = []; }
   }
 
-  const coverImage = (project as any).images?.[0] || project.imageUrl;
+  let imagesArr: string[] = [];
+  if (Array.isArray(project.images)) {
+    imagesArr = project.images;
+  } else if (typeof (project as any).images === 'string') {
+    try { imagesArr = JSON.parse((project as any).images); } catch (e) { imagesArr = []; }
+  }
+
+  const coverImage = imagesArr[0] || project.imageUrl;
 
   // Classe dynamique pour la couleur du statut
   const statusClass = project.status === 'Déployé' ? 'status-deployed' : project.status === 'Archivé' ? 'status-archived' : 'status-dev';
@@ -42,7 +49,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         </div>
 
         <h3 className="project-title">{project.title}</h3>
-        <p className="project-desc">{project.shortDescription || 'Aucune description disponible.'}</p>
+        <p className="project-desc">{project.description || 'Aucune description disponible.'}</p>
 
         <div className="project-tech">
           {safeTechStack.slice(0, 3).map(tech => (

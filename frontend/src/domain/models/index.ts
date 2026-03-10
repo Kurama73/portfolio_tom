@@ -37,6 +37,7 @@ export interface Project {
   link?: string;
   competencesIds: string[];
   skillsIds: string[];
+  images: string[];
 }
 
 export interface IutCompetence {
@@ -51,6 +52,7 @@ export interface Skill {
   name: string;
   mastery: number;
   category?: string;
+  icon?: string;
 }
 
 export interface Experience {
