@@ -411,3 +411,20 @@
 .skill-name { color: #fff; font-weight: 600; font-size: 0.95rem; }
 .skill-percentage { color: #888; font-size: 0.85rem; font-weight: 500; }
 
+.skill-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
