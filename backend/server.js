@@ -12,6 +12,15 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const SECRET_KEY = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
 
+// ==========================================
+// CONFIGURATION ET MIDDLEWARES GLOBAUX
+// ==========================================
+
+app.use(cors());
+app.use(express.json());
+// Servir les fichiers statiques (images)
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
 // Configuration Multer pour les images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,46 +33,48 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-app.use(cors());
-app.use(express.json());
-// Servir les fichiers statiques (images)
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
+// ==========================================
+// CONNEXION À SQLITE ET INITIALISATION
+// ==========================================
 
-// 1. Connexion à SQLite
 const dbPath = path.resolve(__dirname, 'portfolio.db');
 const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) console.error('Erreur SQLite:', err.message);
-  else console.log('Système connecté à SQLite.');
-});
-
-// Check if database needs seeding
-db.get("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table' AND name='skills'", (err, row) => {
-  if (err || !row || row.count === 0) {
-    seedDatabase(db).catch(console.error);
+  if (err) {
+    console.error('Erreur SQLite:', err.message);
   } else {
-    db.get("SELECT COUNT(*) as count FROM skills", (err, row) => {
-      if (row.count === 0) {
+    console.log('Système connecté à SQLite.');
+
+    // Initialisation de la base de données (Seeding si nécessaire)
+    db.get("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table' AND name='skills'", (err, row) => {
+      if (err || !row || row.count === 0) {
         seedDatabase(db).catch(console.error);
+      } else {
+        db.get("SELECT COUNT(*) as count FROM skills", (err, row) => {
+          if (row && row.count === 0) {
+            seedDatabase(db).catch(console.error);
+          }
+        });
       }
     });
-  }
-});
 
-// (On ne refait pas les CREATE TABLE ici, on part du principe que ton seed.js a tout fait proprement)
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT)`);
-  db.get("SELECT * FROM admin", (err, row) => {
-    if (!row) {
-      const adminPass = process.env.ADMIN_PASSWORD || "admin123";
-      const hash = bcrypt.hashSync(adminPass, 10);
-      db.run("INSERT INTO admin (username, password) VALUES ('tom', ?)", [hash]);
-    }
-  });
+    // Création de la table admin et utilisateur par défaut
+    db.serialize(() => {
+      db.run(`CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT)`);
+      db.get("SELECT * FROM admin", (err, row) => {
+        if (!row) {
+          const adminPass = process.env.ADMIN_PASSWORD || "admin123";
+          const hash = bcrypt.hashSync(adminPass, 10);
+          db.run("INSERT INTO admin (username, password) VALUES ('tom', ?)", [hash]);
+        }
+      });
+    });
+  }
 });
 
 // ==========================================
 // MIDDLEWARE DE SÉCURITÉ
 // ==========================================
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -79,12 +90,13 @@ const authenticateToken = (req, res, next) => {
 // ==========================================
 // ROUTES AUTHENTIFICATION
 // ==========================================
+
 app.post('/api/auth/login', (req, res) => {
   const { username, password } = req.body;
   db.get("SELECT * FROM admin WHERE username = ?", [username], (err, user) => {
     if (err || !user) return res.status(400).json({ error: 'Identifiants incorrects' });
     if (bcrypt.compareSync(password, user.password)) {
-      const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '2h' });
+      const token = jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '24h' });
       res.json({ token });
     } else {
       res.status(400).json({ error: 'Identifiants incorrects' });
@@ -101,7 +113,6 @@ app.get('/api/projects', (req, res) => {
     if (err) return res.status(500).json([]);
     const formatted = rows.map(r => ({
       ...r,
-      // Ton seed enregistre techStack, skillsIds et competencesIds en JSON stringifié
       techStack: r.techStack ? JSON.parse(r.techStack) : [],
       skillsIds: r.skillsIds ? JSON.parse(r.skillsIds) : [],
       competencesIds: r.competencesIds ? JSON.parse(r.competencesIds) : [],
@@ -137,7 +148,6 @@ app.get('/api/professional-experiences', (req, res) => {
 });
 
 app.get('/api/experiences', (req, res) => {
-  // On récupère simplement toutes les expériences professionnelles pour cette route globale
   db.all('SELECT * FROM professional_experiences', [], (err, rows) => {
     if (err) return res.status(500).json([]);
     const formatted = rows.map(r => ({
@@ -156,7 +166,6 @@ app.get('/api/passions', (req, res) => {
   });
 });
 
-// Attention : Dans ton seed.js, la table s'appelle `iut_competences` !
 app.get('/api/iut-competences', (req, res) => {
   db.all('SELECT * FROM iut_competences', [], (err, rows) => {
     res.json(rows || []);
@@ -165,6 +174,12 @@ app.get('/api/iut-competences', (req, res) => {
 
 app.get('/api/skills', (req, res) => {
   db.all('SELECT * FROM skills', [], (err, rows) => {
+    res.json(rows || []);
+  });
+});
+
+app.get('/api/soft-skills', (req, res) => {
+  db.all('SELECT * FROM soft_skills', [], (err, rows) => {
     res.json(rows || []);
   });
 });
@@ -333,6 +348,30 @@ app.delete('/api/skills/:id', authenticateToken, (req, res) => {
   });
 });
 
+// --- SOFT SKILLS ---
+app.post('/api/soft-skills', authenticateToken, (req, res) => {
+  const s = req.body;
+  db.run('INSERT INTO soft_skills (id, name) VALUES (?, ?)', [s.id, s.name], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(s);
+  });
+});
+
+app.put('/api/soft-skills/:id', authenticateToken, (req, res) => {
+  const s = req.body;
+  db.run('UPDATE soft_skills SET name=? WHERE id=?', [s.name, req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
+});
+
+app.delete('/api/soft-skills/:id', authenticateToken, (req, res) => {
+  db.run('DELETE FROM soft_skills WHERE id = ?', [req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
+});
+
 // --- PASSIONS ---
 app.post('/api/passions', authenticateToken, (req, res) => {
   const p = req.body;
@@ -356,6 +395,10 @@ app.delete('/api/passions/:id', authenticateToken, (req, res) => {
     res.json({ success: true });
   });
 });
+
+// ==========================================
+// DÉMARRAGE DU SERVEUR
+// ==========================================
 
 app.listen(PORT, () => {
   console.log(`🚀 Moteur API démarré sur http://localhost:${PORT}`);
