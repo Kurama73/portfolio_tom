@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --bg-color: #121318; /* Noir espace profond */
+  --text-color: #e0e0e0;
+  --primary-color: #ff3300; /* Orange/Rouge moteur fusée & F1 */
+  --secondary-color: #0b0c10;
+  --accent-color: #00ffcc; /* Cyan Néon Gaming */
+  --glass-bg: rgba(15, 15, 20, 0.75);
+  --glass-border: rgba(0, 255, 204, 0.15);
+  --border-radius-mac: 12px;
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Rajdhani', sans-serif; /* Typo technique / Télémétrie */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  position: relative;
+}
+
+section[id], [id^="formation"], [id^="experience"] {
+  scroll-margin-top: 120px;
+}
+
+/* Grille holographique subtile (Science/Espace) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -2;
+}
+
+/* Nébuleuse lumineuse en fond */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255, 51, 0, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 70%, rgba(0, 255, 204, 0.05) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.2;
+}
+
+h2.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #fff, #888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+/* Cartes épurées avec touche Racing/Sci-fi */
+.mac-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-mac);
+  padding: 1.1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.mac-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 51, 0, 0.15);
+  border-color: rgba(255, 51, 0, 0.4);
+}
+
+/* Boutons style "Cockpit / Gaming" */
+.primary-button {
+  background: linear-gradient(45deg, var(--primary-color), #ff6600);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  transition: all 0.3s ease;
+}
+
+.primary-button:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 20px rgba(255, 51, 0, 0.6);
+  transform: scale(1.02);
+}
+
+.dot { color: var(--accent-color); text-shadow: 0 0 10px var(--accent-color); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar (Néon) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 204, 0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }

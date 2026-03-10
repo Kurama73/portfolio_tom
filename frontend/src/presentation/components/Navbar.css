@@ -1,0 +1,66 @@
+.navbar {
+  position: fixed;
+  top: 1.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.navbar-glass {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 2rem;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-display);
+  align-items: center;
+}
+
+.nav-links a {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+.nav-logo {
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.dot {
+  color: var(--primary-color);
+}
+
+.nav-contact {
+    background: var(--primary-color);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    opacity: 1 !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+.nav-contact:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
+}
