@@ -8,7 +8,6 @@ function App() {
   const [isAdminMode, setIsAdminMode] = useState(false);
 
   useEffect(() => {
-    // Si l'URL contient #override, on ouvre la porte dérobée
     const checkHash = () => setIsAdminMode(window.location.hash === '#override');
     checkHash();
     window.addEventListener('hashchange', checkHash);
@@ -23,7 +22,6 @@ function App() {
     <>
       <Navbar />
       <Home />
-      {/* C'est ici qu'il manquait le composant Contact ! */}
       <Contact />
     </>
   );

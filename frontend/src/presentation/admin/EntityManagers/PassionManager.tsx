@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
-import { Passion } from '../../../domain/models';
+import type { Passion } from '../../../domain/models';
 import ImageUpload from '../ImageUpload';
 
 const PassionManager: React.FC = () => {

@@ -44,7 +44,6 @@ export class AdminService {
     throw new Error(data.error || 'Erreur d\'upload');
   }
 
-  // Méthode générique CRUD pour éviter la répétition
   private static async request(endpoint: string, method: string, body?: any) {
     const res = await fetch(`${API_URL}${endpoint}`, {
       method,
@@ -58,32 +57,26 @@ export class AdminService {
     return res.json();
   }
 
-  // --- Projets ---
   static createProject(data: any) { return this.request('/projects', 'POST', data); }
   static updateProject(id: string | number, data: any) { return this.request(`/projects/${id}`, 'PUT', data); }
   static deleteProject(id: string | number) { return this.request(`/projects/${id}`, 'DELETE'); }
 
-  // --- Formations ---
   static createFormation(data: any) { return this.request('/formations', 'POST', data); }
   static updateFormation(id: string | number, data: any) { return this.request(`/formations/${id}`, 'PUT', data); }
   static deleteFormation(id: string | number) { return this.request(`/formations/${id}`, 'DELETE'); }
 
-  // --- Expériences Pro ---
   static createExperience(data: any) { return this.request('/professional_experiences', 'POST', data); }
   static updateExperience(id: string | number, data: any) { return this.request(`/professional_experiences/${id}`, 'PUT', data); }
   static deleteExperience(id: string | number) { return this.request(`/professional_experiences/${id}`, 'DELETE'); }
 
-  // --- Compétences IUT ---
   static createCompetence(data: any) { return this.request('/iut-competences', 'POST', data); }
   static updateCompetence(id: string, data: any) { return this.request(`/iut-competences/${id}`, 'PUT', data); }
   static deleteCompetence(id: string) { return this.request(`/iut-competences/${id}`, 'DELETE'); }
 
-  // --- Skills ---
   static createSkill(data: any) { return this.request('/skills', 'POST', data); }
   static updateSkill(id: string, data: any) { return this.request(`/skills/${id}`, 'PUT', data); }
   static deleteSkill(id: string) { return this.request(`/skills/${id}`, 'DELETE'); }
 
-  // --- Passions ---
   static createPassion(data: any) { return this.request('/passions', 'POST', data); }
   static updatePassion(id: string, data: any) { return this.request(`/passions/${id}`, 'PUT', data); }
   static deletePassion(id: string) { return this.request(`/passions/${id}`, 'DELETE'); }

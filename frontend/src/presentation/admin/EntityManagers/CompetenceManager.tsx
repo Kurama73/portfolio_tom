@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
-import { IutCompetence } from '../../../domain/models';
+import type { IutCompetence } from '../../../domain/models';
 
 const CompetenceManager: React.FC = () => {
   const [competences, setCompetences] = useState<IutCompetence[]>([]);

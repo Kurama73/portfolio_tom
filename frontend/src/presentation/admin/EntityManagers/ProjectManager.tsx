@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
-import { Project, ProjectCategory, ProjectStatus } from '../../../domain/models';
+import { type Project, ProjectCategory, ProjectStatus } from '../../../domain/models';
 import ImageUpload from '../ImageUpload';
 
 const ProjectManager: React.FC = () => {

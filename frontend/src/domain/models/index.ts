@@ -1,6 +1,3 @@
-// ==========================================
-// ENUMS (Pour les formulaires et la cohérence)
-// ==========================================
 export const ProjectCategory = {
   Web: 'Web',
   Mobile: 'Mobile',
@@ -21,9 +18,6 @@ export const ProjectStatus = {
 
 export type ProjectStatus = typeof ProjectStatus[keyof typeof ProjectStatus];
 
-// ==========================================
-// INTERFACES (Les modèles de données)
-// ==========================================
 export interface Project {
   id: string;
   title: string;

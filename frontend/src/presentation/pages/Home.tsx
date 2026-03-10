@@ -101,7 +101,6 @@ const Home: React.FC = () => {
 
             {/* Côté Gauche : Texte & Actions */}
             <div className="hero-text-side">
-              <div className="telemetry-badge">Systems Active // Port: 3000</div>
               <h1 className="hero-name-massive">
                 Tom Frumy<span className="dot">.</span>
               </h1>
@@ -113,7 +112,7 @@ const Home: React.FC = () => {
               </div>
               <div className="hero-action-bay">
                 <a href="#parcours" className="cta-button primary">Consulter Parcours</a>
-                <a href="#projects" className="cta-button secondary">Voir les Projets</a>
+                <a href="/TOM_FRUMY_CV.pdf" download="Tom_Frumy_CV.pdf" className="cta-button secondary">Télécharger le CV</a>
               </div>
             </div>
 

@@ -111,7 +111,7 @@ const PROJECTS = [
   },
   {
     id: "sae-java",
-    title: "Ciel Français (SAE JAVA)",
+    title: "SAE JAVA - Coloration",
     description: "Visualisation de graphes et évitement de collision d'avions (Java Swing).",
     longDescription: "Modélisation de l'espace aérien et simulation d'évitement de collisions à l'aide d'algorithmes de coloration de graphes. Développement d'une interface graphique interactive permettant de manipuler les trajectoires.\n\nJ’ai conçu toute la partie IHM interactive (Java Swing) et l’intégration des fonctionnalités d'import/export de données complexes (CSV/JSON).",
     techStack: ["Java Swing", "Algorithmes de Graphes", "JUnit"],

@@ -9,10 +9,9 @@ require('dotenv').config();
 const { seedDatabase } = require('./seed');
 const rateLimit = require('express-rate-limit');
 
-// Limiteur de requêtes pour le formulaire de contact (Anti-Spam)
 const contactLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 heure
-  max: 5, // Limite chaque IP à 5 messages par heure
+  windowMs: 60 * 60 * 1000,
+  max: 5,
   message: { error: "Trop de tentatives. Veuillez réessayer plus tard." },
   standardHeaders: true,
   legacyHeaders: false,
@@ -28,10 +27,8 @@ const SECRET_KEY = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
 
 app.use(cors());
 app.use(express.json());
-// Servir les fichiers statiques (images)
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-// Configuration Multer pour les images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, 'public/images/uploads'));
@@ -54,7 +51,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
   } else {
     console.log('Système connecté à SQLite.');
 
-    // Initialisation de la base de données (Seeding si nécessaire)
     db.get("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table' AND name='skills'", (err, row) => {
       if (err || !row || row.count === 0) {
         seedDatabase(db).catch(console.error);
@@ -67,7 +63,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
       }
     });
 
-    // Création de la table admin et utilisateur par défaut
     db.serialize(() => {
       db.run(`CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT)`);
       db.get("SELECT * FROM admin", (err, row) => {
@@ -200,14 +195,12 @@ app.get('/api/soft-skills', (req, res) => {
 // ROUTES ÉCRITURE (SÉCURISÉES)
 // ==========================================
 
-// --- UPLOAD D'IMAGE ---
 app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Aucun fichier uploadé' });
   const imageUrl = `/images/uploads/${req.file.filename}`;
   res.json({ url: imageUrl });
 });
 
-// --- PROJETS ---
 app.post('/api/projects', authenticateToken, (req, res) => {
   const p = req.body;
   const sql = `INSERT INTO projects (title, description, longDescription, techStack, imageUrl, github, link, category, status, skillsIds, competencesIds, images, startDate)
@@ -251,7 +244,6 @@ app.delete('/api/projects/:id', authenticateToken, (req, res) => {
   });
 });
 
-// --- FORMATIONS ---
 app.post('/api/formations', authenticateToken, (req, res) => {
   const f = req.body;
   const sql = `INSERT INTO formations (id, title, institution, period, description, longDescription, imageUrl, type, hardSkills, softSkills, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -277,7 +269,6 @@ app.delete('/api/formations/:id', authenticateToken, (req, res) => {
   });
 });
 
-// --- EXPERIENCES PRO ---
 app.post('/api/professional_experiences', authenticateToken, (req, res) => {
   const e = req.body;
   const sql = `INSERT INTO professional_experiences (id, title, company, period, description, longDescription, missions, hardSkills, softSkills, imageUrl, type, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -303,7 +294,6 @@ app.delete('/api/professional_experiences/:id', authenticateToken, (req, res) =>
   });
 });
 
-// --- COMPETENCES IUT ---
 app.post('/api/iut-competences', authenticateToken, (req, res) => {
   const c = req.body;
   db.run('INSERT INTO iut_competences (id, name, description, level) VALUES (?, ?, ?, ?)', [c.id, c.name, c.description, c.level], (err) => {
@@ -327,7 +317,6 @@ app.delete('/api/iut-competences/:id', authenticateToken, (req, res) => {
   });
 });
 
-// --- SKILLS ---
 app.post('/api/skills', authenticateToken, (req, res) => {
   const s = req.body;
   db.run('INSERT INTO skills (id, name, mastery, category, icon) VALUES (?, ?, ?, ?, ?)', [s.id, s.name, s.mastery, s.category, s.icon], (err) => {
@@ -351,7 +340,6 @@ app.delete('/api/skills/:id', authenticateToken, (req, res) => {
   });
 });
 
-// --- SOFT SKILLS ---
 app.post('/api/soft-skills', authenticateToken, (req, res) => {
   const s = req.body;
   db.run('INSERT INTO soft_skills (id, name) VALUES (?, ?)', [s.id, s.name], (err) => {
@@ -375,7 +363,6 @@ app.delete('/api/soft-skills/:id', authenticateToken, (req, res) => {
   });
 });
 
-// --- PASSIONS ---
 app.post('/api/passions', authenticateToken, (req, res) => {
   const p = req.body;
   db.run('INSERT INTO passions (id, name, description, imageUrl) VALUES (?, ?, ?, ?)', [p.id, p.name, p.description, p.imageUrl], (err) => {
@@ -399,17 +386,14 @@ app.delete('/api/passions/:id', authenticateToken, (req, res) => {
   });
 });
 
-// --- CONTACT (PROTECTION ANTI-BOT & WEBHOOK) ---
 app.post('/api/contact', contactLimiter, async (req, res) => {
   const { name, email, subject, message, _honeypot } = req.body;
 
-  // 1. Stratégie Honeypot : Si ce champ caché est rempli, c'est un bot
   if (_honeypot) {
     console.warn("Tentative de bot détectée (Honeypot rempli)");
     return res.status(403).json({ error: "Bot detected." });
   }
 
-  // 2. Validation de base
   if (!name || !email || !subject || !message) {
     return res.status(400).json({ error: "Tous les champs sont obligatoires." });
   }

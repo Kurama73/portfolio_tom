@@ -7,7 +7,7 @@ const Contact: React.FC = () => {
     email: '',
     subject: '',
     message: '',
-    _honeypot: '' 
+    _honeypot: ''
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -45,7 +45,6 @@ const Contact: React.FC = () => {
       </div>
 
       <div className="contact-content">
-        {/* Colonne de Gauche : Coordonnées*/}
         <div className="mac-card contact-info-card static-card">
           <h3 className="info-card-title">Informations</h3>
 

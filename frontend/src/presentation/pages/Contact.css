@@ -13,6 +13,7 @@
 
 /* GRILLE PRINCIPALE */
 .contact-content {
+  align-items: center;
   display: grid;
   grid-template-columns: 350px 1fr; /* Colonne infos fixe, le reste pour le formulaire */
   gap: 3rem;
@@ -167,7 +168,7 @@
 
 .submit-btn {
   margin-top: 0.5rem;
-  align-self: flex-start;
+  align-self: flex-end;
 }
 
 /* -------------------------------------
