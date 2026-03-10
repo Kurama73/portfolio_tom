@@ -275,6 +275,26 @@
   font-size: 1.1rem;
 }
 
+.mini-tag {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(0, 255, 204, 0.05); /* Légère teinte accent */
+  border: 1px solid rgba(0, 255, 204, 0.1);
+  border-radius: 4px;
+  color: #88efd4; /* Accent color soft variant */
+  font-family: var(--font-sans);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-soft-skills {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
 .parcours-split {
   display: grid;
   grid-template-columns: 1fr 1fr;

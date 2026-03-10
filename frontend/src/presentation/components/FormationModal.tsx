@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formation } from '../../domain/models';
+import type { Formation } from '../../domain/models';
 import './Modal.css';
 
 interface FormationModalProps {
@@ -30,7 +30,7 @@ const FormationModal: React.FC<FormationModalProps> = ({ formation, onClose }) =
             </div>
 
             <div>
-              <h3 className="modal-section-title">Acquisitions Techniques</h3>
+              <h3 className="modal-section-title">Compétences Techniques</h3>
               <div className="skills-group">
                 {hardSkills.length > 0 ? (
                   hardSkills.map((skill, index) => <span key={index} className="tag tag-hard">{skill}</span>)

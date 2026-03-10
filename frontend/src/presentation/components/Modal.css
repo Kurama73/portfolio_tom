@@ -69,28 +69,28 @@ body.modal-open {
 }
 
 .modal-body-padding {
-  padding: 3rem;
+  padding: 2.5rem 3rem;
 }
 
 .modal-title {
   font-family: var(--font-display);
-  font-size: 3rem;
+  font-size: 2.8rem;
   color: white;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .modal-meta {
-  display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2rem;
 }
 
 .modal-tagline {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #fff;
   font-family: var(--font-sans);
   font-weight: 300;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
   line-height: 1.4;
   opacity: 0.9;
   border-left: 2px solid var(--primary-color);
@@ -99,15 +99,15 @@ body.modal-open {
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 3rem;
 }
 
 .modal-section-title {
   font-family: var(--font-display);
   color: var(--accent-color);
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 3px;
   border-left: 3px solid var(--accent-color);
@@ -115,17 +115,22 @@ body.modal-open {
 }
 
 .modal-text {
-  line-height: 1.8;
+  line-height: 1.7;
   color: #bbb;
   white-space: pre-wrap;
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 /* --- TAGS & SKILLS --- */
 .skills-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  margin-bottom: 2rem; /* Espace après chaque groupe */
+}
+
+.skills-group:last-child {
+  margin-bottom: 0;
 }
 
 .tag {

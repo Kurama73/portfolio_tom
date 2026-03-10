@@ -173,6 +173,8 @@ const PROFESSIONAL_EXPERIENCES = [
       "Génération de rapports PDF complexes avec données chiffrées",
       "Travail en méthodologie agile avec Git pour le versioning"
     ],
+    hardSkills: ["C#", ".NET 9", "WPF", "Cryptographie", "Git", "Agile", "PDF Generation"],
+    softSkills: ["Autonomie", "Rigueur", "Collaboration", "Adaptabilité"],
     imageUrl: "/images/experiences/Desautel.jpg",
     type: "stage"
   },
@@ -190,6 +192,8 @@ const PROFESSIONAL_EXPERIENCES = [
       "Respect des normes d'hygiène et de sécurité alimentaire",
       "Service en salle et relation client"
     ],
+    hardSkills: ["Techniques de cuisson", "HACCP", "Dressage", "Gestion de brigade"],
+    softSkills: ["Résistance au stress", "Rapidité", "Discipline", "Sens du détail"],
     imageUrl: "/images/experiences/Cuisine.png",
     type: "stage"
   }
@@ -304,6 +308,8 @@ function seedDatabase(db) {
           description TEXT NOT NULL,
           longDescription TEXT NOT NULL,
           missions TEXT NOT NULL,
+          hardSkills TEXT,
+          softSkills TEXT,
           imageUrl TEXT NOT NULL,
           type TEXT NOT NULL
         )
@@ -355,9 +361,9 @@ function seedDatabase(db) {
         formationStmt.finalize();
 
         // Insert professional experiences
-        const profExpStmt = db.prepare('INSERT OR REPLACE INTO professional_experiences (id, title, company, period, description, longDescription, missions, imageUrl, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const profExpStmt = db.prepare('INSERT OR REPLACE INTO professional_experiences (id, title, company, period, description, longDescription, missions, hardSkills, softSkills, imageUrl, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         PROFESSIONAL_EXPERIENCES.forEach(exp => {
-          profExpStmt.run(exp.id, exp.title, exp.company, exp.period, exp.description, exp.longDescription, JSON.stringify(exp.missions), exp.imageUrl, exp.type);
+          profExpStmt.run(exp.id, exp.title, exp.company, exp.period, exp.description, exp.longDescription, JSON.stringify(exp.missions || []), JSON.stringify(exp.hardSkills || []), JSON.stringify(exp.softSkills || []), exp.imageUrl, exp.type);
         });
         profExpStmt.finalize();
 

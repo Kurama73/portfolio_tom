@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfessionalExperience } from '../../domain/models';
+import type { ProfessionalExperience } from '../../domain/models';
 import './Modal.css';
 
 interface ProfExperienceModalProps {
@@ -21,12 +21,7 @@ const ProfExperienceModal: React.FC<ProfExperienceModalProps> = ({ experience, o
             {experience.type && <span className="tag tag-hard">{experience.type}</span>}
           </div>
 
-          <div className="modal-grid" style={{ gridTemplateColumns: '1fr 1.2fr' }}>
-            <div>
-              <h3 className="modal-section-title">Contexte Opérationnel</h3>
-              <p className="modal-text">{experience.longDescription || experience.description}</p>
-            </div>
-
+          <div className="modal-grid">
             <div>
               <h3 className="modal-section-title">Missions & Réalisations</h3>
               <div className="missions-grid">
@@ -41,6 +36,27 @@ const ProfExperienceModal: React.FC<ProfExperienceModalProps> = ({ experience, o
                 ) : (
                   <p className="modal-text" style={{ fontStyle: 'italic' }}>Détails des missions restreints.</p>
                 )}
+              </div>
+
+              <div style={{ marginTop: '2.5rem' }}>
+                <h3 className="modal-section-title">Contexte Opérationnel</h3>
+                <p className="modal-text">{experience.longDescription || experience.description}</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="modal-section-title">Compétences Techniques</h3>
+              <div className="skills-group">
+                {experience.hardSkills?.length > 0 ? (
+                  experience.hardSkills.map((skill, index) => <span key={index} className="tag tag-hard">{skill}</span>)
+                ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>Non spécifiées</span>}
+              </div>
+
+              <h3 className="modal-section-title">Soft Skills</h3>
+              <div className="skills-group">
+                {experience.softSkills?.length > 0 ? (
+                  experience.softSkills.map((skill, index) => <span key={index} className="tag tag-soft">{skill}</span>)
+                ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>Non spécifiées</span>}
               </div>
             </div>
           </div>
