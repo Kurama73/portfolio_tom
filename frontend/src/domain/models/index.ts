@@ -68,6 +68,8 @@ export interface Experience {
 export interface ProfessionalExperience extends Experience {
   type: string;
   missions: string[];
+  hardSkills: string[];
+  softSkills: string[];
 }
 
 export interface Formation extends Experience {
