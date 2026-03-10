@@ -37,7 +37,7 @@ const FormationModal: React.FC<FormationModalProps> = ({ formation, onClose }) =
                 ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>En cours d'acquisition</span>}
               </div>
 
-              <h3 className="modal-section-title">Soft Skills</h3>
+              <h3 className="modal-section-title">Compétences Transversales</h3>
               <div className="skills-group">
                 {softSkills.length > 0 ? (
                   softSkills.map((skill, index) => <span key={index} className="tag tag-soft">{skill}</span>)

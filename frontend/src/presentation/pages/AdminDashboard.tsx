@@ -12,7 +12,6 @@ const AdminDashboard: React.FC = () => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('admin_token'));
   const [activeTab, setActiveTab] = useState('projects');
 
-  // Login states
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);

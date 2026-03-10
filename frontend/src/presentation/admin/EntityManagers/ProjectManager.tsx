@@ -100,6 +100,10 @@ const ProjectManager: React.FC = () => {
                   {Object.values(ProjectStatus).map(stat => <option key={stat} value={stat}>{stat}</option>)}
                 </select>
               </div>
+              <div className="form-group">
+                <label>Date de début (Tri: YYYY-MM)</label>
+                <input className="clean-input" type="month" value={editingProject.startDate || ''} onChange={e => setEditingProject({...editingProject, startDate: e.target.value})} />
+              </div>
             </div>
 
             <div className="form-group">

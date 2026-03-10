@@ -38,6 +38,7 @@ export interface Project {
   competencesIds: string[];
   skillsIds: string[];
   images: string[];
+  startDate?: string;
 }
 
 export interface IutCompetence {
@@ -63,6 +64,8 @@ export interface Experience {
   description: string;
   longDescription?: string;
   imageUrl?: string;
+  competencesIds?: string[];
+  startDate?: string;
 }
 
 export interface ProfessionalExperience extends Experience {

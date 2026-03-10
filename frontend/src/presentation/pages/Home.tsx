@@ -18,6 +18,13 @@ const Home: React.FC = () => {
   const [iutCompetences, setIutCompetences] = useState<IutCompetence[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAllFormations, setShowAllFormations] = useState(false);
+  const [showAllExperiences, setShowAllExperiences] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
+  const getSortValue = (item: any): string => {
+    return item.startDate || '0000-00';
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,11 +43,11 @@ const Home: React.FC = () => {
           PortfolioService.getProjects()
         ]);
 
-        setFormations(formationsData);
-        setProfessionalExperiences(profExpData);
+        setFormations([...formationsData].sort((a, b) => b.startDate?.localeCompare(a.startDate || '') || 0));
+        setProfessionalExperiences([...profExpData].sort((a, b) => b.startDate?.localeCompare(a.startDate || '') || 0));
         setPassions(passionsData);
         setIutCompetences(competencesData);
-        setProjects(projectsData);
+        setProjects([...projectsData].sort((a, b) => b.startDate?.localeCompare(a.startDate || '') || 0));
       } catch (error) {
         console.error('Error loading data:', error);
       } finally {
@@ -88,7 +95,7 @@ const Home: React.FC = () => {
     <>
       <div className="home-page animate-fade-in">
 
-        {/* SECTION ACCUEIL ET PHOTO V3 (PREMIUM) */}
+        {/* SECTION ACCUEIL ET PHOTO */}
         <section id="home" className="hero-fullscreen">
           <div className="hero-content-wrapper">
 
@@ -99,20 +106,18 @@ const Home: React.FC = () => {
                 Tom Frumy<span className="dot">.</span>
               </h1>
               <p className="hero-role">
-                Étudiant <span className="highlight-text">Développeur Software</span> & Passionné
+                Étudiant <span className="highlight-text">développeur</span>
               </p>
               <div className="hero-description">
-                Expertise technique en C# (.NET 9), Svelte et Java.
-                Ancien cuisinier reconverti dans l'ingénierie logicielle,
-                j'apporte rigueur et curiosité à chaque ligne de code.
+                Développeur passionné par la technologie, l'innovation et le spatial, j'ai développé rigueur et esprit d'équipe lors d'un parcours atypique en cuisine avant de me réorienter vers l'informatique.
               </div>
               <div className="hero-action-bay">
-                <a href="#projects" className="cta-button primary">Initialiser Projets</a>
-                <a href="#parcours" className="cta-button secondary">Consulter Parcours</a>
+                <a href="#parcours" className="cta-button primary">Consulter Parcours</a>
+                <a href="#projects" className="cta-button secondary">Voir les Projets</a>
               </div>
             </div>
 
-            {/* Côté Droit : Image de profil Premium (Apple ID style) */}
+            {/* Côté Droit : Image de profil */}
             <div className="hero-visual-side">
               <div className="apple-id-card">
                 <div className="apple-id-photo-wrapper">
@@ -130,7 +135,7 @@ const Home: React.FC = () => {
         </section>
 
         <div className="main-content-container">
-          {/* SECTION PARCOURS (LIEN NAVBAR) */}
+          {/* SECTION PARCOURS*/}
           <section id="parcours">
 
             {/* FORMATIONS */}
@@ -140,30 +145,39 @@ const Home: React.FC = () => {
               {formations.length === 0 ? (
                 <p>Chargement des formations...</p>
               ) : (
-                <div className="timeline-grid">
-                  {formations.map(formation => (
-                    <div key={formation.id} className="mac-card timeline-card formation-card" onClick={() => handleOpenFormationModal(formation)}>
-                      <div className="timeline-header">
-                        <span className="timeline-company">{formation.institution}</span>
-                        <span className="timeline-period">{formation.period}</span>
-                      </div>
-                      <h3 className="timeline-title">{formation.title}</h3>
-                      <p className="timeline-desc">{formation.description}</p>
-
-                      {/* Affichage des Soft Skills sur la carte */}
-                      {formation.softSkills && formation.softSkills.length > 0 && (
-                        <div className="card-soft-skills">
-                          {formation.softSkills.slice(0, 3).map((skill, idx) => (
-                            <span key={idx} className="mini-tag">{skill}</span>
-                          ))}
-                          {formation.softSkills.length > 3 && <span className="mini-tag">+{formation.softSkills.length - 3}</span>}
+                <>
+                  <div className="timeline-grid">
+                    {formations.slice(0, showAllFormations ? formations.length : 3).map(formation => (
+                      <div key={formation.id} className="mac-card timeline-card formation-card" onClick={() => handleOpenFormationModal(formation)}>
+                        <div className="timeline-header">
+                          <span className="timeline-company">{formation.institution}</span>
+                          <span className="timeline-period">{formation.period}</span>
                         </div>
-                      )}
+                        <h3 className="timeline-title">{formation.title}</h3>
+                        <p className="timeline-desc">{formation.description}</p>
 
-                      <div className="formation-type-badge">{formation.type}</div>
+                        {/* Affichage des Soft Skills sur la carte */}
+                        {formation.softSkills && formation.softSkills.length > 0 && (
+                          <div className="card-soft-skills">
+                            {formation.softSkills.slice(0, 3).map((skill, idx) => (
+                              <span key={idx} className="mini-tag">{skill}</span>
+                            ))}
+                            {formation.softSkills.length > 3 && <span className="mini-tag">+{formation.softSkills.length - 3}</span>}
+                          </div>
+                        )}
+
+                        <div className="formation-type-badge">{formation.type}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {formations.length > 3 && (
+                    <div className="show-more-container">
+                      <button className="show-more-btn" onClick={() => setShowAllFormations(!showAllFormations)}>
+                        {showAllFormations ? "Voir moins" : "Voir plus"}
+                      </button>
                     </div>
-                  ))}
-                </div>
+                  )}
+                </>
               )}
             </div>
 
@@ -177,19 +191,28 @@ const Home: React.FC = () => {
               {professionalExperiences.length === 0 ? (
                 <p>Chargement des expériences...</p>
               ) : (
-                <div className="timeline-grid">
-                  {professionalExperiences.map(exp => (
-                    <div key={exp.id} className="mac-card timeline-card experience-card" onClick={() => handleOpenProfExperienceModal(exp)}>
-                      <div className="timeline-header">
-                        <span className="timeline-company">{exp.company}</span>
-                        <span className="timeline-period">{exp.period}</span>
+                <>
+                  <div className="timeline-grid">
+                    {professionalExperiences.slice(0, showAllExperiences ? professionalExperiences.length : 3).map(exp => (
+                      <div key={exp.id} className="mac-card timeline-card experience-card" onClick={() => handleOpenProfExperienceModal(exp)}>
+                        <div className="timeline-header">
+                          <span className="timeline-company">{exp.company}</span>
+                          <span className="timeline-period">{exp.period}</span>
+                        </div>
+                        <h3 className="timeline-title">{exp.title}</h3>
+                        <p className="timeline-desc">{exp.description}</p>
+                        <div className="experience-type-badge">{exp.type}</div>
                       </div>
-                      <h3 className="timeline-title">{exp.title}</h3>
-                      <p className="timeline-desc">{exp.description}</p>
-                      <div className="experience-type-badge">{exp.type}</div>
+                    ))}
+                  </div>
+                  {professionalExperiences.length > 3 && (
+                    <div className="show-more-container">
+                      <button className="show-more-btn" onClick={() => setShowAllExperiences(!showAllExperiences)}>
+                        {showAllExperiences ? "Voir moins" : "Voir plus"}
+                      </button>
                     </div>
-                  ))}
-                </div>
+                  )}
+                </>
               )}
             </div>
           </section>
@@ -198,15 +221,24 @@ const Home: React.FC = () => {
           <section id="projects" className="projects-section">
             <h2 className="section-title">Mes Projets</h2>
             <p className="section-subtitle">Cliquez sur un projet pour voir les détails.</p>
-            <div className="projects-grid">
-              {projects.map(project => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onClick={() => handleOpenProjectModal(project)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="projects-grid">
+                {projects.slice(0, showAllProjects ? projects.length : 9).map(project => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onClick={() => handleOpenProjectModal(project)}
+                  />
+                ))}
+              </div>
+              {projects.length > 9 && (
+                <div className="show-more-container">
+                  <button className="show-more-btn" onClick={() => setShowAllProjects(!showAllProjects)}>
+                    {showAllProjects ? "Voir moins" : "Voir plus"}
+                  </button>
+                </div>
+              )}
+            </>
           </section>
 
           {/* SECTION PASSIONS */}
@@ -256,7 +288,7 @@ const Home: React.FC = () => {
                                 handleOpenProjectModal(p);
                               }}
                             >
-                              {p.title}
+                              {p.title.split('(')[0].trim()}
                             </button>
                           ))}
                         </div>
@@ -270,7 +302,7 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* MODALS (ROOT LEVEL - Outside transform context) */}
+      {/* MODALS */}
       {selectedProject && (
         <div className="modal-overlay" onClick={handleCloseModals}>
           <ProjectModal project={selectedProject} onClose={handleCloseModals} />

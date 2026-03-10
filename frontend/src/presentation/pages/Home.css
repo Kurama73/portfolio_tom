@@ -91,6 +91,7 @@
   margin-bottom: 2.5rem;
   border-left: 2px solid rgba(255, 51, 0, 0.5);
   padding-left: 1.5rem;
+  text-align: justify;
 }
 
 .hero-action-bay {
@@ -99,29 +100,45 @@
   flex-wrap: wrap;
 }
 
-/* Bouton Secondaire (Style Fantôme) */
-.secondary-button {
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Boutons CTA */
+.cta-button {
   padding: 0.8rem 2rem;
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-  transition: all 0.3s ease;
 }
 
-.secondary-button:hover {
+.cta-button.primary {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(255, 51, 0, 0.3);
+}
+
+.cta-button.primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(255, 51, 0, 0.5);
+  filter: brightness(1.1);
+}
+
+.cta-button.secondary {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-left: 0;
+}
+
+.cta-button.secondary:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: white;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .icon { margin-right: 8px; }
@@ -326,7 +343,7 @@
 .timeline-company { color: white; font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
 .timeline-period { color: var(--primary-color); font-size: 0.85rem; font-weight: 600; }
 .timeline-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
-.timeline-desc { color: #888; font-size: 0.95rem; line-height: 1.5; }
+.timeline-desc { color: #888; font-size: 0.95rem; line-height: 1.5; text-align: justify; }
 
 .formation-type-badge, .experience-type-badge {
   display: inline-block;
@@ -344,13 +361,15 @@
 .passion-card { padding: 0 !important; overflow: hidden; display: flex; flex-direction: column; }
 .passion-image { width: 100%; height: 220px; overflow: hidden; }
 .passion-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-.passion-card:hover .passion-image img { transform: scale(1.08); }
+.passion-card:hover { transform: none; }
+.passion-card:hover .passion-image img { transform: none; }
 .passion-content { padding: 1.5rem; }
 
 /* CARTES IUT */
 .iut-card { display: flex; flex-direction: column; height: 100%; }
+.iut-card:hover { transform: none; }
 .iut-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: white; line-height: 1.3; }
-.iut-desc { font-size: 0.95rem; color: #888; margin-bottom: 2rem; line-height: 1.6; flex-grow: 1; }
+.iut-desc { font-size: 0.95rem; color: #888; margin-bottom: 2rem; line-height: 1.6; flex-grow: 1; text-align: justify; }
 
 .linked-projects-area { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.05); }
 .linked-projects-area h4 { font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
@@ -428,3 +447,46 @@
   transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.show-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.show-more-btn {
+  background: transparent;
+  color: var(--accent-color);
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  padding: 0.8rem 2.5rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.show-more-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.show-more-btn:hover {
+  background: rgba(0, 255, 204, 0.05);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+  transform: translateY(-2px);
+}
+
+.show-more-btn:hover::before {
+  left: 100%;
+}

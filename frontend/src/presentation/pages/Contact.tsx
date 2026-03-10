@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Contact.css';
 
 const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+    _honeypot: '' 
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      const response = await fetch('http://localhost:3001/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '', _honeypot: '' });
+      } else {
+        const data = await response.json();
+        setErrorMessage(data.error || "Une erreur est survenue.");
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error("Erreur d'envoi:", error);
+      setStatus('error');
+    }
+  };
+
   return (
     <div id="contact" className="contact-page animate-fade-in">
       <div className="contact-header">
@@ -10,7 +45,7 @@ const Contact: React.FC = () => {
       </div>
 
       <div className="contact-content">
-        {/* Colonne de Gauche : Coordonnées (Style épuré) */}
+        {/* Colonne de Gauche : Coordonnées*/}
         <div className="mac-card contact-info-card static-card">
           <h3 className="info-card-title">Informations</h3>
 
@@ -51,9 +86,9 @@ const Contact: React.FC = () => {
             <div className="info-text">
               <h4>Réseaux Sociaux</h4>
               <p className="social-links">
-                <a href="#" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/tom-frumy-78b154295" target="_blank" rel="noreferrer">LinkedIn</a>
                 <span className="separator">/</span>
-                <a href="#" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="https://github.com/Kurama73?tab=repositories" target="_blank" rel="noreferrer">GitHub</a>
               </p>
             </div>
           </div>
@@ -61,32 +96,80 @@ const Contact: React.FC = () => {
 
         {/* Colonne de Droite : Formulaire */}
         <div className="mac-card contact-form-card static-card">
-          <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+          <form className="contact-form" onSubmit={handleSubmit}>
 
             <div className="form-group-row">
               <div className="form-group">
                 <label>Nom complet</label>
-                <input type="text" className="clean-input" placeholder="John Doe" required />
+                <input
+                  type="text"
+                  className="clean-input"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label>Adresse Email</label>
-                <input type="email" className="clean-input" placeholder="john@domain.com" required />
+                <input
+                  type="email"
+                  className="clean-input"
+                  placeholder="john@domain.com"
+                  value={formData.email}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
+                  required
+                />
               </div>
             </div>
 
             <div className="form-group">
               <label>Sujet</label>
-              <input type="text" className="clean-input" placeholder="Proposition de mission..." required />
+              <input
+                type="text"
+                className="clean-input"
+                placeholder="Proposition de mission..."
+                value={formData.subject}
+                onChange={e => setFormData({ ...formData, subject: e.target.value })}
+                required
+              />
             </div>
 
             <div className="form-group">
               <label>Message</label>
-              <textarea className="clean-input" rows={6} placeholder="Votre message..." required></textarea>
+              <textarea
+                className="clean-input"
+                rows={6}
+                placeholder="Votre message..."
+                value={formData.message}
+                onChange={e => setFormData({ ...formData, message: e.target.value })}
+                required
+              ></textarea>
             </div>
 
-            <button type="submit" className="primary-button submit-btn">
-              Envoyer le message
+            <div className="form-group" style={{ display: 'none' }}>
+              <label>Ne pas remplir ce champ</label>
+              <input
+                type="text"
+                value={formData._honeypot}
+                onChange={e => setFormData({ ...formData, _honeypot: e.target.value })}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className={`primary-button submit-btn ${status === 'loading' ? 'loading' : ''}`}
+              disabled={status === 'loading'}
+            >
+              {status === 'loading' ? 'Envoi en cours...' : 'Envoyer le message'}
             </button>
+
+            {status === 'success' && (
+              <p className="status-message success">Message envoyé avec succès ! 🚀</p>
+            )}
+            {status === 'error' && (
+              <p className="status-message error">{errorMessage || "Erreur lors de l'envoi. Veuillez réessayer."}</p>
+            )}
 
           </form>
         </div>

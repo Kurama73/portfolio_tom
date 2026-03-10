@@ -41,7 +41,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
       <button className="close-button" onClick={onClose}>&times;</button>
 
       <div className="modal-content-scroll">
-        {/* HERO ILLUSTRATION HEADER */}
         {imagesToDisplay.length > 0 && (
           <ImageCarousel images={imagesToDisplay} alt={project.title} showGalleryOnly={false} />
         )}
@@ -88,7 +87,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             </div>
           </div>
 
-          {/* GALERIE MINIATURES AU BAS DE LA MODALE */}
           <ImageCarousel images={imagesToDisplay} alt={project.title} showGalleryOnly={true} />
         </div>
       </div>

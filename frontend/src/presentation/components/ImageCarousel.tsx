@@ -7,11 +7,6 @@ interface ProjectGalleryProps {
   showGalleryOnly?: boolean;
 }
 
-/**
- * Projet Gallery System
- * Si showGalleryOnly est faux (par défaut), affiche le Hero Header.
- * Si showGalleryOnly est vrai, affiche uniquement la grille de miniatures.
- */
 const ProjectGallery: React.FC<ProjectGalleryProps> = ({ images, alt, showGalleryOnly = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);

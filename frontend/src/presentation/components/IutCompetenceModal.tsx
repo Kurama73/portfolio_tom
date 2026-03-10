@@ -1,22 +1,20 @@
 import React from 'react';
-import { Project } from '../../domain/models';
+import type { Project } from '../../domain/models';
 import { PortfolioService } from '../../domain/services/portfolio.service';
 import SkillBar from './SkillBar';
 import './Modal.css';
 
 interface IutCompetenceModalProps {
   competence: any;
+  projects: Project[];
   onClose: () => void;
   onOpenProject: (project: Project) => void;
 }
 
-const IutCompetenceModal: React.FC<IutCompetenceModalProps> = ({ competence, onClose, onOpenProject }) => {
-  const linkedProjects = PortfolioService.getProjectsByCompetence(competence.id);
+const IutCompetenceModal: React.FC<IutCompetenceModalProps> = ({ competence, projects, onClose, onOpenProject }) => {
+  const linkedProjects = PortfolioService.getProjectsByCompetence(projects, competence.id);
 
   return (
-    // J'ai supprimé le <div className="modal-overlay"> qui était ici.
-    // On retourne directement la tech-modal !
-
     <div className="tech-modal animate-fade-in" onClick={e => e.stopPropagation()}>
       <button className="close-button" onClick={onClose}>&times;</button>
       <div className="modal-content-scroll">
@@ -48,13 +46,12 @@ const IutCompetenceModal: React.FC<IutCompetenceModalProps> = ({ competence, onC
                       onClick={() => onOpenProject(p)}
                     >
                       <h4 style={{ color: 'white', fontSize: '1.2rem', fontFamily: 'var(--font-display)' }}>{p.title}</h4>
-                      <p style={{ color: '#888', fontSize: '0.9rem', flex: 1 }}>{p.shortDescription || (p.description?.substring(0, 80) + '...')}</p>
+                      <p style={{ color: '#888', fontSize: '0.9rem', flex: 1 }}>{p.description?.substring(0, 80) + '...'}</p>
                       <span className="tech-badge" style={{ width: 'fit-content', borderColor: 'var(--primary-color)', color: 'white' }}>
                         Ouvrir le projet ▹
                       </span>
                     </div>
                   ))}
-
                 </div>
               </div>
             )}

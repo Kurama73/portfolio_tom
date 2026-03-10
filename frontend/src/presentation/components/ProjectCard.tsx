@@ -25,7 +25,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
 
   const coverImage = imagesArr[0] || project.imageUrl;
 
-  // Classe dynamique pour la couleur du statut
   const statusClass = project.status === 'Déployé' ? 'status-deployed' : project.status === 'Archivé' ? 'status-archived' : 'status-dev';
 
   return (

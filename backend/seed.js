@@ -43,202 +43,229 @@ const IUT_COMPETENCES = [
 const PROJECTS = [
   {
     id: "appliparam",
-    title: "AppliParam",
-    description: "Logiciel de paramétrage de centrale incendie (WPF/.NET 9).",
-    longDescription: "Refonte complète de l'interface de gestion des paramètres avancés (Niveau 4) en WPF (.NET 9) pour les centrales incendie INISE16. Ce projet incluait l'ajout de cryptage dynamique, la gestion de nouvelles cartes réseau et la génération de rapports PDF complexes. Travail réalisé lors d'un stage de 12 semaines chez Desautel.",
-    techStack: ["C#", ".NET 9", "WPF", "XML", "Design Patterns"],
+    title: "AppliParam (Desautel)",
+    description: "Refonte d'un logiciel WPF/.NET de paramétrage de centrales incendie avec cryptographie.",
+    longDescription: "Lors de mon stage de 12 semaines au sein de l’équipe R&D de Desautel, j’ai été chargé de la refonte complète de l’interface Niveau 4 du logiciel AppliParam, utilisé pour la configuration avancée des centrales incendie INISE16.\n\nL’ancienne interface souffrait d’un manque d’ergonomie et d’une absence de validation. J’ai conçu une nouvelle IHM en WPF/XAML synchronisée en temps réel (pattern Observer). J’ai également développé un système de cryptage dynamique à clé multiple pour sécuriser les fichiers XML et enrichi la génération de rapports PDF techniques.",
+    techStack: ["C#", ".NET 9", "WPF", "Design Patterns", "Git", "Cryptographie", "XML"],
     skillsIds: ["csharp", "dotnet", "xml", "git"],
     competencesIds: ["comp1", "comp2", "comp4"],
     imageUrl: "/images/projects/AppliParam/1.jpg",
     images: ["/images/projects/AppliParam/1.jpg", "/images/projects/AppliParam/2.jpg", "/images/projects/AppliParam/3.jpg"],
     category: "Software",
+    startDate: "2025-04"
   },
   {
     id: "smartdesk",
     title: "SmartDesk",
-    description: "Application web moderne de gestion d'agenda et productivité.",
-    longDescription: "Une solution complète pour booster sa productivité : calendrier interactif, gestionnaire de tâches, module de prise de notes et widgets musicaux. Développé avec l'approche Svelte pour une réactivité maximale et un design épuré.",
+    description: "Application web de productivité (Svelte/Node.js) avec widgets personnalisables.",
+    longDescription: "SmartDesk est une application web collaborative de gestion d’agenda et de productivité développée en équipe. Elle regroupe calendrier, tâches, notes et widgets (musique, etc.) dans une interface responsive.\n\nMa contribution a porté sur le design global et le développement complet du système de widgets interactifs. Nous avons utilisé Svelte, Node.js et MySQL, avec un déploiement sur VPS et une gestion de projet agile sur GitHub.",
     techStack: ["Svelte", "Node.js", "TailwindCSS", "MySQL", "VPS"],
     skillsIds: ["svelte", "tailwind", "sql", "js"],
-    competencesIds: ["comp1", "comp2"],
+    competencesIds: ["comp1", "comp2", "comp5"],
     imageUrl: "/images/projects/SmartDesk/1.png",
     images: ["/images/projects/SmartDesk/1.png", "/images/projects/SmartDesk/2.png"],
     category: "Web",
+    startDate: "2024-05"
   },
   {
     id: "paniervip",
     title: "PanierVIP",
-    description: "Gestion collaborative de listes de courses en temps réel.",
-    longDescription: "Application web collaborative permettant de créer des comptes, gérer des listes de courses partagées et suivre les achats en temps réel. Utilisation du framework PHP Symfony pour garantir une architecture MVC robuste et sécurisée.",
-    techStack: ["PHP", "Symfony", "Twig", "MySQL", "CSS"],
+    description: "Gestion collaborative de listes de courses en temps réel avec PHP/Symfony.",
+    longDescription: "PanierVIP permet à plusieurs utilisateurs de partager des listes de courses avec suivi des achats et statistiques. Développé sous Symfony avec Twig et MySQL.\n\nJ'ai réalisé l'authentification et la gestion des rôles (SecurityBundle), ainsi que les fonctionnalités CRUD pour les produits et utilisateurs. Le projet a permis de maîtriser les migrations et la validation des formulaires dans un environnement collaboratif.",
+    techStack: ["PHP", "Symfony", "Twig", "MySQL", "CSS", "Git"],
     skillsIds: ["php", "symfony", "sql", "css"],
     competencesIds: ["comp1", "comp4", "comp6"],
     imageUrl: "/images/projects/PanierVIP/1.png",
     images: ["/images/projects/PanierVIP/1.png", "/images/projects/PanierVIP/2.png", "/images/projects/PanierVIP/3.png"],
     category: "Web",
-    status: "Déployé"
+    status: "Déployé",
+    startDate: "2024-01"
   },
   {
     id: "lootboxhunter",
     title: "LootBoxHunter",
-    description: "Application mobile simulant l'ouverture de caisses.",
-    longDescription: "Application Android permettant de simuler l'ouverture de caisses de cosmétiques. Utilise une API externe pour les données et Firebase pour toute la partie authentification et stockage des données utilisateur.",
-    techStack: ["Kotlin", "Android Studio", "Firebase", "REST API"],
+    description: "Simulateur mobile d'ouverture de caisses (Kotlin/Firebase) avec API REST.",
+    longDescription: "Application Android native permettant de simuler l'ouverture de caisses de cosmétiques. Utilisation d'une API REST pour les données et de Firebase pour l'authentification et le stockage cloud.\n\nDesign complet de l'IHM sous Android Studio et gestion asynchrone des flux de données. Le système gère l'inventaire des utilisateurs et la synchronisation en temps réel.",
+    techStack: ["Kotlin", "Android Studio", "Firebase", "API REST"],
     skillsIds: ["kotlin"],
-    competencesIds: ["comp1", "comp4"],
+    competencesIds: ["comp1", "comp4", "comp3"],
     imageUrl: "/images/projects/LootBoxHunter/1.png",
     images: ["/images/projects/LootBoxHunter/1.png", "/images/projects/LootBoxHunter/2.png", "/images/projects/LootBoxHunter/3.png", "/images/projects/LootBoxHunter/4.png"],
     category: "Mobile",
-    status: "Déployé"
+    status: "Déployé",
+    startDate: "2023-11"
   },
   {
     id: "dimensionalmatrix",
     title: "DimensionalMatrix",
-    description: "Jeu labyrinthe sur Raspberry Pi avec SenseHat.",
-    longDescription: "Un jeu de labyrinthe innovant contrôlé par gyroscope sur une matrice LED 8x8. Le projet combine programmation matérielle en Python et logique de jeu pour une expérience interactive tangible.",
+    description: "Jeu labyrinthe Python sur Raspberry Pi avec capteurs SenseHat.",
+    longDescription: "Développement d'un jeu interactif utilisant la matrice LED et le gyroscope du SenseHat. Le joueur doit s'échapper d'un labyrinthe en inclinant le boîtier.\n\nProjet réalisé en équipe dans un contexte international (ateliers en anglais), mettant l'accent sur l'optimisation pour hardware embarqué et la gestion des entrées/sorties temps réel.",
     techStack: ["Python", "Raspberry Pi", "SenseHat", "Gyroscope"],
     skillsIds: ["python"],
-    competencesIds: ["comp1", "comp3"],
+    competencesIds: ["comp1", "comp2", "comp3"],
     imageUrl: "/images/projects/DimensionalMatrix/1.png",
     images: ["/images/projects/DimensionalMatrix/1.png"],
     category: "System",
-    status: "Archivé"
+    status: "Archivé",
+    startDate: "2023-03"
   },
   {
     id: "sae-java",
-    title: "SAE JAVA - Ciel Français",
-    description: "Visualisation de graphes et évitement de collision.",
-    longDescription: "Application Swing modélisant l'espace aérien français. Elle implémente des algorithmes de graphes complexes pour la détection et l'évitement des conflits de trajectoires d'avions.",
+    title: "Ciel Français (SAE JAVA)",
+    description: "Visualisation de graphes et évitement de collision d'avions (Java Swing).",
+    longDescription: "Modélisation de l'espace aérien et simulation d'évitement de collisions à l'aide d'algorithmes de coloration de graphes. Développement d'une interface graphique interactive permettant de manipuler les trajectoires.\n\nJ’ai conçu toute la partie IHM interactive (Java Swing) et l’intégration des fonctionnalités d'import/export de données complexes (CSV/JSON).",
     techStack: ["Java Swing", "Algorithmes de Graphes", "JUnit"],
     skillsIds: ["java"],
     competencesIds: ["comp1", "comp2", "comp5"],
     imageUrl: "/images/projects/SAE_JAVA/4.png",
     images: ["/images/projects/SAE_JAVA/4.png", "/images/projects/SAE_JAVA/1.png", "/images/projects/SAE_JAVA/2.png", "/images/projects/SAE_JAVA/3.png"],
     category: "Desktop",
-    status: "Archivé"
+    status: "Archivé",
+    startDate: "2023-01"
   },
 ];
 
 const FORMATIONS = [
   {
     id: "bac-pro-cuisine",
-    title: "Baccalauréat Professionnel Cuisine",
-    institution: "Lycée Hôtelier",
+    title: "Bac Professionnel Cuisine",
+    institution: "Lycée Hôtelier | Challes-les-Eaux",
     period: "2018 - 2021",
-    description: "Formation en cuisine professionnelle avec stages en brigade.",
-    longDescription: "Formation complète en arts culinaires avec apprentissage des techniques de base et avancées de la cuisine française. Accent mis sur la précision, l'organisation et le travail en équipe dans un environnement exigeant.",
-    hardSkills: ["Techniques culinaires", "Hygiène alimentaire", "Gestion des stocks", "Préparation des plats", "Service en salle"],
-    softSkills: ["Travail d'équipe", "Rigueur", "Gestion du stress", "Adaptabilité", "Précision"],
+    description: "Baccalauréat Profesionnel Cuisine, mention Très Bien.",
+    longDescription: "Titulaire d’un Bac Professionnel Cuisine avec mention Très Bien, j’ai appris à travailler en équipe, à faire preuve de rigueur et à m’adapter à des situations imprévues. Cette expérience intense m’a permis de développer une excellente gestion du stress, une organisation solide et un esprit de collaboration. Ces compétences sont pleinement transférables dans le domaine de l’informatique.",
+    hardSkills: ["Gestion de brigade", "HACCP", "Organisation", "Rigueur"],
+    softSkills: ["Discipline", "Travail en équipe", "Gestion du stress"],
     imageUrl: "/images/experiences/Cuisine.png",
-    type: "education"
+    type: "education",
+    competencesIds: ["comp6"],
+    startDate: "2018-09"
   },
   {
-    id: "sti2d",
-    title: "Baccalauréat STI2D",
-    institution: "Lycée Technologique",
+    id: "bac-sti2d",
+    title: "Bac STI2D option EE",
+    institution: "Lycée Saint Ambroise | Chambéry",
     period: "2021 - 2022",
-    description: "Baccalauréat Sciences et Technologies de l'Industrie et du Développement Durable.",
-    longDescription: "Formation technologique orientée vers l'innovation et le développement durable. Introduction aux sciences industrielles et aux technologies numériques.",
-    hardSkills: ["Électronique", "Informatique", "Mécanique", "Énergies renouvelables", "Programmation basique"],
-    softSkills: ["Résolution de problèmes", "Créativité", "Travail en équipe", "Autonomie", "Pensée critique"],
-    imageUrl: "/images/ID_mono.png",
-    type: "education"
+    description: "Baccalauréat Technologique Sciences et Technologies de l'Industrie et du Développement Durable, mention Très Bien.",
+    longDescription: "Réorientation vers les technologies et l'informatique. Découverte de l'ingénierie, de la mécanique et de la programmation. J'ai choisi de travailler sur la programmation autonome lors des projets, ce qui a confirmé mon intérêt pour le développement logiciel.",
+    hardSkills: ["Programmation", "Ingénierie", "Physique appliquée"],
+    softSkills: ["Curiosité", "Capacité d'adaptation"],
+    imageUrl: "/images/skills/net9.png",
+    type: "education",
+    competencesIds: [],
+    startDate: "2021-09"
   },
   {
     id: "but-info",
     title: "BUT Informatique",
-    institution: "IUT de Chambéry",
+    institution: "IUT Lyon 1 | Villeurbanne",
     period: "2022 - 2025",
-    description: "Bachelor Universitaire de Technologie en Informatique.",
-    longDescription: "Formation supérieure en informatique avec spécialisation en développement logiciel, bases de données et systèmes d'information. Projet de fin d'études en cours.",
-    hardSkills: ["Développement web", "Bases de données", "Programmation orientée objet", "Algorithmique", "Architecture logicielle", "Cybersécurité"],
-    softSkills: ["Communication", "Travail en équipe", "Adaptabilité", "Résolution de problèmes", "Gestion de projet", "Autonomie"],
+    description: "Bachelor Universitaire de Technologie en Informatique, spécialité Développement d’applications.",
+    longDescription: "Aujourd’hui en troisième année de BUT Informatique à Lyon 1. Approfondissement de la conception logicielle, des bases de données et du travail collaboratif. Spécialité développement d'applications.\n\nJ'y ai appris la résolution de problèmes, le prototypage et les tests rigoureux.",
+    hardSkills: ["Développement logiciel", "Bases de données", "Algorithmique", "Architecture logicielle"],
+    softSkills: ["Résolution de problèmes", "Autonomie", "Esprit critique"],
     imageUrl: "/images/ID_mono.png",
-    type: "education"
+    type: "education",
+    competencesIds: ["comp1", "comp2", "comp3", "comp4", "comp5", "comp6"],
+    startDate: "2022-09"
   }
 ];
 
 const PROFESSIONAL_EXPERIENCES = [
   {
+    id: "alternance-desautel",
+    title: "Apprenti Développeur",
+    company: "Desautel",
+    period: "Septembre 2025 - Présent",
+    description: "Alternance en 3ème année de BUT : évolution et maintenance des applications + développement d'un superviseur incendie",
+    longDescription: "Poursuite du travail initié en stage en tant qu'alternant. Responsable des évolutions logicielles sur les outils de paramétrage et de supervision des centrales incendie.",
+    missions: [
+      "Développement de nouvelles fonctionnalités métier en C#/.NET",
+      "Optimisation de la robustesse des échanges de données XML",
+      "Maintenance corrective et évolutive des interfaces WPF",
+      "Recherche et développement d'un superviseur incendie"
+    ],
+    hardSkills: ["C#", ".NET", "WPF", "Git", "SQL"],
+    softSkills: ["Professionnalisme", "Autonomie", "Rigueur"],
+    imageUrl: "/images/experiences/Desautel.jpg",
+    type: "alternance",
+    competencesIds: ["comp1", "comp2", "comp6"],
+    startDate: "2025-09"
+  },
+  {
     id: "stage-desautel",
-    title: "Stage Développement Logiciel",
+    title: "Stage Développement",
     company: "Desautel",
     period: "Avril 2025 - Juillet 2025",
-    description: "Développement et amélioration d'un logiciel de paramétrage de centrales incendie.",
-    longDescription: "Stage de fin de BUT consistant à refondre l'interface de gestion des paramètres avancés d'un logiciel métier critique pour les centrales incendie INISE16.",
+    description: "Refonte de l'interface de paramétrage 'AppliParam' et sécurisation des données.",
+    longDescription: "Stage de 2ème année de BUT. Refonte complète de l'interface Niveau 4 du logiciel AppliParam, gestion du cryptage dynamique et génération de rapports PDF.",
     missions: [
-      "Refonte complète de l'interface WPF (.NET 9) pour les paramètres de niveau 4",
-      "Implémentation d'un système de cryptage dynamique multi-clés",
-      "Gestion de nouvelles cartes réseau et optimisation des performances",
-      "Génération de rapports PDF complexes avec données chiffrées",
-      "Travail en méthodologie agile avec Git pour le versioning"
+      "Refonte de l'IHM WPF avec synchronisation Observer",
+      "Développement d'un système de cryptage à clé multiple",
+      "Génération de rapports PDF dynamiques",
+      "Gestion de configurations réseau complexes"
     ],
-    hardSkills: ["C#", ".NET 9", "WPF", "Cryptographie", "Git", "Agile", "PDF Generation"],
-    softSkills: ["Autonomie", "Rigueur", "Collaboration", "Adaptabilité"],
+    hardSkills: ["C#", ".NET 9", "WPF", "Cryptographie", "XML"],
+    softSkills: ["Adaptabilité", "Analyse", "Persévérance"],
     imageUrl: "/images/experiences/Desautel.jpg",
-    type: "stage"
+    type: "stage",
+    competencesIds: ["comp1", "comp2", "comp4"],
+    startDate: "2025-04"
   },
   {
     id: "stages-cuisine",
-    title: "Stages Cuisine Professionnelle",
+    title: "Stages Cuisine",
     company: "Divers Établissements",
     period: "2018 - 2021",
-    description: "Stages en cuisine dans différents établissements (Perpignan, Nice, Chambéry, etc.).",
-    longDescription: "Parcours complet en cuisine professionnelle dans le cadre du Bac Pro Cuisine. Expérience en brigade dans divers établissements permettant d'acquérir rigueur et gestion du stress.",
+    description: "Expériences en brigade dans des établissements de prestige (Nice, Perpignan, Chambéry).",
+    longDescription: "Stages dans le cadre du Bac Pro Cuisine. Apprentissage de la rigueur, de l'organisation et du travail d'équipe sous pression.",
     missions: [
-      "Préparation et cuisson des plats selon les standards professionnels",
-      "Gestion des stocks et inventaires alimentaires",
-      "Travail en équipe sous pression en service continu",
-      "Respect des normes d'hygiène et de sécurité alimentaire",
-      "Service en salle et relation client"
+      "Préparation des denrées et service en brigade",
+      "Respect strict des normes d'hygiène",
+      "Gestion du stress en pic d'activité",
+      "Organisation des postes de travail"
     ],
-    hardSkills: ["Techniques de cuisson", "HACCP", "Dressage", "Gestion de brigade"],
-    softSkills: ["Résistance au stress", "Rapidité", "Discipline", "Sens du détail"],
+    hardSkills: ["Techniques culinaires", "Organisation"],
+    softSkills: ["Résistance au stress", "Discipline", "Travail en équipe"],
     imageUrl: "/images/experiences/Cuisine.png",
-    type: "stage"
+    type: "stage",
+    competencesIds: ["comp6"],
+    startDate: "2018-09"
   }
 ];
 
 const PASSIONS = [
   {
     id: "pas1",
-    name: "Gaming",
-    description: "Plus qu'un loisir, une source d'inspiration pour le design de mécaniques et l'optimisation des performances.",
-    imageUrl: "/images/passions/gaming_1.png"
-  },
-  {
-    id: "pas2",
-    name: "Aérospatial",
-    description: "L'exigence technique et l'innovation constante du secteur spatial me fascinent et guident ma curiosité.",
+    name: "Espace",
+    description: "Ma passion pour l’espace est née d’une quête de connaissance et d’un émerveillement devant les sciences. L’exploration et la compréhension de l’univers, de la vie, ainsi que les technologies associées (lanceurs, sondes, etc.) me fascinent.",
     imageUrl: "/images/passions/space_1.jpg"
   },
   {
-    id: "pas3",
-    name: "Sport Automobile",
-    description: "L'adrénaline de la performance et l'ingénierie de pointe au service de la vitesse.",
+    id: "pas2",
+    name: "Sport automobile",
+    description: "Mon intérêt pour le sport automobile s’est construit progressivement via l’ingénierie, la compétition et le sport. La Formule 1 m’a servi de porte d’entrée vers tout l’univers du sport auto.",
     imageUrl: "/images/passions/ms_1.jpg"
   },
   {
-    id: "pas4",
+    id: "pas3",
     name: "SimRacing",
-    description: "La quête de la trajectoire parfaite, demandant une concentration et une précision chirurgicale.",
+    description: "En 2021, j’ai commencé à m’investir dans la simulation automobile. Je possède aujourd’hui un simulateur complet, qui me permet de développer concentration, sang-froid et réflexes.",
     imageUrl: "/images/passions/sr_1.jpg"
   },
   {
-    id: "pas5",
+    id: "pas4",
     name: "Cuisine",
-    description: "L'art de l'organisation et de la précision, où chaque ingrédient compte pour le résultat final.",
+    description: "Titulaire d’un Bac Pro Cuisine avec mention Très Bien, j’ai appris la rigueur et l’organisation sous pression. Ces compétences sont pleinement transférables dans le domaine de l’informatique.",
     imageUrl: "/images/passions/cuisine_1.jpg"
   },
   {
-    id: "pas6",
-    name: "Technologie",
-    description: "En veille permanente sur les dernières avancées logicielle et matérielle pour rester à la pointe.",
+    id: "pas5",
+    name: "Technologie Et Informatique",
+    description: "Passionné par la résolution de problèmes et le prototypage. J'ai choisi de m'orienter vers le développement d'applications pour comprendre et créer des programmes innovants.",
     imageUrl: "/images/passions/informatique_1.jpg"
   }
 ];
 
-// Function to seed the database
 function seedDatabase(db) {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
@@ -280,7 +307,9 @@ function seedDatabase(db) {
           competencesIds TEXT NOT NULL,
           imageUrl TEXT NOT NULL,
           category TEXT NOT NULL,
-          images TEXT
+          images TEXT,
+          status TEXT,
+          startDate TEXT
         )
       `);
 
@@ -295,7 +324,9 @@ function seedDatabase(db) {
           hardSkills TEXT NOT NULL,
           softSkills TEXT NOT NULL,
           imageUrl TEXT NOT NULL,
-          type TEXT NOT NULL
+          type TEXT NOT NULL,
+          competencesIds TEXT,
+          startDate TEXT
         )
       `);
 
@@ -311,7 +342,9 @@ function seedDatabase(db) {
           hardSkills TEXT,
           softSkills TEXT,
           imageUrl TEXT NOT NULL,
-          type TEXT NOT NULL
+          type TEXT NOT NULL,
+          competencesIds TEXT,
+          startDate TEXT
         )
       `);
 
@@ -347,23 +380,23 @@ function seedDatabase(db) {
         compStmt.finalize();
 
         // Insert projects
-        const projectStmt = db.prepare('INSERT OR REPLACE INTO projects (id, title, description, longDescription, techStack, skillsIds, competencesIds, imageUrl, category, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const projectStmt = db.prepare('INSERT OR REPLACE INTO projects (id, title, description, longDescription, techStack, skillsIds, competencesIds, imageUrl, category, images, status, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         PROJECTS.forEach(project => {
-          projectStmt.run(project.id, project.title, project.description, project.longDescription, JSON.stringify(project.techStack), JSON.stringify(project.skillsIds), JSON.stringify(project.competencesIds), project.imageUrl, project.category, JSON.stringify(project.images || []));
+          projectStmt.run(project.id, project.title, project.description, project.longDescription, JSON.stringify(project.techStack), JSON.stringify(project.skillsIds), JSON.stringify(project.competencesIds), project.imageUrl, project.category, JSON.stringify(project.images || []), project.status || 'Archivé', project.startDate || '');
         });
         projectStmt.finalize();
 
         // Insert formations
-        const formationStmt = db.prepare('INSERT OR REPLACE INTO formations (id, title, institution, period, description, longDescription, hardSkills, softSkills, imageUrl, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const formationStmt = db.prepare('INSERT OR REPLACE INTO formations (id, title, institution, period, description, longDescription, hardSkills, softSkills, imageUrl, type, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         FORMATIONS.forEach(formation => {
-          formationStmt.run(formation.id, formation.title, formation.institution, formation.period, formation.description, formation.longDescription, JSON.stringify(formation.hardSkills), JSON.stringify(formation.softSkills), formation.imageUrl, formation.type);
+          formationStmt.run(formation.id, formation.title, formation.institution, formation.period, formation.description, formation.longDescription, JSON.stringify(formation.hardSkills), JSON.stringify(formation.softSkills), formation.imageUrl, formation.type, JSON.stringify(formation.competencesIds || []), formation.startDate || '');
         });
         formationStmt.finalize();
 
         // Insert professional experiences
-        const profExpStmt = db.prepare('INSERT OR REPLACE INTO professional_experiences (id, title, company, period, description, longDescription, missions, hardSkills, softSkills, imageUrl, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const profExpStmt = db.prepare('INSERT OR REPLACE INTO professional_experiences (id, title, company, period, description, longDescription, missions, hardSkills, softSkills, imageUrl, type, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         PROFESSIONAL_EXPERIENCES.forEach(exp => {
-          profExpStmt.run(exp.id, exp.title, exp.company, exp.period, exp.description, exp.longDescription, JSON.stringify(exp.missions || []), JSON.stringify(exp.hardSkills || []), JSON.stringify(exp.softSkills || []), exp.imageUrl, exp.type);
+          profExpStmt.run(exp.id, exp.title, exp.company, exp.period, exp.description, exp.longDescription, JSON.stringify(exp.missions || []), JSON.stringify(exp.hardSkills || []), JSON.stringify(exp.softSkills || []), exp.imageUrl, exp.type, JSON.stringify(exp.competencesIds || []), exp.startDate || '');
         });
         profExpStmt.finalize();
 

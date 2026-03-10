@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { Experience, IutCompetence, Skill } from '../../domain/models';
 import { PortfolioService } from '../../domain/services/portfolio.service';
 import SkillBar from './SkillBar';
-import './Modal.css'; // On utilise le nouveau CSS globalisé des modales
+import './Modal.css';
 
 interface ExperienceModalProps {
   experience: Experience;
@@ -23,7 +23,7 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({ experience, onClose }
         ]);
 
         const experienceCompetences = allCompetences.filter(c =>
-          experience.competencesIds.includes(c.id)
+          experience.competencesIds?.includes(c.id)
         );
 
         setSkills(allSkills);
@@ -66,7 +66,6 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({ experience, onClose }
           </div>
 
           <div className="modal-grid">
-            {/* Colonne de gauche (principale) */}
             <div>
               <h3 className="modal-section-title">Détails du parcours</h3>
               <p className="modal-text">{experience.longDescription}</p>
@@ -79,7 +78,6 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({ experience, onClose }
               </div>
             </div>
 
-            {/* Colonne de droite (sidebar) */}
             <div>
               <h3 className="modal-section-title">Compétences IUT mobilisées</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>

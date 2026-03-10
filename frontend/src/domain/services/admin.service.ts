@@ -69,9 +69,9 @@ export class AdminService {
   static deleteFormation(id: string | number) { return this.request(`/formations/${id}`, 'DELETE'); }
 
   // --- Expériences Pro ---
-  static createExperience(data: any) { return this.request('/professional-experiences', 'POST', data); }
-  static updateExperience(id: string | number, data: any) { return this.request(`/professional-experiences/${id}`, 'PUT', data); }
-  static deleteExperience(id: string | number) { return this.request(`/professional-experiences/${id}`, 'DELETE'); }
+  static createExperience(data: any) { return this.request('/professional_experiences', 'POST', data); }
+  static updateExperience(id: string | number, data: any) { return this.request(`/professional_experiences/${id}`, 'PUT', data); }
+  static deleteExperience(id: string | number) { return this.request(`/professional_experiences/${id}`, 'DELETE'); }
 
   // --- Compétences IUT ---
   static createCompetence(data: any) { return this.request('/iut-competences', 'POST', data); }

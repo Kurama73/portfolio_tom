@@ -7,6 +7,16 @@ const bcrypt = require('bcrypt');
 const multer = require('multer');
 require('dotenv').config();
 const { seedDatabase } = require('./seed');
+const rateLimit = require('express-rate-limit');
+
+// Limiteur de requêtes pour le formulaire de contact (Anti-Spam)
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 heure
+  max: 5, // Limite chaque IP à 5 messages par heure
+  message: { error: "Trop de tentatives. Veuillez réessayer plus tard." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -123,27 +133,29 @@ app.get('/api/projects', (req, res) => {
 });
 
 app.get('/api/formations', (req, res) => {
-  db.all('SELECT * FROM formations', [], (err, rows) => {
-    if (err) return res.status(500).json([]);
-    const formatted = rows.map(r => ({
+  db.all("SELECT * FROM formations", [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    const parsedRows = rows.map(r => ({
       ...r,
-      hardSkills: r.hardSkills ? JSON.parse(r.hardSkills) : [],
-      softSkills: r.softSkills ? JSON.parse(r.softSkills) : []
+      hardSkills: JSON.parse(r.hardSkills || '[]'),
+      softSkills: JSON.parse(r.softSkills || '[]'),
+      competencesIds: JSON.parse(r.competencesIds || '[]')
     }));
-    res.json(formatted);
+    res.json(parsedRows);
   });
 });
 
-app.get('/api/professional-experiences', (req, res) => {
-  db.all('SELECT * FROM professional_experiences', [], (err, rows) => {
-    if (err) return res.status(500).json([]);
-    const formatted = rows.map(r => ({
+app.get('/api/professional_experiences', (req, res) => {
+  db.all("SELECT * FROM professional_experiences", [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    const parsedRows = rows.map(r => ({
       ...r,
-      missions: r.missions ? JSON.parse(r.missions) : [],
-      hardSkills: r.hardSkills ? JSON.parse(r.hardSkills) : [],
-      softSkills: r.softSkills ? JSON.parse(r.softSkills) : []
+      missions: JSON.parse(r.missions || '[]'),
+      hardSkills: JSON.parse(r.hardSkills || '[]'),
+      softSkills: JSON.parse(r.softSkills || '[]'),
+      competencesIds: JSON.parse(r.competencesIds || '[]')
     }));
-    res.json(formatted);
+    res.json(parsedRows);
   });
 });
 
@@ -198,14 +210,15 @@ app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) =>
 // --- PROJETS ---
 app.post('/api/projects', authenticateToken, (req, res) => {
   const p = req.body;
-  const sql = `INSERT INTO projects (title, description, longDescription, techStack, imageUrl, github, link, category, status, skillsIds, competencesIds, images)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO projects (title, description, longDescription, techStack, imageUrl, github, link, category, status, skillsIds, competencesIds, images, startDate)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const params = [
     p.title, p.description, p.longDescription,
     JSON.stringify(p.techStack || []), p.imageUrl, p.github, p.link,
     p.category, p.status,
     JSON.stringify(p.skillsIds || []), JSON.stringify(p.competencesIds || []),
-    JSON.stringify(p.images || [])
+    JSON.stringify(p.images || []),
+    p.startDate
   ];
   db.run(sql, params, function(err) {
     if (err) return res.status(500).json({ error: err.message });
@@ -215,13 +228,14 @@ app.post('/api/projects', authenticateToken, (req, res) => {
 
 app.put('/api/projects/:id', authenticateToken, (req, res) => {
   const p = req.body;
-  const sql = `UPDATE projects SET title=?, description=?, longDescription=?, techStack=?, imageUrl=?, github=?, link=?, category=?, status=?, skillsIds=?, competencesIds=?, images=? WHERE id=?`;
+  const sql = `UPDATE projects SET title=?, description=?, longDescription=?, techStack=?, imageUrl=?, github=?, link=?, category=?, status=?, skillsIds=?, competencesIds=?, images=?, startDate=? WHERE id=?`;
   const params = [
     p.title, p.description, p.longDescription,
     JSON.stringify(p.techStack || []), p.imageUrl, p.github, p.link,
     p.category, p.status,
     JSON.stringify(p.skillsIds || []), JSON.stringify(p.competencesIds || []),
     JSON.stringify(p.images || []),
+    p.startDate,
     req.params.id
   ];
   db.run(sql, params, function(err) {
@@ -240,19 +254,17 @@ app.delete('/api/projects/:id', authenticateToken, (req, res) => {
 // --- FORMATIONS ---
 app.post('/api/formations', authenticateToken, (req, res) => {
   const f = req.body;
-  const sql = `INSERT INTO formations (title, institution, period, description, longDescription, imageUrl, type, hardSkills, softSkills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  const params = [f.title, f.institution, f.period, f.description, f.longDescription, f.imageUrl, f.type, JSON.stringify(f.hardSkills || []), JSON.stringify(f.softSkills || [])];
-  db.run(sql, params, function(err) {
+  const sql = `INSERT INTO formations (id, title, institution, period, description, longDescription, imageUrl, type, hardSkills, softSkills, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.run(sql, [f.id, f.title, f.institution, f.period, f.description, f.longDescription, f.imageUrl, f.type, JSON.stringify(f.hardSkills || []), JSON.stringify(f.softSkills || []), JSON.stringify(f.competencesIds || []), f.startDate], function(err) {
     if (err) return res.status(500).json({ error: err.message });
-    res.json({ id: this.lastID, ...f });
+    res.json({ id: f.id });
   });
 });
 
 app.put('/api/formations/:id', authenticateToken, (req, res) => {
   const f = req.body;
-  const sql = `UPDATE formations SET title=?, institution=?, period=?, description=?, longDescription=?, imageUrl=?, type=?, hardSkills=?, softSkills=? WHERE id=?`;
-  const params = [f.title, f.institution, f.period, f.description, f.longDescription, f.imageUrl, f.type, JSON.stringify(f.hardSkills || []), JSON.stringify(f.softSkills || []), req.params.id];
-  db.run(sql, params, (err) => {
+  const sql = `UPDATE formations SET title=?, institution=?, period=?, description=?, longDescription=?, imageUrl=?, type=?, hardSkills=?, softSkills=?, competencesIds=?, startDate=? WHERE id=?`;
+  db.run(sql, [f.title, f.institution, f.period, f.description, f.longDescription, f.imageUrl, f.type, JSON.stringify(f.hardSkills || []), JSON.stringify(f.softSkills || []), JSON.stringify(f.competencesIds || []), f.startDate, req.params.id], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
   });
@@ -266,34 +278,25 @@ app.delete('/api/formations/:id', authenticateToken, (req, res) => {
 });
 
 // --- EXPERIENCES PRO ---
-app.post('/api/professional-experiences', authenticateToken, (req, res) => {
+app.post('/api/professional_experiences', authenticateToken, (req, res) => {
   const e = req.body;
-  const sql = `INSERT INTO professional_experiences (title, company, period, description, longDescription, imageUrl, type, missions, hardSkills, softSkills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  const params = [
-    e.title, e.company, e.period, e.description, e.longDescription, e.imageUrl, e.type,
-    JSON.stringify(e.missions || []), JSON.stringify(e.hardSkills || []), JSON.stringify(e.softSkills || [])
-  ];
-  db.run(sql, params, function(err) {
+  const sql = `INSERT INTO professional_experiences (id, title, company, period, description, longDescription, missions, hardSkills, softSkills, imageUrl, type, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.run(sql, [e.id, e.title, e.company, e.period, e.description, e.longDescription, JSON.stringify(e.missions || []), JSON.stringify(e.hardSkills || []), JSON.stringify(e.softSkills || []), e.imageUrl, e.type, JSON.stringify(e.competencesIds || []), e.startDate], function(err) {
     if (err) return res.status(500).json({ error: err.message });
-    res.json({ id: this.lastID, ...e });
+    res.json({ id: e.id });
   });
 });
 
-app.put('/api/professional-experiences/:id', authenticateToken, (req, res) => {
+app.put('/api/professional_experiences/:id', authenticateToken, (req, res) => {
   const e = req.body;
-  const sql = `UPDATE professional_experiences SET title=?, company=?, period=?, description=?, longDescription=?, imageUrl=?, type=?, missions=?, hardSkills=?, softSkills=? WHERE id=?`;
-  const params = [
-    e.title, e.company, e.period, e.description, e.longDescription, e.imageUrl, e.type,
-    JSON.stringify(e.missions || []), JSON.stringify(e.hardSkills || []), JSON.stringify(e.softSkills || []),
-    req.params.id
-  ];
-  db.run(sql, params, (err) => {
+  const sql = `UPDATE professional_experiences SET title=?, company=?, period=?, description=?, longDescription=?, missions=?, hardSkills=?, softSkills=?, imageUrl=?, type=?, competencesIds=?, startDate=? WHERE id=?`;
+  db.run(sql, [e.title, e.company, e.period, e.description, e.longDescription, JSON.stringify(e.missions || []), JSON.stringify(e.hardSkills || []), JSON.stringify(e.softSkills || []), e.imageUrl, e.type, JSON.stringify(e.competencesIds || []), e.startDate, req.params.id], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
   });
 });
 
-app.delete('/api/professional-experiences/:id', authenticateToken, (req, res) => {
+app.delete('/api/professional_experiences/:id', authenticateToken, (req, res) => {
   db.run('DELETE FROM professional_experiences WHERE id = ?', [req.params.id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
@@ -394,6 +397,63 @@ app.delete('/api/passions/:id', authenticateToken, (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
   });
+});
+
+// --- CONTACT (PROTECTION ANTI-BOT & WEBHOOK) ---
+app.post('/api/contact', contactLimiter, async (req, res) => {
+  const { name, email, subject, message, _honeypot } = req.body;
+
+  // 1. Stratégie Honeypot : Si ce champ caché est rempli, c'est un bot
+  if (_honeypot) {
+    console.warn("Tentative de bot détectée (Honeypot rempli)");
+    return res.status(403).json({ error: "Bot detected." });
+  }
+
+  // 2. Validation de base
+  if (!name || !email || !subject || !message) {
+    return res.status(400).json({ error: "Tous les champs sont obligatoires." });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Format d'email invalide." });
+  }
+
+  if (message.length < 10) {
+    return res.status(400).json({ error: "Le message est trop court." });
+  }
+
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl) {
+    console.error("DISCORD_WEBHOOK_URL non configuré");
+    return res.status(500).json({ error: "Service indisponible." });
+  }
+
+  const discordPayload = {
+    embeds: [{
+      title: `🚨 Message Portfolio de ${name}`,
+      description: `**Sujet :** ${subject}`,
+      color: 0x00ffcc,
+      fields: [
+        { name: "📧 Email", value: `\`${email}\``, inline: true },
+        { name: "✉️ Message", value: message }
+      ],
+      timestamp: new Date().toISOString()
+    }]
+  };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(discordPayload)
+    });
+
+    if (response.ok) res.json({ success: true });
+    else throw new Error("Discord API Response Error");
+  } catch (error) {
+    res.status(500).json({ error: "Échec de l'envoi." });
+  }
 });
 
 // ==========================================

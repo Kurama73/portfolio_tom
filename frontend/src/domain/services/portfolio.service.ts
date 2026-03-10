@@ -24,7 +24,7 @@ export class PortfolioService {
   }
 
   static async getProfessionalExperiences(): Promise<ProfessionalExperience[]> {
-    const response = await fetch(`${API_BASE}/professional-experiences`);
+    const response = await fetch(`${API_BASE}/professional_experiences`);
     return response.json();
   }
 
