@@ -30,7 +30,7 @@ const IutCompetenceModal: React.FC<IutCompetenceModalProps> = ({ competence, pro
               <h3 className="modal-section-title">{t('iut.competence_analysis')}</h3>
               <p className="modal-text">{translateField(competence, 'description')}</p>
               <div style={{ marginTop: '2rem', marginBottom: '1rem', maxWidth: '400px' }}>
-                <SkillBar name={t('iut.level_label')} mastery={competence.level} />
+                <SkillBar name={t('iut.level_label')} mastery={competence.percentage} />
               </div>
             </div>
 

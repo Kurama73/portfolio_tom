@@ -273,7 +273,7 @@ const Home: React.FC = () => {
                   <div key={comp.id} className="mac-card iut-card">
                     <h3>{translateField(comp, 'name')}</h3>
                     <p className="iut-desc">{translateField(comp, 'description')}</p>
-                    <SkillBar name={t('sections.iut.level_label')} mastery={comp.level} />
+                    <SkillBar name={t('sections.iut.level_label')} mastery={comp.percentage} />
 
 
                     {linkedProjects.length > 0 && (

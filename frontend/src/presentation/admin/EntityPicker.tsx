@@ -6,7 +6,7 @@ export interface PickerOption {
   /** Display label (FR) */
   label: string;
   /** Display label (EN) — optional */
-  labelEn?: string;
+  label_en?: string;
   /** Sub-label shown in small text below (e.g. category) */
   sub?: string;
 }
@@ -34,7 +34,7 @@ export const EntityPicker: React.FC<EntityPickerProps> = ({
   const filtered = useMemo(() =>
     options.filter(o =>
       o.label.toLowerCase().includes(search.toLowerCase()) ||
-      (o.labelEn ?? '').toLowerCase().includes(search.toLowerCase()) ||
+      (o.label_en ?? '').toLowerCase().includes(search.toLowerCase()) ||
       (o.sub ?? '').toLowerCase().includes(search.toLowerCase())
     ), [options, search]);
 
@@ -43,7 +43,7 @@ export const EntityPicker: React.FC<EntityPickerProps> = ({
     const newSel = isSelected ? selected.filter(v => v !== opt.value) : [...selected, opt.value];
     onChange(newSel);
     if (onChangeEn && selectedEn !== undefined) {
-      const enVal = opt.labelEn ?? opt.value;
+      const enVal = opt.label_en ?? opt.value;
       const newEnSel = isSelected
         ? selectedEn.filter(v => v !== enVal)
         : [...selectedEn, enVal];

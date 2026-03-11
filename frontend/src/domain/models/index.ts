@@ -31,13 +31,13 @@ export type ExperienceType = typeof ExperienceType[keyof typeof ExperienceType];
 export interface Project {
   id: string;
   title: string;
-  titleEn?: string;
+  title_en?: string;
   category: ProjectCategory;
   status: ProjectStatus;
   description: string;
-  descriptionEn?: string;
+  description_en?: string;
   longDescription: string;
-  longDescriptionEn?: string;
+  longDescription_en?: string;
   techStack: string[];
   imageUrl?: string;
   github?: string;
@@ -51,10 +51,10 @@ export interface Project {
 export interface IutCompetence {
   id: string;
   name: string;
-  nameEn?: string;
+  name_en?: string;
   description: string;
-  descriptionEn?: string;
-  level: number;
+  description_en?: string;
+  percentage: number;
 }
 
 export interface Skill {
@@ -68,15 +68,15 @@ export interface Skill {
 export interface Experience {
   id: string;
   title: string;
-  titleEn?: string;
+  title_en?: string;
   company: string;
-  companyEn?: string;
+  company_en?: string;
   period: string; // Maintain for legacy if needed, but per-field translation is better
-  periodEn?: string;
+  period_en?: string;
   description: string;
-  descriptionEn?: string;
+  description_en?: string;
   longDescription?: string;
-  longDescriptionEn?: string;
+  longDescription_en?: string;
   imageUrl?: string;
   competencesIds?: string[];
   startDate?: string;
@@ -85,20 +85,20 @@ export interface Experience {
 
 export interface ProfessionalExperience extends Experience {
   missions: string[];
-  missionsEn?: string[];
+  missions_en?: string[];
   hardSkills: string[];
-  hardSkillsEn?: string[];
+  hardSkills_en?: string[];
   softSkills: string[];
-  softSkillsEn?: string[];
+  softSkills_en?: string[];
 }
 
 export interface Formation extends Experience {
   institution: string;
-  institutionEn?: string;
+  institution_en?: string;
   hardSkills: string[];
-  hardSkillsEn?: string[];
+  hardSkills_en?: string[];
   softSkills: string[];
-  softSkillsEn?: string[];
+  softSkills_en?: string[];
 }
 
 export interface Passion {

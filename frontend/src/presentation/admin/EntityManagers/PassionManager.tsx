@@ -146,8 +146,10 @@ const PassionManager: React.FC = () => {
       <table className="admin-table">
         <thead>
           <tr>
-            <th>Nom</th>
-            <th>Description</th>
+            <th>Nom (FR)</th>
+            <th>Name (EN)</th>
+            <th>Description (FR)</th>
+            <th>Description (EN)</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -155,7 +157,9 @@ const PassionManager: React.FC = () => {
           {passions.map(p => (
             <tr key={p.id}>
               <td>{p.name}</td>
+              <td>{p.nameEn}</td>
               <td style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.7 }}>{p.description}</td>
+              <td style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.7 }}>{p.descriptionEn}</td>
               <td>
                 <button className="action-btn edit-btn" onClick={() => setEditingPassion(p)}>Edit</button>
                 <button className="action-btn delete-btn" onClick={() => handleDelete(p.id)}>Delete</button>

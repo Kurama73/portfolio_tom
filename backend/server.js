@@ -82,7 +82,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
           db.run("UPDATE projects SET category='SYSTEM' WHERE category='System'");
           db.run("UPDATE projects SET category='DATA' WHERE category='Data'");
           db.run("UPDATE projects SET category='NETWORK' WHERE category='Network'");
-          console.log('Enum values normalized.');
         });
       }).catch(console.error);
     });
@@ -332,7 +331,7 @@ app.delete('/api/professional_experiences/:id', authenticateToken, (req, res) =>
 
 app.post('/api/iut-competences', authenticateToken, (req, res) => {
   const c = req.body;
-  db.run('INSERT INTO iut_competences (id, name, nameEn, description, descriptionEn, level) VALUES (?, ?, ?, ?, ?, ?)', [c.id, c.name, c.nameEn, c.description, c.descriptionEn, c.level], (err) => {
+  db.run('INSERT INTO iut_competences (id, name, name_en, description, description_en, percentage) VALUES (?, ?, ?, ?, ?, ?)', [c.id, c.name, c.name_en, c.description, c.description_en, c.percentage], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(c);
   });
@@ -340,7 +339,7 @@ app.post('/api/iut-competences', authenticateToken, (req, res) => {
 
 app.put('/api/iut-competences/:id', authenticateToken, (req, res) => {
   const c = req.body;
-  db.run('UPDATE iut_competences SET name=?, nameEn=?, description=?, descriptionEn=?, level=? WHERE id=?', [c.name, c.nameEn, c.description, c.descriptionEn, c.level, req.params.id], (err) => {
+  db.run('UPDATE iut_competences SET name=?, name_en=?, description=?, description_en=?, percentage=? WHERE id=?', [c.name, c.name_en, c.description, c.description_en, c.percentage, req.params.id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
   });

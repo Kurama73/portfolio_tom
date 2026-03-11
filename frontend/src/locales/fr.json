@@ -35,7 +35,7 @@
     "iut": {
       "title": "Référentiel B.U.T Informatique",
       "subtitle": "Projets associés et progression sur les 6 compétences clés.",
-      "level_label": "Niveau d'acquisition",
+      "level_label": "Pourcentage d'acquisition",
       "linked_projects": "Projets associés :",
       "competence_analysis": "Analyse de la compétence",
       "acquisition_proofs": "Projets associés (Preuves d'acquisition)"

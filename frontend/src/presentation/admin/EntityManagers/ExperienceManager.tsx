@@ -43,20 +43,20 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
   const hardSkillOptions: PickerOption[] = allHardSkills.map(s => ({
     value: s.name,
     label: s.name,
-    labelEn: s.name, // Hard skills usually keep same name in EN
+    label_en: s.name, // Hard skills usually keep same name in EN
     sub: s.category,
   }));
 
   const softSkillOptions: PickerOption[] = allSoftSkills.map(s => ({
     value: s.name,
     label: s.name,
-    labelEn: s.nameEn ?? s.name,
+    label_en: s.nameEn ?? s.name,
   }));
 
   const competenceOptions: PickerOption[] = allCompetences.map(c => ({
     value: c.id,
     label: c.name,
-    labelEn: c.nameEn,
+    label_en: c.name_en,
   }));
 
   const handleTranslate = async (field: string, target: string) => {
@@ -75,7 +75,7 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
     if (!editingItem) return;
     const clean = { ...editingItem };
     // missions are free-text (one per line)
-    for (const f of ['missions', 'missionsEn']) {
+    for (const f of ['missions', 'missions_en']) {
       if (typeof clean[f] === 'string') {
         clean[f] = (clean[f] as string).split('\n').filter((l: string) => l.trim());
       }
@@ -107,23 +107,23 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
     setEditingItem({
       ...item,
       missions: Array.isArray(item.missions) ? (item.missions as string[]).join('\n') : String(item.missions ?? ''),
-      missionsEn: Array.isArray(item.missionsEn ?? item.missions_en)
-        ? ((item.missionsEn ?? item.missions_en) as string[]).join('\n')
-        : String(item.missionsEn ?? item.missions_en ?? ''),
+      missions_en: Array.isArray(item.missions_en ?? item.missionsEn)
+        ? ((item.missions_en ?? item.missionsEn) as string[]).join('\n')
+        : String(item.missions_en ?? item.missionsEn ?? ''),
       hardSkills: toArr(item.hardSkills),
-      hardSkillsEn: toArr(item.hardSkillsEn ?? item.hardSkills_en),
+      hardSkills_en: toArr(item.hardSkills_en ?? item.hardSkillsEn),
       softSkills: toArr(item.softSkills),
-      softSkillsEn: toArr(item.softSkillsEn ?? item.softSkills_en),
+      softSkills_en: toArr(item.softSkills_en ?? item.softSkillsEn),
       competencesIds: toArr(item.competencesIds),
     });
   };
 
   const newItem = () => setEditingItem({
-    id: '', title: '', titleEn: '', period: '', periodEn: '',
-    description: '', descriptionEn: '', longDescription: '', longDescriptionEn: '',
-    company: '', companyEn: '', institution: '', institutionEn: '',
-    missions: '', missionsEn: '', hardSkills: [], hardSkillsEn: [],
-    softSkills: [], softSkillsEn: [], imageUrl: '',
+    id: '', title: '', title_en: '', period: '', period_en: '',
+    description: '', description_en: '', longDescription: '', longDescription_en: '',
+    company: '', company_en: '', institution: '', institution_en: '',
+    missions: '', missions_en: '', hardSkills: [], hardSkills_en: [],
+    softSkills: [], softSkills_en: [], imageUrl: '',
     type: type === 'pro' ? ExperienceType.INTERNSHIP : ExperienceType.EDUCATION,
     competencesIds: [],
   });
@@ -184,7 +184,7 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
               </div>
             </div>
 
-            <TField label="Période / Durée" field="period" target="periodEn" required />
+            <TField label="Période / Durée" field="period" target="period_en" required />
 
             {/* TITRE — génère l'ID auto */}
             <div className="translation-row">
@@ -201,11 +201,11 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
                 <div className="translation-field-header">
                   <label>Title (EN)</label>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="translate-btn" onClick={() => handleTranslate('title', 'titleEn')} disabled={translating !== null}>{translating === 'titleEn' ? '...' : 'Auto-Trad'}</button>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('title', 'title_en')} disabled={translating !== null}>{translating === 'title_en' ? '...' : 'Auto-Trad'}</button>
                     <span className="lang-badge">EN</span>
                   </div>
                 </div>
-                <input className="clean-input" value={(editingItem.titleEn as string) ?? ''} onChange={e => setEditingItem({ ...editingItem, titleEn: e.target.value })} />
+                <input className="clean-input" value={(editingItem.title_en as string) ?? ''} onChange={e => setEditingItem({ ...editingItem, title_en: e.target.value })} />
               </div>
             </div>
 
@@ -217,15 +217,15 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
             )}
 
             {type === 'pro'
-              ? <TField label="Entreprise" field="company" target="companyEn" required />
-              : <TField label="Institution" field="institution" target="institutionEn" required />
+              ? <TField label="Entreprise" field="company" target="company_en" required />
+              : <TField label="Institution" field="institution" target="institution_en" required />
             }
 
-            <TField label="Description Courte" field="description" target="descriptionEn" as="textarea" required />
-            <TField label="Analyse Longue" field="longDescription" target="longDescriptionEn" as="textarea" height="150px" />
+            <TField label="Description Courte" field="description" target="description_en" as="textarea" required />
+            <TField label="Analyse Longue" field="longDescription" target="longDescription_en" as="textarea" height="150px" />
 
             {type === 'pro' && (
-              <TField label="Missions (un par ligne)" field="missions" target="missionsEn" as="textarea" height="110px" />
+              <TField label="Missions (un par ligne)" field="missions" target="missions_en" as="textarea" height="110px" />
             )}
 
             {/* HARD SKILLS via EntityPicker */}
@@ -235,9 +235,9 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
               options={hardSkillOptions}
               selected={toArr(editingItem.hardSkills)}
               onChange={fr => {
-                // Sync EN: find matching option's labelEn
-                const en = fr.map(name => hardSkillOptions.find(o => o.value === name)?.labelEn ?? name);
-                setEditingItem({ ...editingItem, hardSkills: fr, hardSkillsEn: en });
+                // Sync EN: find matching option's label_en
+                const en = fr.map(name => hardSkillOptions.find(o => o.value === name)?.label_en ?? name);
+                setEditingItem({ ...editingItem, hardSkills: fr, hardSkills_en: en });
               }}
               emptyMessage="Aucun hard skill — créez-en dans l'onglet Hard Skills."
             />
@@ -249,8 +249,8 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
               options={softSkillOptions}
               selected={toArr(editingItem.softSkills)}
               onChange={fr => {
-                const en = fr.map(name => softSkillOptions.find(o => o.value === name)?.labelEn ?? name);
-                setEditingItem({ ...editingItem, softSkills: fr, softSkillsEn: en });
+                const en = fr.map(name => softSkillOptions.find(o => o.value === name)?.label_en ?? name);
+                setEditingItem({ ...editingItem, softSkills: fr, softSkills_en: en });
               }}
               emptyMessage="Aucun soft skill — créez-en dans l'onglet Soft Skills."
             />

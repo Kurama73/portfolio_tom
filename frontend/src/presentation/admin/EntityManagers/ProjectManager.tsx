@@ -48,7 +48,7 @@ const ProjectManager: React.FC = () => {
   const competenceOptions: PickerOption[] = allCompetences.map(c => ({
     value: c.id,
     label: c.name,
-    labelEn: c.nameEn,
+    label_en: c.name_en,
   }));
 
   const handleTranslate = async (field: keyof Project, targetField: keyof Project) => {
@@ -115,8 +115,8 @@ const ProjectManager: React.FC = () => {
       <div className="admin-main-header">
         <h2 className="admin-main-title">Projets</h2>
         <button className="primary-button" onClick={() => setEditingProject({
-          id: '', title: '', titleEn: '', category: ProjectCategory.WEB, status: ProjectStatus.DEVELOPMENT,
-          description: '', descriptionEn: '', longDescription: '', longDescriptionEn: '',
+          id: '', title: '', title_en: '', category: ProjectCategory.WEB, status: ProjectStatus.DEVELOPMENT,
+          description: '', description_en: '', longDescription: '', longDescription_en: '',
           techStack: [], images: [], skillsIds: [], competencesIds: [], github: '', link: '', startDate: ''
         })}>
           Nouveau Projet
@@ -164,11 +164,11 @@ const ProjectManager: React.FC = () => {
                 <div className="translation-field-header">
                   <label>Title (EN)</label>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="translate-btn" onClick={() => handleTranslate('title', 'titleEn')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('title', 'title_en')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
                     <span className="lang-badge">EN</span>
                   </div>
                 </div>
-                <input className="clean-input" value={editingProject.titleEn || ''} onChange={e => setEditingProject({ ...editingProject, titleEn: e.target.value })} />
+                <input className="clean-input" value={editingProject.title_en || ''} onChange={e => setEditingProject({ ...editingProject, title_en: e.target.value })} />
               </div>
             </div>
 
@@ -189,11 +189,11 @@ const ProjectManager: React.FC = () => {
                 <div className="translation-field-header">
                   <label>Short Description (EN)</label>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="translate-btn" onClick={() => handleTranslate('description', 'descriptionEn')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('description', 'description_en')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
                     <span className="lang-badge">EN</span>
                   </div>
                 </div>
-                <textarea className="clean-input" value={editingProject.descriptionEn || ''} onChange={e => setEditingProject({ ...editingProject, descriptionEn: e.target.value })} />
+                <textarea className="clean-input" value={editingProject.description_en || ''} onChange={e => setEditingProject({ ...editingProject, description_en: e.target.value })} />
               </div>
             </div>
 
@@ -207,11 +207,11 @@ const ProjectManager: React.FC = () => {
                 <div className="translation-field-header">
                   <label>Long Analysis (EN)</label>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="translate-btn" onClick={() => handleTranslate('longDescription', 'longDescriptionEn')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('longDescription', 'longDescription_en')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
                     <span className="lang-badge">EN</span>
                   </div>
                 </div>
-                <textarea className="clean-input" style={{ height: '180px' }} value={editingProject.longDescriptionEn || ''} onChange={e => setEditingProject({ ...editingProject, longDescriptionEn: e.target.value })} />
+                <textarea className="clean-input" style={{ height: '180px' }} value={editingProject.longDescription_en || ''} onChange={e => setEditingProject({ ...editingProject, longDescription_en: e.target.value })} />
               </div>
             </div>
 

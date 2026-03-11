@@ -61,7 +61,7 @@ const CompetenceManager: React.FC = () => {
     <div className="entity-manager">
       <div className="admin-main-header">
         <h2 className="admin-main-title">Compétences B.U.T</h2>
-        <button className="primary-button" onClick={() => setEditingComp({ id: '', name: '', nameEn: '', description: '', descriptionEn: '', level: 1 })}>
+        <button className="primary-button" onClick={() => setEditingComp({ id: '', name: '', name_en: '', description: '', description_en: '', percentage: 85 })}>
           Nouvelle Compétence
         </button>
       </div>
@@ -85,8 +85,8 @@ const CompetenceManager: React.FC = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Niveau (1–6)</label>
-                <input type="number" min="1" max="6" className="clean-input" value={editingComp.level || 1} onChange={e => setEditingComp({ ...editingComp, level: parseInt(e.target.value) })} required />
+                <label>Pourcentage (0–100)</label>
+                <input type="number" min="0" max="100" className="clean-input" value={editingComp.percentage || 85} onChange={e => setEditingComp({ ...editingComp, percentage: parseInt(e.target.value) })} required />
               </div>
             </div>
 
@@ -106,11 +106,11 @@ const CompetenceManager: React.FC = () => {
                 <div className="translation-field-header">
                   <label>Short Name</label>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="translate-btn" onClick={() => handleTranslate('name', 'nameEn')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('name', 'name_en')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
                     <span className="lang-badge">EN</span>
                   </div>
                 </div>
-                <input className="clean-input" value={editingComp.nameEn || ''} onChange={e => setEditingComp({ ...editingComp, nameEn: e.target.value })} />
+                <input className="clean-input" value={editingComp.name_en || ''} onChange={e => setEditingComp({ ...editingComp, name_en: e.target.value })} />
               </div>
             </div>
 
@@ -123,11 +123,11 @@ const CompetenceManager: React.FC = () => {
                 <div className="translation-field-header">
                   <label>Description</label>
                   <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <button type="button" className="translate-btn" onClick={() => handleTranslate('description', 'descriptionEn')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('description', 'description_en')} disabled={translating}>{translating ? '...' : 'Auto-Trad'}</button>
                     <span className="lang-badge">EN</span>
                   </div>
                 </div>
-                <textarea className="clean-input" value={editingComp.descriptionEn || ''} onChange={e => setEditingComp({ ...editingComp, descriptionEn: e.target.value })} />
+                <textarea className="clean-input" value={editingComp.description_en || ''} onChange={e => setEditingComp({ ...editingComp, description_en: e.target.value })} />
               </div>
             </div>
 
@@ -142,8 +142,9 @@ const CompetenceManager: React.FC = () => {
       <table className="admin-table">
         <thead>
           <tr>
-            <th>Nom</th>
-            <th>Niveau</th>
+            <th>Nom (FR)</th>
+            <th>Nom (EN)</th>
+            <th>Pourcentage</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -151,7 +152,8 @@ const CompetenceManager: React.FC = () => {
           {competences.map(c => (
             <tr key={c.id}>
               <td>{c.name}</td>
-              <td>Niveau {c.level}</td>
+              <td>{c.name_en || 'N/A'}</td>
+              <td>{c.percentage}%</td>
               <td>
                 <button className="action-btn edit-btn" onClick={() => setEditingComp(c)}>Edit</button>
                 <button className="action-btn delete-btn" onClick={() => handleDelete(c.id)}>Delete</button>

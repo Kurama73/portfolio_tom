@@ -32,12 +32,12 @@ const SOFT_SKILLS = [
 ];
 
 const IUT_COMPETENCES = [
-  { id: "comp1", name: "Réaliser un développement d'application", name_en: "Develop Applications", description: "Concevoir, coder, tester et intégrer des solutions logicielles.", description_en: "Design, code, test, and integrate software solutions.", level: 6 },
-  { id: "comp2", name: "Optimiser des applications", name_en: "Optimize Applications", description: "Proposer des applications informatiques performantes et optimisées.", description_en: "Propose high-performance and optimized software applications.", level: 5 },
-  { id: "comp3", name: "Administrer des systèmes communicants", name_en: "Administer Systems", description: "Installer, configurer et maintenir des infrastructures informatiques.", description_en: "Install, configure, and maintain IT infrastructures.", level: 4 },
-  { id: "comp4", name: "Gérer des données de l'information", name_en: "Manage Information Data", description: "Concevoir et administrer des bases de données complexes.", description_en: "Design and administer complex databases.", level: 5 },
-  { id: "comp5", name: "Conduire un projet", name_en: "Project Management", description: "Organiser et piloter un projet informatique avec des méthodes agiles.", description_en: "Organize and lead an IT project using agile methods.", level: 6 },
-  { id: "comp6", name: "Collaborer au sein d'une équipe", name_en: "Team Collaboration", description: "Travailler efficacement dans une équipe informatique.", description_en: "Work effectively within an IT team.", level: 5 }
+  { id: "comp1", name: "Réaliser un développement d'application", name_en: "Develop Applications", description: "Concevoir, coder, tester et intégrer des solutions logicielles.", description_en: "Design, code, test, and integrate software solutions.", percentage: 85 },
+  { id: "comp2", name: "Optimiser des applications", name_en: "Optimize Applications", description: "Proposer des applications informatiques performantes et optimisées.", description_en: "Propose high-performance and optimized software applications.", percentage: 80 },
+  { id: "comp3", name: "Administrer des systèmes communicants", name_en: "Administer Systems", description: "Installer, configurer et maintenir des infrastructures informatiques.", description_en: "Install, configure, and maintain IT infrastructures.", percentage: 70 },
+  { id: "comp4", name: "Gérer des données de l'information", name_en: "Manage Information Data", description: "Concevoir et administrer des bases de données complexes.", description_en: "Design and administer complex databases.", percentage: 80 },
+  { id: "comp5", name: "Conduire un projet", name_en: "Project Management", description: "Organiser et piloter un projet informatique avec des méthodes agiles.", description_en: "Organize and lead an IT project using agile methods.", percentage: 85 },
+  { id: "comp6", name: "Collaborer au sein d'une équipe", name_en: "Team Collaboration", description: "Travailler efficacement dans une équipe informatique.", description_en: "Work effectively within an IT team.", percentage: 80 }
 ];
 
 const PROJECTS = [
@@ -337,41 +337,41 @@ const PASSIONS = [
   {
     id: "pas1",
     name: "Espace",
-    name_en: "Space",
+    nameEn: "Space",
     description: "Ma passion pour l’espace est née d’une quête de connaissance et d’un émerveillement devant les sciences. L’exploration et la compréhension de l’univers, de la vie, ainsi que les technologies associées (lanceurs, sondes, etc.) me fascinent.",
-    description_en: "My passion for space was born from a quest for knowledge and a wonder for science. The exploration and understanding of the universe, life, and associated technologies (launchers, probes, etc.) fascinate me.",
+    descriptionEn: "My passion for space was born from a quest for knowledge and a wonder for science. The exploration and understanding of the universe, life, and associated technologies (launchers, probes, etc.) fascinate me.",
     imageUrl: "/images/passions/space_1.jpg"
   },
   {
     id: "pas2",
     name: "Sport automobile",
-    name_en: "Motorsport",
+    nameEn: "Motorsport",
     description: "Mon intérêt pour le sport automobile s’est construit progressivement via l’ingénierie, la compétition et le sport. La Formule 1 m’a servi de porte d’entrée vers tout l’univers du sport auto.",
-    description_en: "My interest in motorsport has gradually built up through engineering, competition, and sport. Formula 1 served as my gateway into the entire world of motorsport.",
+    descriptionEn: "My interest in motorsport has gradually built up through engineering, competition, and sport. Formula 1 served as my gateway into the entire world of motorsport.",
     imageUrl: "/images/passions/ms_1.jpg"
   },
   {
     id: "pas3",
     name: "SimRacing",
-    name_en: "SimRacing",
+    nameEn: "SimRacing",
     description: "En 2021, j’ai commencé à m’investir dans la simulation automobile. Je possède aujourd’hui un simulateur complet, qui me permet de développer concentration, sang-froid et réflexes.",
-    description_en: "In 2021, I started getting involved in car simulation. Today I own a complete simulator, which allows me to develop concentration, composure, and reflexes.",
+    descriptionEn: "In 2021, I started getting involved in car simulation. Today I own a complete simulator, which allows me to develop concentration, composure, and reflexes.",
     imageUrl: "/images/passions/sr_1.jpg"
   },
   {
     id: "pas4",
     name: "Cuisine",
-    name_en: "Cooking",
+    nameEn: "Cooking",
     description: "Titulaire d’un Bac Pro Cuisine avec mention Très Bien, j’ai appris la rigueur et l’organisation sous pression. Ces compétences sont pleinement transférables dans le domaine de l’informatique.",
-    description_en: "Holding a Professional Baccalaureate in Cooking with honors, I learned rigor and organization under pressure. These skills are fully transferable to the field of IT.",
+    descriptionEn: "Holding a Professional Baccalaureate in Cooking with honors, I learned rigor and organization under pressure. These skills are fully transferable to the field of IT.",
     imageUrl: "/images/passions/cuisine_1.jpg"
   },
   {
     id: "pas5",
     name: "Technologie Et Informatique",
-    name_en: "Technology & IT",
+    nameEn: "Technology & IT",
     description: "Passionné par la résolution de problèmes et le prototypage. J'ai choisi de m'orienter vers le développement d'applications pour comprendre et créer des programmes innovants.",
-    description_en: "Passionate about problem solving and prototyping. I chose to specialize in application development to understand and create innovative programs.",
+    descriptionEn: "Passionate about problem solving and prototyping. I chose to specialize in application development to understand and create innovative programs.",
     imageUrl: "/images/passions/informatique_1.jpg"
   }
 ];
@@ -412,7 +412,7 @@ function seedDatabase(db) {
           name_en TEXT,
           description TEXT NOT NULL,
           description_en TEXT,
-          level INTEGER NOT NULL
+          percentage INTEGER NOT NULL
         )
       `);
 
@@ -492,9 +492,9 @@ function seedDatabase(db) {
         CREATE TABLE IF NOT EXISTS passions (
           id TEXT PRIMARY KEY,
           name TEXT NOT NULL,
-          name_en TEXT,
+          nameEn TEXT,
           description TEXT NOT NULL,
-          description_en TEXT,
+          descriptionEn TEXT,
           imageUrl TEXT NOT NULL
         )
       `, (err) => {
@@ -515,9 +515,9 @@ function seedDatabase(db) {
         softSkillStmt.finalize();
 
         // Insert IUT competences
-        const compStmt = db.prepare('INSERT OR REPLACE INTO iut_competences (id, name, name_en, description, description_en, level) VALUES (?, ?, ?, ?, ?, ?)');
+        const compStmt = db.prepare('INSERT OR REPLACE INTO iut_competences (id, name, name_en, description, description_en, percentage) VALUES (?, ?, ?, ?, ?, ?)');
         IUT_COMPETENCES.forEach(comp => {
-          compStmt.run(comp.id, comp.name, comp.name_en || comp.name, comp.description, comp.description_en || comp.description, comp.level);
+          compStmt.run(comp.id, comp.name, comp.name_en || comp.name, comp.description, comp.description_en || comp.description, comp.percentage);
         });
         compStmt.finalize();
 
@@ -543,9 +543,9 @@ function seedDatabase(db) {
         profExpStmt.finalize();
 
         // Insert passions
-        const passionStmt = db.prepare('INSERT OR REPLACE INTO passions (id, name, name_en, description, description_en, imageUrl) VALUES (?, ?, ?, ?, ?, ?)');
+        const passionStmt = db.prepare('INSERT OR REPLACE INTO passions (id, name, nameEn, description, descriptionEn, imageUrl) VALUES (?, ?, ?, ?, ?, ?)');
         PASSIONS.forEach(passion => {
-          passionStmt.run(passion.id, passion.name, passion.name_en || passion.name, passion.description, passion.description_en || passion.description, passion.imageUrl);
+          passionStmt.run(passion.id, passion.name, passion.nameEn || passion.name, passion.description, passion.descriptionEn || passion.description, passion.imageUrl);
         });
         passionStmt.finalize();
 
