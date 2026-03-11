@@ -417,6 +417,8 @@ function seedDatabase(db) {
           skillsIds TEXT NOT NULL,
           competencesIds TEXT NOT NULL,
           imageUrl TEXT NOT NULL,
+          github TEXT,
+          link TEXT,
           category TEXT NOT NULL,
           images TEXT,
           status TEXT,

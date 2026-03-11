@@ -236,15 +236,12 @@ app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) =>
 
 app.post('/api/projects', authenticateToken, (req, res) => {
   const p = req.body;
-  const sql = `INSERT INTO projects (title, title_en, description, description_en, longDescription, longDescription_en, techStack, imageUrl, github, link, category, status, skillsIds, competencesIds, images, startDate)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO projects (id, title, title_en, description, description_en, longDescription, longDescription_en, techStack, skillsIds, competencesIds, imageUrl, github, link, category, images, status, startDate)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const params = [
-    p.title, p.titleEn, p.description, p.descriptionEn, p.longDescription, p.longDescriptionEn,
-    JSON.stringify(p.techStack || []), p.imageUrl, p.github, p.link,
-    p.category, p.status,
-    JSON.stringify(p.skillsIds || []), JSON.stringify(p.competencesIds || []),
-    JSON.stringify(p.images || []),
-    p.startDate
+    p.id, p.title, p.titleEn, p.description, p.descriptionEn, p.longDescription, p.longDescriptionEn,
+    JSON.stringify(p.techStack || []), JSON.stringify(p.skillsIds || []), JSON.stringify(p.competencesIds || []),
+    p.imageUrl, p.github, p.link, p.category, JSON.stringify(p.images || []), p.status, p.startDate
   ];
   db.run(sql, params, function(err) {
     if (err) return res.status(500).json({ error: err.message });
