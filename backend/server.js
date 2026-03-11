@@ -265,7 +265,13 @@ app.put('/api/projects/:id', authenticateToken, (req, res) => {
     req.params.id
   ];
   db.run(sql, params, function(err) {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error('Project update error:', err);
+      return res.status(500).json({ error: `Database error: ${err.message}` });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: `Project with ID ${req.params.id} not found` });
+    }
     res.json({ success: true });
   });
 });

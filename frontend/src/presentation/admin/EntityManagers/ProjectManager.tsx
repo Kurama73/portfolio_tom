@@ -73,8 +73,9 @@ const ProjectManager: React.FC = () => {
       }
       setEditingProject(null);
       loadProjects();
-    } catch {
-      alert('Erreur lors de la sauvegarde');
+    } catch (error) {
+      console.error('Save error:', error);
+      alert(`Erreur lors de la sauvegarde: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 
