@@ -32,12 +32,12 @@ const SOFT_SKILLS = [
 ];
 
 const IUT_COMPETENCES = [
-  { id: "comp1", name: "Réaliser un développement d'application", name_en: "Develop Applications", description: "Concevoir, coder, tester et intégrer des solutions logicielles.", description_en: "Design, code, test, and integrate software solutions.", level: 85 },
-  { id: "comp2", name: "Optimiser des applications", name_en: "Optimize Applications", description: "Proposer des applications informatiques performantes et optimisées.", description_en: "Propose high-performance and optimized software applications.", level: 75 },
-  { id: "comp3", name: "Administrer des systèmes communicants", name_en: "Administer Systems", description: "Installer, configurer et maintenir des infrastructures informatiques.", description_en: "Install, configure, and maintain IT infrastructures.", level: 70 },
-  { id: "comp4", name: "Gérer des données de l'information", name_en: "Manage Information Data", description: "Concevoir et administrer des bases de données complexes.", description_en: "Design and administer complex databases.", level: 80 },
-  { id: "comp5", name: "Conduire un projet", name_en: "Project Management", description: "Organiser et piloter un projet informatique avec des méthodes agiles.", description_en: "Organize and lead an IT project using agile methods.", level: 90 },
-  { id: "comp6", name: "Collaborer au sein d'une équipe", name_en: "Team Collaboration", description: "Travailler efficacement dans une équipe informatique.", description_en: "Work effectively within an IT team.", level: 85 }
+  { id: "comp1", name: "Réaliser un développement d'application", name_en: "Develop Applications", description: "Concevoir, coder, tester et intégrer des solutions logicielles.", description_en: "Design, code, test, and integrate software solutions.", level: 6 },
+  { id: "comp2", name: "Optimiser des applications", name_en: "Optimize Applications", description: "Proposer des applications informatiques performantes et optimisées.", description_en: "Propose high-performance and optimized software applications.", level: 5 },
+  { id: "comp3", name: "Administrer des systèmes communicants", name_en: "Administer Systems", description: "Installer, configurer et maintenir des infrastructures informatiques.", description_en: "Install, configure, and maintain IT infrastructures.", level: 4 },
+  { id: "comp4", name: "Gérer des données de l'information", name_en: "Manage Information Data", description: "Concevoir et administrer des bases de données complexes.", description_en: "Design and administer complex databases.", level: 5 },
+  { id: "comp5", name: "Conduire un projet", name_en: "Project Management", description: "Organiser et piloter un projet informatique avec des méthodes agiles.", description_en: "Organize and lead an IT project using agile methods.", level: 6 },
+  { id: "comp6", name: "Collaborer au sein d'une équipe", name_en: "Team Collaboration", description: "Travailler efficacement dans une équipe informatique.", description_en: "Work effectively within an IT team.", level: 5 }
 ];
 
 const PROJECTS = [
