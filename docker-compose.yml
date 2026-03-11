@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: portfolio-backend
+    restart: unless-stopped
+    volumes:
+      - portfolio_data:/app/data
+      - portfolio_images:/app/public/images/uploads
+    env_file:
+      - ./backend/.env
+    network_mode: "host"
+
+volumes:
+  portfolio_data:
+  portfolio_images:

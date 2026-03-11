@@ -21,7 +21,7 @@ const SoftSkillManager: React.FC = () => {
   const [translating, setTranslating] = useState(false);
 
   const loadSkills = useCallback(async () => {
-    const res = await fetch('http://localhost:3001/api/soft-skills');
+    const res = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/soft-skills');
     const data = await res.json();
     setSkills(data.map((s: SoftSkill) => ({ ...s, nameEn: s.nameEn || s.name_en || '' })));
   }, []);

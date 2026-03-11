@@ -46,15 +46,17 @@ const upload = multer({ storage });
 // CONNEXION À SQLITE ET INITIALISATION
 // ==========================================
 
-const dbPath = path.resolve(__dirname, 'portfolio.db');
+const dbPath = process.env.DB_PATH || path.resolve(__dirname, 'portfolio.db');
 const fs = require('fs');
-if (fs.existsSync(dbPath)) {
+
+if (process.env.NODE_ENV !== 'production' && fs.existsSync(dbPath)) {
   try {
     fs.unlinkSync(dbPath);
   } catch (err) {
     console.warn('Impossible de supprimer la base de données existante:', err.message);
   }
 }
+
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Erreur SQLite:', err.message);
@@ -62,7 +64,11 @@ const db = new sqlite3.Database(dbPath, (err) => {
     console.log('Système connecté à SQLite.');
 
     db.get("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table' AND name='skills'", (err, row) => {
-      // Always seed for development
+      // Only seed if in dev or if the DB is empty
+      if (process.env.NODE_ENV === 'production' && row && row.count > 0) {
+        console.log('Production mode: Tables exist, skipping seed.');
+        return;
+      }
       seedDatabase(db).then(() => {
         // Fix enum values to match i18n keys (must run AFTER seed)
         db.serialize(() => {

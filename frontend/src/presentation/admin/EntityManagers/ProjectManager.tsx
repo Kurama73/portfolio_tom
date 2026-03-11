@@ -22,9 +22,9 @@ const ProjectManager: React.FC = () => {
   const loadProjects = useCallback(async () => {
     try {
       const [pRes, cRes, sRes] = await Promise.all([
-        fetch('http://localhost:3001/api/projects'),
-        fetch('http://localhost:3001/api/iut-competences'),
-        fetch('http://localhost:3001/api/skills'),
+        fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/projects'),
+        fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/iut-competences'),
+        fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/skills'),
       ]);
       setProjects(await pRes.json());
       setAllCompetences(await cRes.json());

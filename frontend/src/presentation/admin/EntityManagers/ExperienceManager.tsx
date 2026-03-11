@@ -24,10 +24,10 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
   const loadItems = useCallback(async () => {
     const endpoint = type === 'pro' ? '/professional_experiences' : '/formations';
     const [itemsRes, compRes, skillsRes, softRes] = await Promise.all([
-      fetch(`http://localhost:3001/api${endpoint}`),
-      fetch(`http://localhost:3001/api/iut-competences`),
-      fetch(`http://localhost:3001/api/skills`),
-      fetch(`http://localhost:3001/api/soft-skills`),
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}${endpoint}`),
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/iut-competences`),
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/skills`),
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/soft-skills`),
     ]);
     setItems(await itemsRes.json());
     setAllCompetences(await compRes.json());

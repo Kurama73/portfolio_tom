@@ -14,7 +14,7 @@ const SkillManager: React.FC = () => {
   const [editingSkill, setEditingSkill] = useState<Partial<Skill> | null>(null);
 
   const loadSkills = React.useCallback(async () => {
-    const res = await fetch('http://localhost:3001/api/skills');
+    const res = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/skills');
     setSkills(await res.json());
   }, []);
 

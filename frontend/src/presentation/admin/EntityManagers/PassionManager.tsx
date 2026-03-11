@@ -16,7 +16,7 @@ const PassionManager: React.FC = () => {
   const [translating, setTranslating] = useState(false);
 
   const loadPassions = async () => {
-    const res = await fetch('http://localhost:3001/api/passions');
+    const res = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/passions');
     setPassions(await res.json());
   };
 

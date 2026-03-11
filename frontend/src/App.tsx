@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Home from './presentation/pages/Home';
 import Contact from './presentation/pages/Contact';
 import AdminDashboard from './presentation/pages/AdminDashboard';
