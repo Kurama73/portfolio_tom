@@ -53,6 +53,8 @@ const PROJECTS = [
     skillsIds: ["csharp", "dotnet", "xml", "git"],
     competencesIds: ["comp1", "comp2", "comp4"],
     imageUrl: "/images/projects/AppliParam/1.jpg",
+    github: "",
+    link: "",
     images: ["/images/projects/AppliParam/1.jpg", "/images/projects/AppliParam/2.jpg", "/images/projects/AppliParam/3.jpg"],
     category: "SOFTWARE",
     status: "ARCHIVED",
@@ -70,6 +72,8 @@ const PROJECTS = [
     skillsIds: ["svelte", "tailwind", "sql", "js"],
     competencesIds: ["comp1", "comp2", "comp5"],
     imageUrl: "/images/projects/SmartDesk/1.png",
+    github: "",
+    link: "",
     images: ["/images/projects/SmartDesk/1.png", "/images/projects/SmartDesk/2.png"],
     category: "WEB",
     status: "ARCHIVED",
@@ -87,6 +91,8 @@ const PROJECTS = [
     skillsIds: ["php", "symfony", "sql", "css"],
     competencesIds: ["comp1", "comp4", "comp6"],
     imageUrl: "/images/projects/PanierVIP/1.png",
+    github: "",
+    link: "",
     images: ["/images/projects/PanierVIP/1.png", "/images/projects/PanierVIP/2.png", "/images/projects/PanierVIP/3.png"],
     category: "WEB",
     status: "DEPLOYED",
@@ -104,6 +110,8 @@ const PROJECTS = [
     skillsIds: ["kotlin"],
     competencesIds: ["comp1", "comp4", "comp3"],
     imageUrl: "/images/projects/LootBoxHunter/1.png",
+    github: "",
+    link: "",
     images: ["/images/projects/LootBoxHunter/1.png", "/images/projects/LootBoxHunter/2.png", "/images/projects/LootBoxHunter/3.png", "/images/projects/LootBoxHunter/4.png"],
     category: "MOBILE",
     status: "DEPLOYED",
@@ -121,6 +129,8 @@ const PROJECTS = [
     skillsIds: ["python"],
     competencesIds: ["comp1", "comp2", "comp3"],
     imageUrl: "/images/projects/DimensionalMatrix/1.png",
+    github: "",
+    link: "",
     images: ["/images/projects/DimensionalMatrix/1.png"],
     category: "SYSTEM",
     status: "ARCHIVED",
@@ -138,6 +148,8 @@ const PROJECTS = [
     skillsIds: ["java"],
     competencesIds: ["comp1", "comp2", "comp5"],
     imageUrl: "/images/projects/SAE_JAVA/4.png",
+    github: "",
+    link: "",
     images: ["/images/projects/SAE_JAVA/4.png", "/images/projects/SAE_JAVA/1.png", "/images/projects/SAE_JAVA/2.png", "/images/projects/SAE_JAVA/3.png"],
     category: "DESKTOP",
     status: "ARCHIVED",
@@ -510,9 +522,9 @@ function seedDatabase(db) {
         compStmt.finalize();
 
         // Insert projects
-        const projectStmt = db.prepare('INSERT OR REPLACE INTO projects (id, title, title_en, description, description_en, longDescription, longDescription_en, techStack, skillsIds, competencesIds, imageUrl, category, images, status, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        const projectStmt = db.prepare('INSERT OR REPLACE INTO projects (id, title, title_en, description, description_en, longDescription, longDescription_en, techStack, skillsIds, competencesIds, imageUrl, github, link, category, images, status, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         PROJECTS.forEach(project => {
-          projectStmt.run(project.id, project.title, project.titleEn || project.title, project.description, project.descriptionEn || project.description, project.longDescription, project.longDescriptionEn || project.longDescription, JSON.stringify(project.techStack), JSON.stringify(project.skillsIds), JSON.stringify(project.competencesIds), project.imageUrl, project.category, JSON.stringify(project.images || []), project.status || 'ARCHIVED', project.startDate || '');
+          projectStmt.run(project.id, project.title, project.titleEn || project.title, project.description, project.descriptionEn || project.description, project.longDescription, project.longDescriptionEn || project.longDescription, JSON.stringify(project.techStack), JSON.stringify(project.skillsIds), JSON.stringify(project.competencesIds), project.imageUrl, project.github || '', project.link || '', project.category, JSON.stringify(project.images || []), project.status || 'ARCHIVED', project.startDate || '');
         });
         projectStmt.finalize();
 
