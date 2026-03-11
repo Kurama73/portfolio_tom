@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Contact.css';
 
 const Contact: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,7 +30,7 @@ const Contact: React.FC = () => {
         setFormData({ name: '', email: '', subject: '', message: '', _honeypot: '' });
       } else {
         const data = await response.json();
-        setErrorMessage(data.error || "Une erreur est survenue.");
+        setErrorMessage(data.error || t('contact.form.error'));
         setStatus('error');
       }
     } catch (error) {
@@ -40,13 +42,13 @@ const Contact: React.FC = () => {
   return (
     <div id="contact" className="contact-page animate-fade-in">
       <div className="contact-header">
-        <h1 className="section-title">Contact<span className="dot">.</span></h1>
-        <p className="section-subtitle">N'hésitez pas à me contacter pour toute proposition ou question.</p>
+        <h1 className="section-title">{t('contact.title')}<span className="dot">.</span></h1>
+        <p className="section-subtitle">{t('contact.subtitle')}</p>
       </div>
 
       <div className="contact-content">
         <div className="mac-card contact-info-card static-card">
-          <h3 className="info-card-title">Informations</h3>
+          <h3 className="info-card-title">{t('contact.info.title')}</h3>
 
           <div className="info-item">
             <div className="info-icon">
@@ -56,7 +58,7 @@ const Contact: React.FC = () => {
               </svg>
             </div>
             <div className="info-text">
-              <h4>Localisation</h4>
+              <h4>{t('contact.info.location')}</h4>
               <p>Lyon / Chambéry</p>
             </div>
           </div>
@@ -69,7 +71,7 @@ const Contact: React.FC = () => {
               </svg>
             </div>
             <div className="info-text">
-              <h4>Email</h4>
+              <h4>{t('contact.info.email')}</h4>
               <p>tomfrumy@ik.me</p>
             </div>
           </div>
@@ -83,7 +85,7 @@ const Contact: React.FC = () => {
               </svg>
             </div>
             <div className="info-text">
-              <h4>Réseaux Sociaux</h4>
+              <h4>{t('contact.info.social')}</h4>
               <p className="social-links">
                 <a href="https://www.linkedin.com/in/tom-frumy-78b154295" target="_blank" rel="noreferrer">LinkedIn</a>
                 <span className="separator">/</span>
@@ -99,7 +101,7 @@ const Contact: React.FC = () => {
 
             <div className="form-group-row">
               <div className="form-group">
-                <label>Nom complet</label>
+                <label>{t('contact.form.name')}</label>
                 <input
                   type="text"
                   className="clean-input"
@@ -110,7 +112,7 @@ const Contact: React.FC = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Adresse Email</label>
+                <label>{t('contact.form.email')}</label>
                 <input
                   type="email"
                   className="clean-input"
@@ -123,11 +125,11 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label>Sujet</label>
+              <label>{t('contact.form.subject')}</label>
               <input
                 type="text"
                 className="clean-input"
-                placeholder="Proposition de mission..."
+                placeholder="..."
                 value={formData.subject}
                 onChange={e => setFormData({ ...formData, subject: e.target.value })}
                 required
@@ -135,11 +137,11 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label>Message</label>
+              <label>{t('contact.form.message')}</label>
               <textarea
                 className="clean-input"
                 rows={6}
-                placeholder="Votre message..."
+                placeholder="..."
                 value={formData.message}
                 onChange={e => setFormData({ ...formData, message: e.target.value })}
                 required
@@ -160,14 +162,14 @@ const Contact: React.FC = () => {
               className={`primary-button submit-btn ${status === 'loading' ? 'loading' : ''}`}
               disabled={status === 'loading'}
             >
-              {status === 'loading' ? 'Envoi en cours...' : 'Envoyer le message'}
+              {status === 'loading' ? t('contact.form.sending') : t('contact.form.send')}
             </button>
 
             {status === 'success' && (
-              <p className="status-message success">Message envoyé avec succès ! 🚀</p>
+              <p className="status-message success">{t('contact.form.success')}</p>
             )}
             {status === 'error' && (
-              <p className="status-message error">{errorMessage || "Erreur lors de l'envoi. Veuillez réessayer."}</p>
+              <p className="status-message error">{errorMessage || t('contact.form.error')}</p>
             )}
 
           </form>

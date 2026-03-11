@@ -44,7 +44,7 @@ export class AdminService {
     throw new Error(data.error || 'Erreur d\'upload');
   }
 
-  private static async request(endpoint: string, method: string, body?: any) {
+  private static async request(endpoint: string, method: string, body?: unknown) {
     const res = await fetch(`${API_URL}${endpoint}`, {
       method,
       headers: this.getHeaders(),
@@ -57,27 +57,31 @@ export class AdminService {
     return res.json();
   }
 
-  static createProject(data: any) { return this.request('/projects', 'POST', data); }
-  static updateProject(id: string | number, data: any) { return this.request(`/projects/${id}`, 'PUT', data); }
+  static createProject(data: unknown) { return this.request('/projects', 'POST', data); }
+  static updateProject(id: string | number, data: unknown) { return this.request(`/projects/${id}`, 'PUT', data); }
   static deleteProject(id: string | number) { return this.request(`/projects/${id}`, 'DELETE'); }
 
-  static createFormation(data: any) { return this.request('/formations', 'POST', data); }
-  static updateFormation(id: string | number, data: any) { return this.request(`/formations/${id}`, 'PUT', data); }
+  static createFormation(data: unknown) { return this.request('/formations', 'POST', data); }
+  static updateFormation(id: string | number, data: unknown) { return this.request(`/formations/${id}`, 'PUT', data); }
   static deleteFormation(id: string | number) { return this.request(`/formations/${id}`, 'DELETE'); }
 
-  static createExperience(data: any) { return this.request('/professional_experiences', 'POST', data); }
-  static updateExperience(id: string | number, data: any) { return this.request(`/professional_experiences/${id}`, 'PUT', data); }
+  static createExperience(data: unknown) { return this.request('/professional_experiences', 'POST', data); }
+  static updateExperience(id: string | number, data: unknown) { return this.request(`/professional_experiences/${id}`, 'PUT', data); }
   static deleteExperience(id: string | number) { return this.request(`/professional_experiences/${id}`, 'DELETE'); }
 
-  static createCompetence(data: any) { return this.request('/iut-competences', 'POST', data); }
-  static updateCompetence(id: string, data: any) { return this.request(`/iut-competences/${id}`, 'PUT', data); }
+  static createCompetence(data: unknown) { return this.request('/iut-competences', 'POST', data); }
+  static updateCompetence(id: string, data: unknown) { return this.request(`/iut-competences/${id}`, 'PUT', data); }
   static deleteCompetence(id: string) { return this.request(`/iut-competences/${id}`, 'DELETE'); }
 
-  static createSkill(data: any) { return this.request('/skills', 'POST', data); }
-  static updateSkill(id: string, data: any) { return this.request(`/skills/${id}`, 'PUT', data); }
+  static createSkill(data: unknown) { return this.request('/skills', 'POST', data); }
+  static updateSkill(id: string, data: unknown) { return this.request(`/skills/${id}`, 'PUT', data); }
   static deleteSkill(id: string) { return this.request(`/skills/${id}`, 'DELETE'); }
 
-  static createPassion(data: any) { return this.request('/passions', 'POST', data); }
-  static updatePassion(id: string, data: any) { return this.request(`/passions/${id}`, 'PUT', data); }
+  static createPassion(data: unknown) { return this.request('/passions', 'POST', data); }
+  static updatePassion(id: string, data: unknown) { return this.request(`/passions/${id}`, 'PUT', data); }
   static deletePassion(id: string) { return this.request(`/passions/${id}`, 'DELETE'); }
+
+  static createSoftSkill(data: unknown) { return this.request('/soft-skills', 'POST', data); }
+  static updateSoftSkill(id: string, data: unknown) { return this.request(`/soft-skills/${id}`, 'PUT', data); }
+  static deleteSoftSkill(id: string) { return this.request(`/soft-skills/${id}`, 'DELETE'); }
 }

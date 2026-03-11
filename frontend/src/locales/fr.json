@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "parcours": "Parcours",
+    "projects": "Projets",
+    "passions": "Passions",
+    "iut": "IUT",
+    "contact": "Contact"
+  },
+  "hero": {
+    "role": "Étudiant <span class=\"highlight-text\">développeur</span>",
+    "description": "Développeur passionné par la technologie, l'innovation et le spatial, j'ai développé rigueur et esprit d'équipe lors d'un parcours atypique en cuisine avant de me réorienter vers l'informatique.",
+    "cta_parcours": "Consulter Parcours",
+    "cta_cv": "Télécharger le CV"
+  },
+  "sections": {
+    "formations": {
+      "title": "Formations",
+      "subtitle": "Mon parcours académique et certifications.",
+      "loading": "Chargement des formations..."
+    },
+    "experiences": {
+      "title": "Expériences Professionnelles",
+      "subtitle": "Mon historique de travail et réalisations.",
+      "loading": "Chargement des expériences..."
+    },
+    "projects": {
+      "title": "Mes Projets",
+      "subtitle": "Cliquez sur un projet pour voir les détails."
+    },
+    "passions": {
+      "title": "Mes Passions",
+      "subtitle": "Ce qui m'anime au quotidien."
+    },
+    "iut": {
+      "title": "Référentiel B.U.T Informatique",
+      "subtitle": "Projets associés et progression sur les 6 compétences clés.",
+      "level_label": "Niveau d'acquisition",
+      "linked_projects": "Projets associés :",
+      "competence_analysis": "Analyse de la compétence",
+      "acquisition_proofs": "Projets associés (Preuves d'acquisition)"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "N'hésitez pas à me contacter pour toute proposition ou question.",
+    "info": {
+      "title": "Informations",
+      "location": "Localisation",
+      "email": "Email",
+      "social": "Réseaux Sociaux"
+    },
+    "form": {
+      "name": "Nom complet",
+      "email": "Adresse Email",
+      "subject": "Sujet",
+      "message": "Message",
+      "send": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé avec succès !",
+      "error": "Erreur lors de l'envoi. Veuillez réessayer."
+    }
+  },
+  "modals": {
+    "project": {
+      "analysis": "Analyse du Projet",
+      "tech_stack": "Stack Technique",
+      "iut_competences": "Compétences IUT",
+      "github": "Code Source (GitHub)",
+      "live": "Déploiement Live"
+    },
+    "formation": {
+      "program": "Programme & Objectifs",
+      "tech_skills": "Compétences Techniques",
+      "soft_skills": "Compétences Transversales",
+      "ongoing": "En cours d'acquisition",
+      "unspecified": "Non spécifiées"
+    },
+    "experience": {
+      "missions": "Missions & Réalisations",
+      "context": "Contexte Opérationnel",
+      "tech_skills": "Compétences Techniques",
+      "soft_skills": "Compétences Transversales",
+      "restricted": "Détails des missions restreints.",
+      "unspecified": "Non spécifiés",
+      "details": "Détails du parcours",
+      "global_tech_skills": "Compétences Techniques Globales",
+      "iut_competences": "Compétences IUT mobilisées",
+      "no_competence": "Aucune compétence IUT spécifique liée."
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "show_more": "Voir plus",
+    "show_less": "Voir moins",
+    "no_description": "Aucune description disponible."
+  },
+  "labels": {
+    "status": {
+      "DEPLOYED": "Déployé",
+      "ARCHIVED": "Archivé",
+      "DEVELOPMENT": "En développement"
+    },
+    "categories": {
+      "WEB": "Web",
+      "MOBILE": "Mobile",
+      "SOFTWARE": "Logiciel",
+      "DESKTOP": "Desktop",
+      "SYSTEM": "Système",
+      "DATA": "Data / IA",
+      "NETWORK": "Réseau & SysAdmin"
+    },
+    "types": {
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Alternance",
+      "EDUCATION": "Formation",
+      "PRO": "Professionnel",
+      "WORK": "Travail"
+    }
+  }
+}

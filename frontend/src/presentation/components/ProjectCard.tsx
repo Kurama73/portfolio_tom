@@ -1,4 +1,4 @@
-import React from 'react';
+import { useSafeTranslation } from '../hooks/useSafeTranslation';
 import type { Project } from '../../domain/models';
 import './ProjectCard.css';
 
@@ -8,47 +8,49 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
+  const { t, translateField } = useSafeTranslation();
   let safeTechStack: string[] = [];
 
   if (Array.isArray(project.techStack)) {
-    safeTechStack = project.techStack;
+    safeTechStack = project.techStack as string[];
   } else if (typeof project.techStack === 'string') {
-    try { safeTechStack = JSON.parse(project.techStack); } catch (e) { safeTechStack = []; }
+    try { safeTechStack = JSON.parse(project.techStack); } catch { safeTechStack = []; }
   }
 
   let imagesArr: string[] = [];
-  if (Array.isArray(project.images)) {
-    imagesArr = project.images;
-  } else if (typeof (project as any).images === 'string') {
-    try { imagesArr = JSON.parse((project as any).images); } catch (e) { imagesArr = []; }
+  const projectAsAny = project as unknown as Record<string, unknown>;
+  if (Array.isArray(projectAsAny.images)) {
+    imagesArr = projectAsAny.images as string[];
+  } else if (typeof projectAsAny.images === 'string') {
+    try { imagesArr = JSON.parse(projectAsAny.images as string); } catch { imagesArr = []; }
   }
 
   const coverImage = imagesArr[0] || project.imageUrl;
 
-  const statusClass = project.status === 'Déployé' ? 'status-deployed' : project.status === 'Archivé' ? 'status-archived' : 'status-dev';
+  const statusClass = project.status === 'DEPLOYED' ? 'status-deployed' : project.status === 'ARCHIVED' ? 'status-archived' : 'status-dev';
 
   return (
     <div className="mac-card project-card" onClick={onClick}>
       {coverImage ? (
         <div className="project-image-container">
-          <img src={coverImage} alt={project.title} className="project-image" />
+          <img src={coverImage} alt={translateField(project, 'title')} className="project-image" />
         </div>
       ) : (
         <div className="project-image-placeholder">
-          <span>{project.category}</span>
+          <span>{t(`labels.categories.${project.category}`)}</span>
         </div>
       )}
 
       <div className="project-content">
         <div className="project-header">
-          <span className="tech-badge" style={{ fontSize: '0.7rem' }}>{project.category}</span>
+          <span className="tech-badge" style={{ fontSize: '0.7rem' }}>{t(`labels.categories.${project.category}`)}</span>
           <span className={`project-status ${statusClass}`}>
-            {project.status}
+            {t(`labels.status.${project.status}`)}
           </span>
         </div>
 
-        <h3 className="project-title">{project.title}</h3>
-        <p className="project-desc">{project.description || 'Aucune description disponible.'}</p>
+        <h3 className="project-title">{translateField(project, 'title')}</h3>
+        <p className="project-desc">{translateField(project, 'description') || t('common.no_description')}</p>
 
         <div className="project-tech">
           {safeTechStack.slice(0, 3).map(tech => (

@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "home": "Home",
+    "parcours": "Journey",
+    "projects": "Projects",
+    "passions": "Passions",
+    "iut": "IUT",
+    "contact": "Contact"
+  },
+  "hero": {
+    "role": "Student <span class=\"highlight-text\">developer</span>",
+    "description": "Passionate about technology, innovation, and space, I developed rigor and teamwork through an atypical career in cooking before transitioning to IT.",
+    "cta_parcours": "Check Journey",
+    "cta_cv": "Download CV"
+  },
+  "sections": {
+    "formations": {
+      "title": "Education",
+      "subtitle": "My academic background and certifications.",
+      "loading": "Loading education..."
+    },
+    "experiences": {
+      "title": "Professional Experiences",
+      "subtitle": "My work history and achievements.",
+      "loading": "Loading experiences..."
+    },
+    "projects": {
+      "title": "My Projects",
+      "subtitle": "Click on a project to see details."
+    },
+    "passions": {
+      "title": "My Passions",
+      "subtitle": "What drives me every day."
+    },
+    "iut": {
+      "title": "B.U.T Computer Science Framework",
+      "subtitle": "Associated projects and progression on 6 key skills.",
+      "level_label": "Acquisition level",
+      "linked_projects": "Associated projects:",
+      "competence_analysis": "Competence Analysis",
+      "acquisition_proofs": "Associated Projects (Acquisition Proofs)"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Feel free to contact me for any project or question.",
+    "info": {
+      "title": "Information",
+      "location": "Location",
+      "email": "Email",
+      "social": "Social Networks"
+    },
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error during sending. Please try again."
+    }
+  },
+  "modals": {
+    "project": {
+      "analysis": "Project Analysis",
+      "tech_stack": "Technical Stack",
+      "iut_competences": "IUT Skills",
+      "github": "Source Code (GitHub)",
+      "live": "Live Deployment"
+    },
+    "formation": {
+      "program": "Program & Goals",
+      "tech_skills": "Technical Skills",
+      "soft_skills": "Transferable Skills",
+      "ongoing": "In progress",
+      "unspecified": "Not specified"
+    },
+    "experience": {
+      "missions": "Missions & Achievements",
+      "context": "Operational Context",
+      "tech_skills": "Technical Skills",
+      "soft_skills": "Transferable Skills",
+      "restricted": "Mission details restricted.",
+      "unspecified": "Not specified",
+      "details": "Career Details",
+      "global_tech_skills": "Global Technical Skills",
+      "iut_competences": "IUT Competences Mobilized",
+      "no_competence": "No specific IUT competence linked."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "show_more": "Show more",
+    "show_less": "Show less",
+    "no_description": "No description available."
+  },
+  "labels": {
+    "status": {
+      "DEPLOYED": "Deployed",
+      "ARCHIVED": "Archived",
+      "DEVELOPMENT": "In Development"
+    },
+    "categories": {
+      "WEB": "Web",
+      "MOBILE": "Mobile",
+      "SOFTWARE": "Software",
+      "DESKTOP": "Desktop",
+      "SYSTEM": "System",
+      "DATA": "AI & Data",
+      "NETWORK": "Network & SysAdmin"
+    },
+    "types": {
+      "INTERNSHIP": "Internship",
+      "APPRENTICESHIP": "Apprenticeship",
+      "EDUCATION": "Education",
+      "PRO": "Professional",
+      "WORK": "Work"
+    }
+  }
+}

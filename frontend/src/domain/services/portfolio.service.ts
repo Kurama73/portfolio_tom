@@ -1,4 +1,4 @@
-import type { Project, Skill, Experience, Passion, IutCompetence, SoftSkill, Formation, ProfessionalExperience } from "../models";
+import type { Project, Skill, Passion, IutCompetence, SoftSkill, Formation, ProfessionalExperience } from "../models";
 
 const API_BASE = 'http://localhost:3001/api';
 

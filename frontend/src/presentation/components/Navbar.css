@@ -65,6 +65,25 @@
     box-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
 }
 
+.lang-switcher {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #999;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+}
+
+.lang-switcher:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 /* RESPONSIVE NAVBAR */
 @media (max-width: 992px) {
   .navbar-glass {

@@ -1,30 +1,43 @@
 export const ProjectCategory = {
-  Web: 'Web',
-  Mobile: 'Mobile',
-  Software: 'Software',
-  Desktop: 'Desktop',
-  System: 'System',
-  Data: 'Data / IA',
-  Network: 'Réseau & SysAdmin'
+  WEB: 'WEB',
+  MOBILE: 'MOBILE',
+  SOFTWARE: 'SOFTWARE',
+  DESKTOP: 'DESKTOP',
+  SYSTEM: 'SYSTEM',
+  DATA: 'DATA',
+  NETWORK: 'NETWORK'
 } as const;
 
 export type ProjectCategory = typeof ProjectCategory[keyof typeof ProjectCategory];
 
 export const ProjectStatus = {
-  Deployed: 'Déployé',
-  Development: 'En Développement',
-  Archived: 'Archivé'
+  DEPLOYED: 'DEPLOYED',
+  DEVELOPMENT: 'DEVELOPMENT',
+  ARCHIVED: 'ARCHIVED'
 } as const;
 
 export type ProjectStatus = typeof ProjectStatus[keyof typeof ProjectStatus];
 
+export const ExperienceType = {
+  INTERNSHIP: 'INTERNSHIP',
+  APPRENTICESHIP: 'APPRENTICESHIP',
+  EDUCATION: 'EDUCATION',
+  WORK: 'WORK',
+  PRO: 'PRO'
+} as const;
+
+export type ExperienceType = typeof ExperienceType[keyof typeof ExperienceType];
+
 export interface Project {
   id: string;
   title: string;
+  titleEn?: string;
   category: ProjectCategory;
   status: ProjectStatus;
   description: string;
+  descriptionEn?: string;
   longDescription: string;
+  longDescriptionEn?: string;
   techStack: string[];
   imageUrl?: string;
   github?: string;
@@ -38,7 +51,9 @@ export interface Project {
 export interface IutCompetence {
   id: string;
   name: string;
+  nameEn?: string;
   description: string;
+  descriptionEn?: string;
   level: number;
 }
 
@@ -53,37 +68,51 @@ export interface Skill {
 export interface Experience {
   id: string;
   title: string;
+  titleEn?: string;
   company: string;
-  period: string;
+  companyEn?: string;
+  period: string; // Maintain for legacy if needed, but per-field translation is better
+  periodEn?: string;
   description: string;
+  descriptionEn?: string;
   longDescription?: string;
+  longDescriptionEn?: string;
   imageUrl?: string;
   competencesIds?: string[];
   startDate?: string;
+  type: ExperienceType;
 }
 
 export interface ProfessionalExperience extends Experience {
-  type: string;
   missions: string[];
+  missionsEn?: string[];
   hardSkills: string[];
+  hardSkillsEn?: string[];
   softSkills: string[];
+  softSkillsEn?: string[];
 }
 
 export interface Formation extends Experience {
   institution: string;
-  type: string;
+  institutionEn?: string;
   hardSkills: string[];
+  hardSkillsEn?: string[];
   softSkills: string[];
+  softSkillsEn?: string[];
 }
 
 export interface Passion {
   id: string;
   name: string;
+  nameEn?: string;
   description: string;
-  imageUrl: string;
+  descriptionEn?: string;
+  imageUrl?: string;
 }
 
 export interface SoftSkill {
   id: string;
   name: string;
+  nameEn?: string;
 }
+

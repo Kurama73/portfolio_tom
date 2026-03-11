@@ -1,4 +1,4 @@
-import React from 'react';
+import { useSafeTranslation } from '../hooks/useSafeTranslation';
 import type { ProfessionalExperience } from '../../domain/models';
 import './Modal.css';
 
@@ -8,55 +8,61 @@ interface ProfExperienceModalProps {
 }
 
 const ProfExperienceModal: React.FC<ProfExperienceModalProps> = ({ experience, onClose }) => {
+  const { t, translateField, translateArray } = useSafeTranslation();
+
+  const missions = translateArray(experience, 'missions');
+  const hardSkills = translateArray(experience, 'hardSkills');
+  const softSkills = translateArray(experience, 'softSkills');
+
   return (
     <div className="tech-modal animate-fade-in" onClick={e => e.stopPropagation()}>
       <button className="close-button" onClick={onClose}>&times;</button>
       <div className="modal-content-scroll">
 
         <div className="modal-body-padding" style={{ marginTop: '3rem' }}>
-          <h2 className="modal-title">{experience.title}</h2>
+          <h2 className="modal-title">{translateField(experience, 'title')}</h2>
           <div className="modal-meta">
-            <span className="tag tag-tech">{experience.company}</span>
-            <span className="tag tag-soft">{experience.period}</span>
-            {experience.type && <span className="tag tag-hard">{experience.type}</span>}
+            <span className="tag tag-tech">{translateField(experience, 'company')}</span>
+            <span className="tag tag-soft">{translateField(experience, 'period')}</span>
+            {experience.type && <span className="tag tag-hard">{t(`labels.types.${experience.type}`)}</span>}
           </div>
 
           <div className="modal-grid">
             <div>
-              <h3 className="modal-section-title">Missions & Réalisations</h3>
+              <h3 className="modal-section-title">{t('modals.experience.missions')}</h3>
               <div className="missions-grid">
-                {experience.missions?.length > 0 ? (
-                  experience.missions.map((mission, index) => (
+                {missions.length > 0 ? (
+                  missions.map((mission, index) => (
                     <div key={index} className="mission-card">
-                      <p style={{ color: '#ddd', fontSize: '0.95rem', margin: 0, lineHeight: 1.5 }}>
+                      <p style={{ color: '#ddd', fontSize: '0.95rem', margin: 0, lineHeight: 1.5, textAlign: 'justify' }}>
                         {mission}
                       </p>
                     </div>
                   ))
                 ) : (
-                  <p className="modal-text" style={{ fontStyle: 'italic' }}>Détails des missions restreints.</p>
+                  <p className="modal-text" style={{ fontStyle: 'italic' }}>{t('modals.experience.restricted')}</p>
                 )}
               </div>
 
               <div style={{ marginTop: '2.5rem' }}>
-                <h3 className="modal-section-title">Contexte Opérationnel</h3>
-                <p className="modal-text">{experience.longDescription || experience.description}</p>
+                <h3 className="modal-section-title">{t('modals.experience.context')}</h3>
+                <p className="modal-text">{translateField(experience, 'longDescription') || translateField(experience, 'description')}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="modal-section-title">Compétences Techniques</h3>
+              <h3 className="modal-section-title">{t('modals.experience.tech_skills')}</h3>
               <div className="skills-group">
-                {experience.hardSkills?.length > 0 ? (
-                  experience.hardSkills.map((skill, index) => <span key={index} className="tag tag-hard">{skill}</span>)
-                ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>Non spécifiées</span>}
+                {hardSkills.length > 0 ? (
+                  hardSkills.map((skill, index) => <span key={index} className="tag tag-hard">{skill}</span>)
+                ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>{t('modals.experience.unspecified')}</span>}
               </div>
 
-              <h3 className="modal-section-title">Soft Skills</h3>
+              <h3 className="modal-section-title">{t('modals.experience.soft_skills')}</h3>
               <div className="skills-group">
-                {experience.softSkills?.length > 0 ? (
-                  experience.softSkills.map((skill, index) => <span key={index} className="tag tag-soft">{skill}</span>)
-                ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>Non spécifiées</span>}
+                {softSkills.length > 0 ? (
+                  softSkills.map((skill, index) => <span key={index} className="tag tag-soft">{skill}</span>)
+                ) : <span className="modal-text" style={{ fontStyle: 'italic' }}>{t('modals.experience.unspecified')}</span>}
               </div>
             </div>
           </div>

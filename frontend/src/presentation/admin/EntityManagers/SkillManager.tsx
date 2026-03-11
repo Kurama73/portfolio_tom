@@ -2,30 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
 import type { Skill } from '../../../domain/models';
 
+/** Transforms a display name into a URL-safe slug used as ID */
+const slugify = (str: string) =>
+  str.toLowerCase()
+     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+     .replace(/[^a-z0-9]+/g, '-')
+     .replace(/^-+|-+$/g, '');
+
 const SkillManager: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [editingSkill, setEditingSkill] = useState<Partial<Skill> | null>(null);
 
-  useEffect(() => { loadSkills(); }, []);
-
-  const loadSkills = async () => {
+  const loadSkills = React.useCallback(async () => {
     const res = await fetch('http://localhost:3001/api/skills');
     setSkills(await res.json());
-  };
+  }, []);
+
+  useEffect(() => { 
+    const init = async () => {
+      await loadSkills();
+    };
+    init();
+  }, [loadSkills]);
+
+  const isCreating = !skills.some(s => s.id === editingSkill?.id);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingSkill) return;
     try {
-      const isUpdate = skills.some(s => s.id === editingSkill.id);
-      if (isUpdate) {
+      if (!isCreating) {
         await AdminService.updateSkill(editingSkill.id!, editingSkill);
       } else {
         await AdminService.createSkill(editingSkill);
       }
       setEditingSkill(null);
       loadSkills();
-    } catch (err) { alert("Erreur lors de la sauvegarde"); }
+    } catch {
+      alert('Erreur lors de la sauvegarde');
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -33,7 +48,9 @@ const SkillManager: React.FC = () => {
       try {
         await AdminService.deleteSkill(id);
         loadSkills();
-      } catch (err) { alert("Erreur lors de la suppression"); }
+      } catch { 
+        alert("Erreur lors de la suppression"); 
+      }
     }
   };
 
@@ -48,15 +65,30 @@ const SkillManager: React.FC = () => {
 
       {editingSkill && (
         <div className="admin-card animate-fade-in">
+          <h3>{editingSkill.name ? `Modifier ${editingSkill.name}` : 'Nouveau Skill'}</h3>
           <form onSubmit={handleSave} className="contact-form">
             <div className="form-group-row">
               <div className="form-group">
-                <label>ID Unique</label>
-                <input className="clean-input" value={editingSkill.id || ''} onChange={e => setEditingSkill({...editingSkill, id: e.target.value})} required />
+                <label>Nom</label>
+                <input
+                  className="clean-input"
+                  value={editingSkill.name || ''}
+                  onChange={e => {
+                    const name = e.target.value;
+                    setEditingSkill({ ...editingSkill, name, id: isCreating ? slugify(name) : editingSkill.id });
+                  }}
+                  required
+                />
               </div>
               <div className="form-group">
-                <label>Nom</label>
-                <input className="clean-input" value={editingSkill.name || ''} onChange={e => setEditingSkill({...editingSkill, name: e.target.value})} required />
+                <label>ID (auto)</label>
+                <input
+                  className="clean-input"
+                  value={editingSkill.id || ''}
+                  readOnly={!isCreating}
+                  style={{ opacity: 0.5, cursor: isCreating ? 'text' : 'not-allowed' }}
+                  onChange={e => isCreating && setEditingSkill({ ...editingSkill, id: slugify(e.target.value) })}
+                />
               </div>
             </div>
             <div className="form-group-row">
@@ -69,9 +101,9 @@ const SkillManager: React.FC = () => {
                 <input className="clean-input" value={editingSkill.category || ''} onChange={e => setEditingSkill({...editingSkill, category: e.target.value})} />
               </div>
             </div>
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-              <button type="submit" className="primary-button">Enregistrer</button>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
               <button type="button" className="secondary-button" onClick={() => setEditingSkill(null)}>Annuler</button>
+              <button type="submit" className="primary-button">Enregistrer</button>
             </div>
           </form>
         </div>

@@ -1,164 +1,284 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
+import { translateText } from '../../../domain/services/translation.service';
+import { ExperienceType, type IutCompetence, type Skill, type SoftSkill } from '../../../domain/models';
+import ImageUpload from '../ImageUpload';
+import { EntityPicker, type PickerOption } from '../EntityPicker';
+
+const slugify = (str: string) =>
+  str.toLowerCase()
+     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+     .replace(/[^a-z0-9]+/g, '-')
+     .replace(/^-+|-+$/g, '');
+
+const toArr = (v: unknown): string[] => Array.isArray(v) ? v as string[] : [];
 
 const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) => {
-  const [items, setItems] = useState<any[]>([]);
-  const [allCompetences, setAllCompetences] = useState<any[]>([]);
-  const [editingItem, setEditingItem] = useState<any | null>(null);
+  const [items, setItems] = useState<Record<string, unknown>[]>([]);
+  const [allCompetences, setAllCompetences] = useState<IutCompetence[]>([]);
+  const [allHardSkills, setAllHardSkills] = useState<Skill[]>([]);
+  const [allSoftSkills, setAllSoftSkills] = useState<SoftSkill[]>([]);
+  const [editingItem, setEditingItem] = useState<Record<string, unknown> | null>(null);
+  const [translating, setTranslating] = useState<string | null>(null);
 
-  useEffect(() => { loadItems(); }, [type]);
-
-  const loadItems = async () => {
+  const loadItems = useCallback(async () => {
     const endpoint = type === 'pro' ? '/professional_experiences' : '/formations';
-    const [itemsRes, compRes] = await Promise.all([
+    const [itemsRes, compRes, skillsRes, softRes] = await Promise.all([
       fetch(`http://localhost:3001/api${endpoint}`),
-      fetch(`http://localhost:3001/api/iut-competences`)
+      fetch(`http://localhost:3001/api/iut-competences`),
+      fetch(`http://localhost:3001/api/skills`),
+      fetch(`http://localhost:3001/api/soft-skills`),
     ]);
     setItems(await itemsRes.json());
     setAllCompetences(await compRes.json());
+    setAllHardSkills(await skillsRes.json());
+    setAllSoftSkills(await softRes.json());
+  }, [type]);
+
+  useEffect(() => { loadItems(); }, [loadItems]);
+
+  const isCreating = !items.some(i => i.id === editingItem?.id);
+
+  // Convert BDD entities → PickerOptions (value = FR name, for backward compat with stored arrays)
+  const hardSkillOptions: PickerOption[] = allHardSkills.map(s => ({
+    value: s.name,
+    label: s.name,
+    labelEn: s.name, // Hard skills usually keep same name in EN
+    sub: s.category,
+  }));
+
+  const softSkillOptions: PickerOption[] = allSoftSkills.map(s => ({
+    value: s.name,
+    label: s.name,
+    labelEn: s.nameEn ?? s.name,
+  }));
+
+  const competenceOptions: PickerOption[] = allCompetences.map(c => ({
+    value: c.id,
+    label: c.name,
+    labelEn: c.nameEn,
+  }));
+
+  const handleTranslate = async (field: string, target: string) => {
+    if (!editingItem?.[field]) return;
+    setTranslating(target);
+    try {
+      const translated = await translateText(editingItem[field] as string);
+      setEditingItem({ ...editingItem, [target]: translated });
+    } finally {
+      setTranslating(null);
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingItem) return;
-
-    const cleanedItem = { ...editingItem };
-    if (typeof cleanedItem.missions === 'string') cleanedItem.missions = cleanedItem.missions.split('\n').filter((m: string) => m.trim());
-    if (typeof cleanedItem.hardSkills === 'string') cleanedItem.hardSkills = cleanedItem.hardSkills.split('\n').filter((m: string) => m.trim());
-    if (typeof cleanedItem.softSkills === 'string') cleanedItem.softSkills = cleanedItem.softSkills.split('\n').filter((m: string) => m.trim());
-
+    const clean = { ...editingItem };
+    // missions are free-text (one per line)
+    for (const f of ['missions', 'missionsEn']) {
+      if (typeof clean[f] === 'string') {
+        clean[f] = (clean[f] as string).split('\n').filter((l: string) => l.trim());
+      }
+    }
     try {
       if (type === 'pro') {
-        if (cleanedItem.id) await AdminService.updateExperience(cleanedItem.id, cleanedItem);
-        else await AdminService.createExperience(cleanedItem);
+        if (!isCreating) await AdminService.updateExperience(clean.id as string, clean);
+        else await AdminService.createExperience(clean);
       } else {
-        if (cleanedItem.id) await AdminService.updateFormation(cleanedItem.id, cleanedItem);
-        else await AdminService.createFormation(cleanedItem);
+        if (!isCreating) await AdminService.updateFormation(clean.id as string, clean);
+        else await AdminService.createFormation(clean);
       }
       setEditingItem(null);
       loadItems();
-    } catch (err) { alert("Erreur lors de la sauvegarde"); }
+    } catch { alert('Erreur lors de la sauvegarde'); }
   };
 
-  const handleDelete = async (id: number) => {
-    if (window.confirm("Supprimer cet élément ?")) {
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Supprimer cet élément ?')) {
       try {
         if (type === 'pro') await AdminService.deleteExperience(id);
         else await AdminService.deleteFormation(id);
         loadItems();
-      } catch (err) { alert("Erreur lors de la suppression"); }
+      } catch { alert('Erreur lors de la suppression'); }
     }
   };
+
+  const startEdit = (item: Record<string, unknown>) => {
+    setEditingItem({
+      ...item,
+      missions: Array.isArray(item.missions) ? (item.missions as string[]).join('\n') : String(item.missions ?? ''),
+      missionsEn: Array.isArray(item.missionsEn ?? item.missions_en)
+        ? ((item.missionsEn ?? item.missions_en) as string[]).join('\n')
+        : String(item.missionsEn ?? item.missions_en ?? ''),
+      hardSkills: toArr(item.hardSkills),
+      hardSkillsEn: toArr(item.hardSkillsEn ?? item.hardSkills_en),
+      softSkills: toArr(item.softSkills),
+      softSkillsEn: toArr(item.softSkillsEn ?? item.softSkills_en),
+      competencesIds: toArr(item.competencesIds),
+    });
+  };
+
+  const newItem = () => setEditingItem({
+    id: '', title: '', titleEn: '', period: '', periodEn: '',
+    description: '', descriptionEn: '', longDescription: '', longDescriptionEn: '',
+    company: '', companyEn: '', institution: '', institutionEn: '',
+    missions: '', missionsEn: '', hardSkills: [], hardSkillsEn: [],
+    softSkills: [], softSkillsEn: [], imageUrl: '',
+    type: type === 'pro' ? ExperienceType.INTERNSHIP : ExperienceType.EDUCATION,
+    competencesIds: [],
+  });
+
+  // Bilingual translation row (reusable inline component)
+  const TField = ({
+    label, field, target, as: As = 'input', height, required = false,
+  }: { label: string; field: string; target: string; as?: 'input' | 'textarea'; height?: string; required?: boolean }) => (
+    <div className="translation-row">
+      <div className="translation-field">
+        <div className="translation-field-header"><label>{label} (FR)</label><span className="lang-badge">FR</span></div>
+        {As === 'textarea'
+          ? <textarea className="clean-input" style={height ? { height } : {}} value={(editingItem?.[field] as string) ?? ''} onChange={e => setEditingItem({ ...editingItem!, [field]: e.target.value })} required={required} />
+          : <input className="clean-input" value={(editingItem?.[field] as string) ?? ''} onChange={e => setEditingItem({ ...editingItem!, [field]: e.target.value })} required={required} />
+        }
+      </div>
+      <div className="translation-field">
+        <div className="translation-field-header">
+          <label>{label} (EN)</label>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button type="button" className="translate-btn" onClick={() => handleTranslate(field, target)} disabled={translating !== null}>
+              {translating === target ? '...' : 'Auto-Trad'}
+            </button>
+            <span className="lang-badge">EN</span>
+          </div>
+        </div>
+        {As === 'textarea'
+          ? <textarea className="clean-input" style={height ? { height } : {}} value={(editingItem?.[target] as string) ?? ''} onChange={e => setEditingItem({ ...editingItem!, [target]: e.target.value })} />
+          : <input className="clean-input" value={(editingItem?.[target] as string) ?? ''} onChange={e => setEditingItem({ ...editingItem!, [target]: e.target.value })} />
+        }
+      </div>
+    </div>
+  );
 
   return (
     <div className="entity-manager">
       <div className="admin-main-header">
-        <h2 className="admin-main-title">{type === 'pro' ? 'Expériences Prof.' : 'Formations'}</h2>
-        <button className="primary-button" onClick={() => setEditingItem({
-          id: `new-${Date.now()}`, title: '', period: '', description: '', longDescription: '',
-          company: '', institution: '', missions: [],
-          hardSkills: [], softSkills: [], type: '', competencesIds: []
-        })}>
-          Ajouter
-        </button>
+        <h2 className="admin-main-title">{type === 'pro' ? 'Expériences Professionnelles' : 'Formations'}</h2>
+        <button className="primary-button" onClick={newItem}>Ajouter</button>
       </div>
 
       {editingItem && (
         <div className="admin-card animate-fade-in">
+          <h3>{isCreating ? (type === 'pro' ? 'Nouvelle expérience' : 'Nouvelle formation') : `Modifier "${editingItem.title as string}"`}</h3>
           <form onSubmit={handleSave} className="contact-form">
-            <div className="form-group">
-              <label>Compétences IUT Liées</label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
-                {allCompetences.map(comp => (
-                  <label key={comp.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={(editingItem.competencesIds || []).includes(comp.id)}
-                      onChange={e => {
-                        const current = editingItem.competencesIds || [];
-                        const next = e.target.checked
-                          ? [...current, comp.id]
-                          : current.filter((id: string) => id !== comp.id);
-                        setEditingItem({ ...editingItem, competencesIds: next });
-                      }}
-                    />
-                    {comp.name}
-                  </label>
-                ))}
-              </div>
-            </div>
+
+            {/* META */}
             <div className="form-group-row">
               <div className="form-group">
-                <label>Titre</label>
-                <input className="clean-input" value={editingItem.title || ''} onChange={e => setEditingItem({...editingItem, title: e.target.value})} required />
+                <label>Date de début (YYYY-MM)</label>
+                <input type="month" className="clean-input" value={(editingItem.startDate as string) ?? ''} onChange={e => setEditingItem({ ...editingItem, startDate: e.target.value })} />
               </div>
               <div className="form-group">
-                <label>{type === 'pro' ? 'Entreprise' : 'Institution'}</label>
-                <input className="clean-input" value={type === 'pro' ? (editingItem.company || '') : (editingItem.institution || '')} onChange={e => setEditingItem({...editingItem, [type === 'pro' ? 'company' : 'institution']: e.target.value})} required />
-              </div>
-            </div>
-
-            <div className="form-group-row">
-              <div className="form-group">
-                <label>Période (Texte affiché)</label>
-                <input className="clean-input" value={editingItem.period || ''} onChange={e => setEditingItem({...editingItem, period: e.target.value})} required />
-              </div>
-              <div className="form-group">
-                <label>Date de début (Tri: YYYY-MM)</label>
-                <input className="clean-input" type="month" value={editingItem.startDate || ''} onChange={e => setEditingItem({...editingItem, startDate: e.target.value})} />
-              </div>
-              <div className="form-group">
-                <label>Type (ex: Stage, Alternance, Diplôme)</label>
-                <input className="clean-input" value={editingItem.type || ''} onChange={e => setEditingItem({...editingItem, type: e.target.value})} />
+                <label>Type</label>
+                <select className="clean-input" value={editingItem.type as string} onChange={e => setEditingItem({ ...editingItem, type: e.target.value })}>
+                  {Object.entries(ExperienceType).map(([k, v]) => <option key={k} value={v}>{k}</option>)}
+                </select>
               </div>
             </div>
 
-            <div className="form-group">
-              <label>Description Courte (Home)</label>
-              <input className="clean-input" value={editingItem.description || ''} onChange={e => setEditingItem({...editingItem, description: e.target.value})} required />
-            </div>
+            <TField label="Période / Durée" field="period" target="periodEn" required />
 
-            <div className="form-group">
-              <label>Description Longue (Modal)</label>
-              <textarea className="clean-input" style={{height: '100px'}} value={editingItem.longDescription || ''} onChange={e => setEditingItem({...editingItem, longDescription: e.target.value})} />
-            </div>
-
-            <div className="form-group-row">
-              <div className="form-group">
-                <label>Hard Skills (Un par ligne)</label>
-                <textarea
-                  className="clean-input"
-                  style={{height: '100px'}}
-                  value={Array.isArray(editingItem.hardSkills) ? editingItem.hardSkills.join('\n') : editingItem.hardSkills}
-                  onChange={e => setEditingItem({...editingItem, hardSkills: e.target.value})}
+            {/* TITRE — génère l'ID auto */}
+            <div className="translation-row">
+              <div className="translation-field">
+                <div className="translation-field-header"><label>Titre (FR)</label><span className="lang-badge">FR</span></div>
+                <input className="clean-input" value={(editingItem.title as string) ?? ''} required
+                  onChange={e => {
+                    const title = e.target.value;
+                    setEditingItem({ ...editingItem, title, id: isCreating ? slugify(title) : editingItem.id });
+                  }}
                 />
               </div>
-              <div className="form-group">
-                <label>Soft Skills (Un par ligne)</label>
-                <textarea
-                  className="clean-input"
-                  style={{height: '100px'}}
-                  value={Array.isArray(editingItem.softSkills) ? editingItem.softSkills.join('\n') : editingItem.softSkills}
-                  onChange={e => setEditingItem({...editingItem, softSkills: e.target.value})}
-                />
+              <div className="translation-field">
+                <div className="translation-field-header">
+                  <label>Title (EN)</label>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button type="button" className="translate-btn" onClick={() => handleTranslate('title', 'titleEn')} disabled={translating !== null}>{translating === 'titleEn' ? '...' : 'Auto-Trad'}</button>
+                    <span className="lang-badge">EN</span>
+                  </div>
+                </div>
+                <input className="clean-input" value={(editingItem.titleEn as string) ?? ''} onChange={e => setEditingItem({ ...editingItem, titleEn: e.target.value })} />
               </div>
             </div>
 
-            {type === 'pro' && (
-              <div className="form-group">
-                <label>Missions (Un par ligne)</label>
-                <textarea
-                  className="clean-input"
-                  style={{height: '120px'}}
-                  value={Array.isArray(editingItem.missions) ? editingItem.missions.join('\n') : editingItem.missions}
-                  onChange={e => setEditingItem({...editingItem, missions: e.target.value})}
-                />
+            {isCreating && (
+              <div className="form-group" style={{ marginTop: 0 }}>
+                <label style={{ opacity: 0.5, fontSize: '0.8rem' }}>ID auto-généré</label>
+                <input className="clean-input" value={(editingItem.id as string) ?? ''} readOnly style={{ opacity: 0.35, fontSize: '0.85rem', cursor: 'not-allowed' }} />
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-              <button type="submit" className="primary-button">Enregistrer</button>
+            {type === 'pro'
+              ? <TField label="Entreprise" field="company" target="companyEn" required />
+              : <TField label="Institution" field="institution" target="institutionEn" required />
+            }
+
+            <TField label="Description Courte" field="description" target="descriptionEn" as="textarea" required />
+            <TField label="Analyse Longue" field="longDescription" target="longDescriptionEn" as="textarea" height="150px" />
+
+            {type === 'pro' && (
+              <TField label="Missions (un par ligne)" field="missions" target="missionsEn" as="textarea" height="110px" />
+            )}
+
+            {/* HARD SKILLS via EntityPicker */}
+            <EntityPicker
+              title="Hard Skills"
+              icon="🔧"
+              options={hardSkillOptions}
+              selected={toArr(editingItem.hardSkills)}
+              onChange={fr => {
+                // Sync EN: find matching option's labelEn
+                const en = fr.map(name => hardSkillOptions.find(o => o.value === name)?.labelEn ?? name);
+                setEditingItem({ ...editingItem, hardSkills: fr, hardSkillsEn: en });
+              }}
+              emptyMessage="Aucun hard skill — créez-en dans l'onglet Hard Skills."
+            />
+
+            {/* SOFT SKILLS via EntityPicker */}
+            <EntityPicker
+              title="Soft Skills"
+              icon="🤝"
+              options={softSkillOptions}
+              selected={toArr(editingItem.softSkills)}
+              onChange={fr => {
+                const en = fr.map(name => softSkillOptions.find(o => o.value === name)?.labelEn ?? name);
+                setEditingItem({ ...editingItem, softSkills: fr, softSkillsEn: en });
+              }}
+              emptyMessage="Aucun soft skill — créez-en dans l'onglet Soft Skills."
+            />
+
+            {/* IMAGE */}
+            <div className="form-group" style={{ marginTop: '0.75rem' }}>
+              <label>Image / Illustration</label>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                {!!editingItem.imageUrl && (
+                  <img src={String(editingItem.imageUrl)} alt="preview" style={{ height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+                )}
+                <ImageUpload onUploadSuccess={url => setEditingItem({ ...editingItem, imageUrl: url })} label="Uploader" />
+                <input className="clean-input" value={String(editingItem.imageUrl ?? '')} onChange={e => setEditingItem({ ...editingItem, imageUrl: e.target.value })} placeholder="ou URL directe" />
+              </div>
+            </div>
+
+            {/* COMPÉTENCES IUT via EntityPicker */}
+            <EntityPicker
+              title="Compétences B.U.T Liées"
+              icon="🎓"
+              options={competenceOptions}
+              selected={toArr(editingItem.competencesIds)}
+              onChange={ids => setEditingItem({ ...editingItem, competencesIds: ids })}
+            />
+
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
               <button type="button" className="secondary-button" onClick={() => setEditingItem(null)}>Annuler</button>
+              <button type="submit" className="primary-button">Enregistrer {type === 'pro' ? "l'expérience" : 'la formation'}</button>
             </div>
           </form>
         </div>
@@ -169,25 +289,19 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
           <tr>
             <th>Titre</th>
             <th>{type === 'pro' ? 'Entreprise' : 'Institution'}</th>
-            <th>Période</th>
+            <th>Type</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {items.map(item => (
-            <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>{type === 'pro' ? item.company : item.institution}</td>
-              <td>{item.period}</td>
+            <tr key={item.id as string}>
+              <td>{item.title as string}</td>
+              <td style={{ opacity: 0.7, fontSize: '0.85rem' }}>{(type === 'pro' ? item.company : item.institution) as string}</td>
+              <td><span style={{ fontSize: '0.7rem', opacity: 0.6 }}>{item.type as string}</span></td>
               <td>
-                <button className="action-btn edit-btn" onClick={() => setEditingItem({
-                  ...item,
-                  missions: Array.isArray(item.missions) ? item.missions : JSON.parse(item.missions || '[]'),
-                  hardSkills: Array.isArray(item.hardSkills) ? item.hardSkills : JSON.parse(item.hardSkills || '[]'),
-                  softSkills: Array.isArray(item.softSkills) ? item.softSkills : JSON.parse(item.softSkills || '[]'),
-                  competencesIds: Array.isArray(item.competencesIds) ? item.competencesIds : JSON.parse(item.competencesIds || '[]')
-                })}>Edit</button>
-                <button className="action-btn delete-btn" onClick={() => handleDelete(item.id)}>Delete</button>
+                <button className="action-btn edit-btn" onClick={() => startEdit(item)}>Edit</button>
+                <button className="action-btn delete-btn" onClick={() => handleDelete(item.id as string)}>Delete</button>
               </td>
             </tr>
           ))}
