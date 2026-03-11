@@ -236,7 +236,7 @@ app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) =>
 
 app.post('/api/projects', authenticateToken, (req, res) => {
   const p = req.body;
-  const sql = `INSERT INTO projects (title, titleEn, description, descriptionEn, longDescription, longDescriptionEn, techStack, imageUrl, github, link, category, status, skillsIds, competencesIds, images, startDate)
+  const sql = `INSERT INTO projects (title, title_en, description, description_en, longDescription, longDescription_en, techStack, imageUrl, github, link, category, status, skillsIds, competencesIds, images, startDate)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   const params = [
     p.title, p.titleEn, p.description, p.descriptionEn, p.longDescription, p.longDescriptionEn,
@@ -254,7 +254,7 @@ app.post('/api/projects', authenticateToken, (req, res) => {
 
 app.put('/api/projects/:id', authenticateToken, (req, res) => {
   const p = req.body;
-  const sql = `UPDATE projects SET title=?, titleEn=?, description=?, descriptionEn=?, longDescription=?, longDescriptionEn=?, techStack=?, imageUrl=?, github=?, link=?, category=?, status=?, skillsIds=?, competencesIds=?, images=?, startDate=? WHERE id=?`;
+  const sql = `UPDATE projects SET title=?, title_en=?, description=?, description_en=?, longDescription=?, longDescription_en=?, techStack=?, imageUrl=?, github=?, link=?, category=?, status=?, skillsIds=?, competencesIds=?, images=?, startDate=? WHERE id=?`;
   const params = [
     p.title, p.titleEn, p.description, p.descriptionEn, p.longDescription, p.longDescriptionEn,
     JSON.stringify(p.techStack || []), p.imageUrl, p.github, p.link,
@@ -285,7 +285,7 @@ app.delete('/api/projects/:id', authenticateToken, (req, res) => {
 
 app.post('/api/formations', authenticateToken, (req, res) => {
   const f = req.body;
-  const sql = `INSERT INTO formations (id, title, titleEn, institution, institutionEn, period, periodEn, description, descriptionEn, longDescription, longDescriptionEn, imageUrl, type, hardSkills, hardSkillsEn, softSkills, softSkillsEn, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO formations (id, title, title_en, institution, institution_en, period, period_en, description, description_en, longDescription, longDescription_en, imageUrl, type, hardSkills, hardSkillsEn, softSkills, softSkillsEn, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   db.run(sql, [f.id, f.title, f.titleEn, f.institution, f.institutionEn, f.period, f.periodEn, f.description, f.descriptionEn, f.longDescription, f.longDescriptionEn, f.imageUrl, f.type, JSON.stringify(f.hardSkills || []), JSON.stringify(f.hardSkillsEn || f.hardSkills || []), JSON.stringify(f.softSkills || []), JSON.stringify(f.softSkillsEn || f.softSkills || []), JSON.stringify(f.competencesIds || []), f.startDate], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ id: f.id });
@@ -294,7 +294,7 @@ app.post('/api/formations', authenticateToken, (req, res) => {
 
 app.put('/api/formations/:id', authenticateToken, (req, res) => {
   const f = req.body;
-  const sql = `UPDATE formations SET title=?, titleEn=?, institution=?, institutionEn=?, period=?, periodEn=?, description=?, descriptionEn=?, longDescription=?, longDescriptionEn=?, imageUrl=?, type=?, hardSkills=?, hardSkillsEn=?, softSkills=?, softSkillsEn=?, competencesIds=?, startDate=? WHERE id=?`;
+  const sql = `UPDATE formations SET title=?, title_en=?, institution=?, institution_en=?, period=?, period_en=?, description=?, description_en=?, longDescription=?, longDescription_en=?, imageUrl=?, type=?, hardSkills=?, hardSkillsEn=?, softSkills=?, softSkillsEn=?, competencesIds=?, startDate=? WHERE id=?`;
   db.run(sql, [f.title, f.titleEn, f.institution, f.institutionEn, f.period, f.periodEn, f.description, f.descriptionEn, f.longDescription, f.longDescriptionEn, f.imageUrl, f.type, JSON.stringify(f.hardSkills || []), JSON.stringify(f.hardSkillsEn || f.hardSkills || []), JSON.stringify(f.softSkills || []), JSON.stringify(f.softSkillsEn || f.softSkills || []), JSON.stringify(f.competencesIds || []), f.startDate, req.params.id], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
@@ -310,7 +310,7 @@ app.delete('/api/formations/:id', authenticateToken, (req, res) => {
 
 app.post('/api/professional_experiences', authenticateToken, (req, res) => {
   const e = req.body;
-  const sql = `INSERT INTO professional_experiences (id, title, titleEn, company, companyEn, period, periodEn, description, descriptionEn, longDescription, longDescriptionEn, missions, missionsEn, hardSkills, hardSkillsEn, softSkills, softSkillsEn, imageUrl, type, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO professional_experiences (id, title, title_en, company, company_en, period, period_en, description, description_en, longDescription, longDescription_en, missions, missions_en, hardSkills, hardSkillsEn, softSkills, softSkillsEn, imageUrl, type, competencesIds, startDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   db.run(sql, [e.id, e.title, e.titleEn, e.company, e.companyEn, e.period, e.periodEn, e.description, e.descriptionEn, e.longDescription, e.longDescriptionEn, JSON.stringify(e.missions || []), JSON.stringify(e.missionsEn || []), JSON.stringify(e.hardSkills || []), JSON.stringify(e.hardSkillsEn || e.hardSkills || []), JSON.stringify(e.softSkills || []), JSON.stringify(e.softSkillsEn || e.softSkills || []), e.imageUrl, e.type, JSON.stringify(e.competencesIds || []), e.startDate], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ id: e.id });
@@ -319,7 +319,7 @@ app.post('/api/professional_experiences', authenticateToken, (req, res) => {
 
 app.put('/api/professional_experiences/:id', authenticateToken, (req, res) => {
   const e = req.body;
-  const sql = `UPDATE professional_experiences SET title=?, titleEn=?, company=?, companyEn=?, period=?, periodEn=?, description=?, descriptionEn=?, longDescription=?, longDescriptionEn=?, missions=?, missionsEn=?, hardSkills=?, hardSkillsEn=?, softSkills=?, softSkillsEn=?, imageUrl=?, type=?, competencesIds=?, startDate=? WHERE id=?`;
+  const sql = `UPDATE professional_experiences SET title=?, title_en=?, company=?, company_en=?, period=?, period_en=?, description=?, description_en=?, longDescription=?, longDescription_en=?, missions=?, missions_en=?, hardSkills=?, hardSkillsEn=?, softSkills=?, softSkillsEn=?, imageUrl=?, type=?, competencesIds=?, startDate=? WHERE id=?`;
   db.run(sql, [e.title, e.titleEn, e.company, e.companyEn, e.period, e.periodEn, e.description, e.descriptionEn, e.longDescription, e.longDescriptionEn, JSON.stringify(e.missions || []), JSON.stringify(e.missionsEn || []), JSON.stringify(e.hardSkills || []), JSON.stringify(e.hardSkillsEn || e.hardSkills || []), JSON.stringify(e.softSkills || []), JSON.stringify(e.softSkillsEn || e.softSkills || []), e.imageUrl, e.type, JSON.stringify(e.competencesIds || []), e.startDate, req.params.id], function(err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true });
