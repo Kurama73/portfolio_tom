@@ -18,13 +18,16 @@ jobs:
           npm install
           npm run build
 
+      - name: Deploy to Production Folder
+        run: |
+          mkdir -p /DATA/AppData/mesSites/portfolio_tom
+          # Copie récursive du code vers le dossier final
+          # On ne copie pas .git pour éviter les soucis
+          rsync -av --exclude '.git' . /DATA/AppData/mesSites/portfolio_tom/
+          
       - name: Rebuild Backend
         run: |
+          cd /DATA/AppData/mesSites/portfolio_tom
+          # On crée un .env si absent
+          if [ ! -f backend/.env ]; then touch backend/.env; fi
           docker compose up -d --build
-
-      - name: Update Nginx Files
-        run: |
-          # Création du dossier de destination s'il n'existe pas
-          mkdir -p /DATA/AppData/mesSites/portfolio_tom/frontend/dist/
-          # Copie des fichiers sans sudo (nécessite que jolan soit proprio du dossier)
-          cp -r frontend/dist/* /DATA/AppData/mesSites/portfolio_tom/frontend/dist/
