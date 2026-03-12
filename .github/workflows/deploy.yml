@@ -1,0 +1,29 @@
+name: Deploy Portfolio
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Rebuild Backend
+        run: |
+          docker compose up -d --build
+
+      - name: Update Nginx Files
+        run: |
+          # On suppose que Nginx pointe vers un dossier 'www' ou similaire dans votre AppData.
+          # Si vous servez directement via le dossier du repo, adaptez si nécessaire.
+          sudo cp -r frontend/dist/* /DATA/AppData/mesSites/portfolio_tom/frontend/dist/
