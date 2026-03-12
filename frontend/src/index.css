@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500&display=swap');
 
 :root {
-  --bg-color: #121318; /* Noir espace profond */
+  --bg-color: #121318;
   --text-color: #e0e0e0;
-  --primary-color: #ff3300; /* Orange/Rouge moteur fusée & F1 */
+  --primary-color: #ff3300;
   --secondary-color: #0b0c10;
-  --accent-color: #00ffcc; /* Cyan Néon Gaming */
+  --accent-color: #00ffcc;
   --glass-bg: rgba(15, 15, 20, 0.75);
   --glass-border: rgba(0, 255, 204, 0.15);
   --border-radius-mac: 12px;
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Rajdhani', sans-serif; /* Typo technique / Télémétrie */
+  --font-display: 'Rajdhani', sans-serif;
 }
 
 html {
@@ -31,7 +31,6 @@ section[id], [id^="formation"], [id^="experience"] {
   scroll-margin-top: 120px;
 }
 
-/* Grille holographique subtile (Science/Espace) */
 body::before {
   content: "";
   position: fixed;
@@ -43,7 +42,6 @@ body::before {
   z-index: -2;
 }
 
-/* Nébuleuse lumineuse en fond */
 body::after {
   content: "";
   position: fixed;
@@ -80,7 +78,6 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
 }
 
-/* Cartes épurées avec touche Racing/Sci-fi */
 .mac-card {
   background: var(--glass-bg);
   backdrop-filter: blur(14px);
@@ -99,7 +96,6 @@ a { color: inherit; text-decoration: none; }
   border-color: rgba(255, 51, 0, 0.4);
 }
 
-/* Boutons style "Cockpit / Gaming" */
 .primary-button {
   background: linear-gradient(45deg, var(--primary-color), #ff6600);
   color: white;
@@ -137,13 +133,11 @@ a { color: inherit; text-decoration: none; }
   will-change: transform, opacity;
 }
 
-/* Custom Scrollbar (Néon) */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-color); }
 ::-webkit-scrollbar-thumb { background: rgba(0, 255, 204, 0.3); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-/* Global justification for descriptive text */
 .mac-card p,
 .tech-modal p,
 .timeline-desc,
