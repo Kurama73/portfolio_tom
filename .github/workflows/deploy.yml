@@ -54,7 +54,13 @@ jobs:
           cp -a dist_next/. dist/
           rm -rf dist_next
 
-      - name: Rebuild and restart backend
+      - name: Rebuild and restart stack
         run: |
           cd "$DEPLOY_DIR"
-          docker compose up -d --build --remove-orphans
+          APP_VERSION="${GITHUB_SHA}" docker compose up -d --build --remove-orphans
+
+      - name: Smoke checks (images + api meta)
+        run: |
+          set -e
+          curl -fsS "http://localhost:8081/images/projects/LootBoxHunter/2.png" > /dev/null
+          curl -fsS "http://localhost:8081/api/meta" > /dev/null

@@ -23,6 +23,7 @@ const contactLimiter = rateLimit({
 const app = express();
 const PORT = process.env.PORT || 3001;
 const SECRET_KEY = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
+const APP_VERSION = process.env.APP_VERSION || 'dev-local';
 
 // ==========================================
 // CONFIGURATION ET MIDDLEWARES GLOBAUX
@@ -511,6 +512,48 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Échec de l'envoi." });
   }
+});
+
+app.get('/api/meta', (req, res) => {
+  const query = `
+    SELECT
+      (SELECT COUNT(*) FROM projects) AS projectsCount,
+      (SELECT COUNT(*) FROM formations) AS formationsCount,
+      (SELECT COUNT(*) FROM professional_experiences) AS experiencesCount,
+      (SELECT COUNT(*) FROM passions) AS passionsCount
+  `;
+
+  db.get(query, [], (err, counts) => {
+    if (err) {
+      return res.status(500).json({
+        error: 'Failed to read metadata',
+        appVersion: APP_VERSION,
+        dbPath
+      });
+    }
+
+    db.all(
+      'SELECT id, imageUrl FROM projects ORDER BY startDate DESC LIMIT 5',
+      [],
+      (sampleErr, sampleRows) => {
+        if (sampleErr) {
+          return res.status(500).json({
+            error: 'Failed to read sample project images',
+            appVersion: APP_VERSION,
+            dbPath,
+            counts
+          });
+        }
+
+        res.json({
+          appVersion: APP_VERSION,
+          dbPath,
+          counts,
+          sampleProjectImages: sampleRows
+        });
+      }
+    );
+  });
 });
 
 // ==========================================
