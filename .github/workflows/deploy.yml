@@ -62,5 +62,32 @@ jobs:
       - name: Smoke checks (images + api meta)
         run: |
           set -e
-          curl -fsS "http://localhost:8081/images/projects/LootBoxHunter/2.png" > /dev/null
-          curl -fsS "http://localhost:8081/api/meta" > /dev/null
+          cd "$DEPLOY_DIR"
+
+          # Wait for nginx static serving (can flap briefly during container restart)
+          for i in $(seq 1 20); do
+            if curl -fsS "http://localhost:8081/images/projects/LootBoxHunter/2.png" > /dev/null; then
+              break
+            fi
+            if [ "$i" -eq 20 ]; then
+              echo "Static image smoke check failed after retries"
+              docker compose ps
+              docker compose logs --tail=80
+              exit 1
+            fi
+            sleep 2
+          done
+
+          # Wait for backend to be reachable through nginx proxy
+          for i in $(seq 1 25); do
+            if curl -fsS "http://localhost:8081/api/meta" > /dev/null; then
+              break
+            fi
+            if [ "$i" -eq 25 ]; then
+              echo "API meta smoke check failed after retries"
+              docker compose ps
+              docker compose logs --tail=120
+              exit 1
+            fi
+            sleep 2
+          done
