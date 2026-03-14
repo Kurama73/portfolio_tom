@@ -48,8 +48,11 @@ jobs:
         run: |
           cd "$DEPLOY_DIR/frontend"
           npm ci
-          rm -rf dist
-          npm run build
+          rm -rf dist_next
+          npm run build -- --outDir dist_next
+          mkdir -p dist
+          cp -a dist_next/. dist/
+          rm -rf dist_next
 
       - name: Rebuild and restart backend
         run: |
