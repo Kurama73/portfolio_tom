@@ -220,6 +220,27 @@
   margin: 0;
 }
 
+.admin-version-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--primary-color-rgb, 255, 77, 0), 0.35);
+  background: rgba(var(--primary-color-rgb, 255, 77, 0), 0.12);
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-version-badge-sidebar {
+  width: 100%;
+  margin: 0 0 1rem 0;
+}
+
 .error-banner {
   background: rgba(255, 77, 77, 0.1);
   color: #ff4d4d;
@@ -518,4 +539,4 @@ textarea.clean-input {
     grid-template-columns: 1fr;
   }
 }
-
+

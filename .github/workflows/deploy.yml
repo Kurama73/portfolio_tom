@@ -5,29 +5,55 @@ on:
     branches:
       - prod
 
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
+env:
+  DEPLOY_DIR: /DATA/AppData/mesSites/portfolio_tom
+
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Build Frontend
+      - name: Validate production clone
         run: |
-          cd frontend
-          npm install
+          if [ ! -d "$DEPLOY_DIR/.git" ]; then
+            echo "Production clone not found in $DEPLOY_DIR"
+            exit 1
+          fi
+
+      - name: Update production clone
+        run: |
+          git config --global --add safe.directory "$DEPLOY_DIR"
+          cd "$DEPLOY_DIR"
+          git fetch origin prod
+          git checkout prod
+          git pull --ff-only origin prod
+
+      - name: Prepare runtime folders
+        run: |
+          mkdir -p "$DEPLOY_DIR/backend/data"
+          mkdir -p "$DEPLOY_DIR/backend/public/images/uploads"
+          if [ ! -f "$DEPLOY_DIR/backend/.env" ]; then
+            touch "$DEPLOY_DIR/backend/.env"
+          fi
+
+      - name: Build frontend in production folder
+        run: |
+          cd "$DEPLOY_DIR/frontend"
+          npm ci
+          rm -rf dist
           npm run build
 
-      - name: Deploy to Production Folder
+      - name: Rebuild and restart backend
         run: |
-          mkdir -p /DATA/AppData/mesSites/portfolio_tom
-          # Copie récursive du code vers le dossier final
-          # On ne copie pas .git pour éviter les soucis
-          rsync -av --exclude '.git' . /DATA/AppData/mesSites/portfolio_tom/
-          
-      - name: Rebuild Backend
-        run: |
-          cd /DATA/AppData/mesSites/portfolio_tom
-          # On crée un .env si absent
-          if [ ! -f backend/.env ]; then touch backend/.env; fi
-          docker compose up -d --build
+          cd "$DEPLOY_DIR"
+          docker compose up -d --build --remove-orphans
