@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
+import { buildApiUrl, buildAssetUrl } from '../../../domain/services/api';
 import { type Project, type IutCompetence, type Skill, ProjectCategory, ProjectStatus } from '../../../domain/models';
 import { translateText } from '../../../domain/services/translation.service';
 import ImageUpload from '../ImageUpload';
@@ -22,9 +23,9 @@ const ProjectManager: React.FC = () => {
   const loadProjects = useCallback(async () => {
     try {
       const [pRes, cRes, sRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/projects'),
-        fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/iut-competences'),
-        fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/skills'),
+        fetch(buildApiUrl('/projects')),
+        fetch(buildApiUrl('/iut-competences')),
+        fetch(buildApiUrl('/skills')),
       ]);
       setProjects(await pRes.json());
       setAllCompetences(await cRes.json());
@@ -237,7 +238,7 @@ const ProjectManager: React.FC = () => {
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
                 {(editingProject.images || []).map(img => (
                   <div key={img} style={{ position: 'relative', border: `2px solid ${editingProject.imageUrl === img ? 'var(--primary-color)' : 'rgba(255,255,255,0.1)'}`, padding: '4px', borderRadius: '8px' }}>
-                    <img src={img} alt="preview" style={{ width: '100px', height: '80px', borderRadius: '4px', objectFit: 'cover' }} />
+                    <img src={buildAssetUrl(img)} alt="preview" style={{ width: '100px', height: '80px', borderRadius: '4px', objectFit: 'cover' }} />
                     <button type="button" onClick={() => setEditingProject({ ...editingProject, imageUrl: img })} style={{ position: 'absolute', bottom: -8, left: '50%', transform: 'translateX(-50%)', background: '#333', border: 'none', borderRadius: '4px', color: 'white', fontSize: '0.6rem', padding: '2px 4px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                       {editingProject.imageUrl === img ? '★ Cover' : 'Set Cover'}
                     </button>

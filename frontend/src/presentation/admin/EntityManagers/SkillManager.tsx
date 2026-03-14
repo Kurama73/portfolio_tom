@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
+import { buildApiUrl } from '../../../domain/services/api';
 import type { Skill } from '../../../domain/models';
 
 /** Transforms a display name into a URL-safe slug used as ID */
@@ -14,7 +15,7 @@ const SkillManager: React.FC = () => {
   const [editingSkill, setEditingSkill] = useState<Partial<Skill> | null>(null);
 
   const loadSkills = React.useCallback(async () => {
-    const res = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/skills');
+    const res = await fetch(buildApiUrl('/skills'));
     setSkills(await res.json());
   }, []);
 

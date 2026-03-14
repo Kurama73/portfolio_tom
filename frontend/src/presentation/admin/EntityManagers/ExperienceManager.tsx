@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
+import { buildApiUrl, buildAssetUrl } from '../../../domain/services/api';
 import { translateText } from '../../../domain/services/translation.service';
 import { ExperienceType, type IutCompetence, type Skill, type SoftSkill } from '../../../domain/models';
 import ImageUpload from '../ImageUpload';
@@ -24,10 +25,10 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
   const loadItems = useCallback(async () => {
     const endpoint = type === 'pro' ? '/professional_experiences' : '/formations';
     const [itemsRes, compRes, skillsRes, softRes] = await Promise.all([
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}${endpoint}`),
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/iut-competences`),
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/skills`),
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/soft-skills`),
+      fetch(buildApiUrl(endpoint)),
+      fetch(buildApiUrl('/iut-competences')),
+      fetch(buildApiUrl('/skills')),
+      fetch(buildApiUrl('/soft-skills')),
     ]);
     setItems(await itemsRes.json());
     setAllCompetences(await compRes.json());
@@ -260,7 +261,7 @@ const ExperienceManager: React.FC<{ type: 'pro' | 'formation' }> = ({ type }) =>
               <label>Image / Illustration</label>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 {!!editingItem.imageUrl && (
-                  <img src={String(editingItem.imageUrl)} alt="preview" style={{ height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+                  <img src={buildAssetUrl(String(editingItem.imageUrl))} alt="preview" style={{ height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
                 )}
                 <ImageUpload onUploadSuccess={url => setEditingItem({ ...editingItem, imageUrl: url })} label="Uploader" />
                 <input className="clean-input" value={String(editingItem.imageUrl ?? '')} onChange={e => setEditingItem({ ...editingItem, imageUrl: e.target.value })} placeholder="ou URL directe" />

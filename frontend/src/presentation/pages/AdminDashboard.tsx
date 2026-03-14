@@ -8,6 +8,8 @@ import PassionManager from '../admin/EntityManagers/PassionManager';
 import SoftSkillManager from '../admin/EntityManagers/SoftSkillManager';
 import './AdminDashboard.css';
 
+const CRUD_VERSION = 'v1.0.0';
+
 const AdminDashboard: React.FC = () => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('admin_token'));
   const [activeTab, setActiveTab] = useState('projects');
@@ -41,6 +43,7 @@ const AdminDashboard: React.FC = () => {
             {/* <Lock size={32} color="var(--primary-color)" /> */}
             <h2>TERMINAL <span className="dot">ADMIN</span></h2>
             <p>Authentification requise pour l'accès au portfolio</p>
+            <div className="admin-version-badge">{CRUD_VERSION}</div>
           </div>
 
           <form className="admin-form" onSubmit={handleLogin}>
@@ -123,6 +126,7 @@ const AdminDashboard: React.FC = () => {
           ))}
         </nav>
         <div className="sidebar-footer">
+          <div className="admin-version-badge admin-version-badge-sidebar">{CRUD_VERSION}</div>
           <button className="logout-btn" onClick={() => {
             setToken(null);
             localStorage.removeItem('admin_token');

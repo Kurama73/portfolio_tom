@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+import { buildApiUrl } from './api';
+
 
 export class AdminService {
   private static getToken() {
@@ -13,7 +14,7 @@ export class AdminService {
   }
 
   static async login(username: string, password: string): Promise<string> {
-    const res = await fetch(`${API_URL}/auth/login`, {
+    const res = await fetch(buildApiUrl('/auth/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
@@ -34,7 +35,7 @@ export class AdminService {
   static async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('image', file);
-    const res = await fetch(`${API_URL}/upload`, {
+    const res = await fetch(buildApiUrl('/upload'), {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${this.getToken()}` },
       body: formData
@@ -45,7 +46,7 @@ export class AdminService {
   }
 
   private static async request(endpoint: string, method: string, body?: unknown) {
-    const res = await fetch(`${API_URL}${endpoint}`, {
+    const res = await fetch(buildApiUrl(endpoint), {
       method,
       headers: this.getHeaders(),
       body: body ? JSON.stringify(body) : undefined

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trans } from 'react-i18next';
+import { buildAssetUrl } from '../../domain/services/api';
 import { PortfolioService } from '../../domain/services/portfolio.service';
 import { useSafeTranslation } from '../hooks/useSafeTranslation';
 import SkillBar from '../components/SkillBar';
@@ -249,7 +250,7 @@ const Home: React.FC = () => {
               {passions.map(passion => (
                 <div key={passion.id} className="mac-card passion-card">
                   <div className="passion-image">
-                    <img src={passion.imageUrl} alt={passion.name} />
+                    <img src={buildAssetUrl(passion.imageUrl)} alt={passion.name} />
                   </div>
                   <div className="passion-content">
                     <h3>{translateField(passion, 'name')}</h3>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
+import { buildApiUrl, buildAssetUrl } from '../../../domain/services/api';
 import { translateText } from '../../../domain/services/translation.service';
 import type { Passion } from '../../../domain/models';
 import ImageUpload from '../ImageUpload';
@@ -16,7 +17,7 @@ const PassionManager: React.FC = () => {
   const [translating, setTranslating] = useState(false);
 
   const loadPassions = async () => {
-    const res = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/passions');
+    const res = await fetch(buildApiUrl('/passions'));
     setPassions(await res.json());
   };
 
@@ -127,7 +128,7 @@ const PassionManager: React.FC = () => {
             <div className="admin-card" style={{ background: 'rgba(255,255,255,0.01)', borderStyle: 'dashed' }}>
               <label style={{ display: 'block', marginBottom: '1rem', fontWeight: 700 }}>Image illustrative</label>
               {editingPassion.imageUrl && (
-                <img src={editingPassion.imageUrl} alt="preview" style={{ width: '150px', height: '100px', objectFit: 'cover', marginBottom: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
+                <img src={buildAssetUrl(editingPassion.imageUrl)} alt="preview" style={{ width: '150px', height: '100px', objectFit: 'cover', marginBottom: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }} />
               )}
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <ImageUpload onUploadSuccess={url => setEditingPassion({ ...editingPassion, imageUrl: url })} label="Uploader" />

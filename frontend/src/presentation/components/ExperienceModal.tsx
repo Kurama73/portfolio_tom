@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSafeTranslation } from '../hooks/useSafeTranslation';
 import type { Experience, IutCompetence, Skill } from '../../domain/models';
+import { buildAssetUrl } from '../../domain/services/api';
 import { PortfolioService } from '../../domain/services/portfolio.service';
 import SkillBar from './SkillBar';
 import './Modal.css';
@@ -55,7 +56,7 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({ experience, onClose }
       <div className="modal-content-scroll">
         {experience.imageUrl && (
           <img
-            src={`http://localhost:3001${experience.imageUrl}`}
+            src={buildAssetUrl(experience.imageUrl)}
             alt={translateField(experience, 'title')}
             className="modal-header-image"
           />
@@ -102,4 +103,4 @@ const ExperienceModal: React.FC<ExperienceModalProps> = ({ experience, onClose }
   );
 };
 
-export default ExperienceModal;
+export default ExperienceModal;
