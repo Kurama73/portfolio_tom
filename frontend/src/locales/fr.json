@@ -17,7 +17,7 @@
     "formations": {
       "title": "Formations",
       "subtitle": "Mon parcours académique et certifications.",
-      "loading": "Chargement des formations..."
+      "loading": ""
     },
     "experiences": {
       "title": "Expériences Professionnelles",
