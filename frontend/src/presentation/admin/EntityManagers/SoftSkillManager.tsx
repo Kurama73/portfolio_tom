@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AdminService } from '../../../domain/services/admin.service';
+import { buildApiUrl } from '../../../domain/services/api';
 import { translateText } from '../../../domain/services/translation.service';
 
 const slugify = (str: string) =>
@@ -21,7 +22,7 @@ const SoftSkillManager: React.FC = () => {
   const [translating, setTranslating] = useState(false);
 
   const loadSkills = useCallback(async () => {
-    const res = await fetch(import.meta.env.VITE_API_URL || 'http://localhost:3001/api/soft-skills');
+    const res = await fetch(buildApiUrl('/soft-skills'));
     const data = await res.json();
     setSkills(data.map((s: SoftSkill) => ({ ...s, nameEn: s.nameEn || s.name_en || '' })));
   }, []);

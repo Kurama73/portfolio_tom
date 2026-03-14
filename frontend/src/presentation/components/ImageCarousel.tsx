@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { buildAssetUrl } from '../../domain/services/api';
 import './Modal.css';
 
 interface ProjectGalleryProps {
@@ -37,7 +38,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({ images, alt, showGaller
           <div className="gallery-grid">
             {images.map((img, idx) => (
               <div key={idx} className="gallery-item" onClick={() => openFullscreen(idx)}>
-                <img src={img} alt={`${alt} - ${idx + 1}`} />
+                <img src={buildAssetUrl(img)} alt={`${alt} - ${idx + 1}`} />
               </div>
             ))}
           </div>
@@ -60,7 +61,7 @@ const ProjectGallery: React.FC<ProjectGalleryProps> = ({ images, alt, showGaller
   return (
     <>
       <div className="hero-illustration-header" onClick={() => openFullscreen(0)}>
-        <img src={images[0]} alt={alt} />
+        <img src={buildAssetUrl(images[0])} alt={alt} />
         <div className="header-melt-gradient"></div>
       </div>
 
@@ -90,7 +91,7 @@ const FullscreenOverlay: React.FC<{
     <button className="close-fullscreen" onClick={onClose}>&times;</button>
 
     <img
-      src={images[currentIndex]}
+      src={buildAssetUrl(images[currentIndex])}
       alt={alt}
       className="full-screen-image"
       onClick={(e) => e.stopPropagation()}

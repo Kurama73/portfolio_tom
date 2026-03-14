@@ -1,5 +1,6 @@
 // Portfolio Backend API - v2.1 (enum types fixed)
 const express = require('express');
+const fs = require('fs');
 
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
@@ -47,7 +48,11 @@ const upload = multer({ storage });
 // ==========================================
 
 const dbPath = process.env.DB_PATH || path.resolve(__dirname, 'portfolio.db');
-const fs = require('fs');
+const dbDirectory = path.dirname(dbPath);
+
+if (!fs.existsSync(dbDirectory)) {
+  fs.mkdirSync(dbDirectory, { recursive: true });
+}
 
 if (process.env.NODE_ENV !== 'production' && fs.existsSync(dbPath)) {
   try {
@@ -59,11 +64,16 @@ if (process.env.NODE_ENV !== 'production' && fs.existsSync(dbPath)) {
 
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Erreur SQLite:', err.message);
+    console.error(`Erreur SQLite lors de l'ouverture de ${dbPath}:`, err.message);
+    process.exit(1);
   } else {
-    console.log('Système connecté à SQLite.');
+    console.log(`Système connecté à SQLite (${dbPath}).`);
 
     db.get("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table' AND name='skills'", (err, row) => {
+      if (err) {
+        console.error('Erreur SQLite lors de la vérification des tables:', err.message);
+        return;
+      }
       // Only seed if in dev or if the DB is empty
       if (process.env.NODE_ENV === 'production' && row && row.count > 0) {
         console.log('Production mode: Tables exist, skipping seed.');
@@ -95,6 +105,10 @@ const db = new sqlite3.Database(dbPath, (err) => {
     db.serialize(() => {
       db.run(`CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, username TEXT, password TEXT)`);
       db.get("SELECT * FROM admin", (err, row) => {
+        if (err) {
+          console.error('Erreur SQLite lors de la lecture du compte admin:', err.message);
+          return;
+        }
         if (!row) {
           const adminPass = process.env.ADMIN_PASSWORD || "admin123";
           const hash = bcrypt.hashSync(adminPass, 10);
@@ -104,6 +118,24 @@ const db = new sqlite3.Database(dbPath, (err) => {
     });
   }
 });
+
+db.on('error', (err) => {
+  console.error('Erreur SQLite inattendue:', err.message);
+});
+
+const closeDatabase = (signal) => {
+  db.close((err) => {
+    if (err) {
+      console.error(`Erreur SQLite lors de la fermeture (${signal}):`, err.message);
+    } else {
+      console.log(`Connexion SQLite fermée (${signal}).`);
+    }
+    process.exit(err ? 1 : 0);
+  });
+};
+
+process.on('SIGINT', () => closeDatabase('SIGINT'));
+process.on('SIGTERM', () => closeDatabase('SIGTERM'));
 
 // ==========================================
 // MIDDLEWARE DE SÉCURITÉ

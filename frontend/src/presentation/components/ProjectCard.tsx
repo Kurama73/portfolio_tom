@@ -1,5 +1,6 @@
 import { useSafeTranslation } from '../hooks/useSafeTranslation';
 import type { Project } from '../../domain/models';
+import { buildAssetUrl } from '../../domain/services/api';
 import './ProjectCard.css';
 
 interface ProjectCardProps {
@@ -33,7 +34,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
     <div className="mac-card project-card" onClick={onClick}>
       {coverImage ? (
         <div className="project-image-container">
-          <img src={coverImage} alt={translateField(project, 'title')} className="project-image" />
+          <img src={buildAssetUrl(coverImage)} alt={translateField(project, 'title')} className="project-image" />
         </div>
       ) : (
         <div className="project-image-placeholder">

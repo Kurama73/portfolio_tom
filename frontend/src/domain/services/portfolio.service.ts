@@ -1,40 +1,39 @@
 import type { Project, Skill, Passion, IutCompetence, SoftSkill, Formation, ProfessionalExperience } from "../models";
-
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+import { buildApiUrl } from "./api";
 
 export class PortfolioService {
   static async getProjects(): Promise<Project[]> {
-    const response = await fetch(`${API_BASE}/projects`);
+    const response = await fetch(buildApiUrl('/projects'));
     return response.json();
   }
 
   static async getSkills(): Promise<Skill[]> {
-    const response = await fetch(`${API_BASE}/skills`);
+    const response = await fetch(buildApiUrl('/skills'));
     return response.json();
   }
 
   static async getSoftSkills(): Promise<SoftSkill[]> {
-    const response = await fetch(`${API_BASE}/soft-skills`);
+    const response = await fetch(buildApiUrl('/soft-skills'));
     return response.json();
   }
 
   static async getFormations(): Promise<Formation[]> {
-    const response = await fetch(`${API_BASE}/formations`);
+    const response = await fetch(buildApiUrl('/formations'));
     return response.json();
   }
 
   static async getProfessionalExperiences(): Promise<ProfessionalExperience[]> {
-    const response = await fetch(`${API_BASE}/professional_experiences`);
+    const response = await fetch(buildApiUrl('/professional_experiences'));
     return response.json();
   }
 
   static async getPassions(): Promise<Passion[]> {
-    const response = await fetch(`${API_BASE}/passions`);
+    const response = await fetch(buildApiUrl('/passions'));
     return response.json();
   }
 
   static async getIutCompetences(): Promise<IutCompetence[]> {
-    const response = await fetch(`${API_BASE}/iut-competences`);
+    const response = await fetch(buildApiUrl('/iut-competences'));
     return response.json();
   }
 

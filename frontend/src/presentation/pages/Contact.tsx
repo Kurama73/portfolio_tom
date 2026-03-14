@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { buildApiUrl } from '../../domain/services/api';
 import './Contact.css';
 
 const Contact: React.FC = () => {
@@ -19,8 +20,7 @@ const Contact: React.FC = () => {
     setStatus('loading');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-      const response = await fetch(`${apiUrl}/contact`, {
+      const response = await fetch(buildApiUrl('/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
