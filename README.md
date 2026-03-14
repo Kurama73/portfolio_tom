@@ -98,13 +98,16 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
-    location /images/ {
-        proxy_pass http://172.17.0.1:3001/images/;
+    location /images/uploads/ {
+        proxy_pass http://172.17.0.1:3001/images/uploads/;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
     }
 }
 ```
+
+Important: ne pas proxy tout `/images/` vers le backend, sinon les images statiques du frontend
+(`frontend/public/images/projects/...`) passent en 404.
 
 ### 5.1 Mapping du dist dans le conteneur Nginx
 
