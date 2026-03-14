@@ -58,6 +58,7 @@ jobs:
         run: |
           cd "$DEPLOY_DIR"
           APP_VERSION="${GITHUB_SHA}" docker compose up -d --build --remove-orphans
+          docker compose up -d --force-recreate nginx
 
       - name: Smoke checks (images + api meta)
         run: |
@@ -77,6 +78,9 @@ jobs:
             fi
             sleep 2
           done
+
+          curl -fsS "http://localhost:8081/images/projects/PanierVIP/2.png" > /dev/null
+          curl -fsS "http://localhost:8081/images/projects/AppliParam/2.jpg" > /dev/null
 
           # Wait for backend to be reachable through nginx proxy
           for i in $(seq 1 25); do
